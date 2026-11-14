@@ -30,4 +30,4 @@ Map data © OpenStreetMap contributors. Building data: NYC Open Data. Train time
 
 - OpenStreetMap requires the credit "© OpenStreetMap contributors" wherever its data is shown.
 - The NHL data comes from an unofficial feed. Fine for commentary and stats; do not sell products built on it.
-- To refresh everything: `python3 data/fetch_msg.py --refresh`
+- To refresh everything: `python3 data/fetch_venue.py msg --refresh`
