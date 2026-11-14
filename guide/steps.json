@@ -1,0 +1,437 @@
+{
+  "id": "social-3d-video-v1",
+  "eyebrow": "Visual Design Project",
+  "title": "From 3D model to posted video",
+  "lede": "Your first video, start to finish: the arena that sits on a train station. One small step at a time. Do the step, tap the green button, move on.",
+  "flow": ["Set up", "Story", "Script", "Model", "Record", "Voice", "Edit", "Post", "Learn"],
+  "keys": [
+    {"key": "Cmd + Shift + 5", "does": "Open the Mac screen recorder"},
+    {"key": "Cmd + Ctrl + Esc", "does": "Stop a screen recording"},
+    {"key": "Cmd + Ctrl + F", "does": "Make Chrome full screen"},
+    {"key": "Space", "does": "Play or pause in CapCut"},
+    {"key": "Cmd + B", "does": "Split a clip in CapCut"},
+    {"key": "Cmd + Z", "does": "Undo"}
+  ],
+  "steps": [
+    {
+      "title": "Part 1 of 9 · Pick one name for all three apps", "minutes": 3,
+      "where": "Your phone.",
+      "do": [
+        "Think of a short name about places and their stories.",
+        "Check it is free on [TikTok](https://www.tiktok.com), [Instagram](https://www.instagram.com) and [YouTube](https://www.youtube.com).",
+        "Use the exact same @name on all three."
+      ],
+      "see": "The same @name is free on all three apps.",
+      "tip": "Leave the word stadium out of the name. You will grow past stadiums."
+    },
+    {
+      "title": "Set up TikTok", "minutes": 3,
+      "where": "TikTok app on your phone, then **Profile** at the bottom right.",
+      "do": [
+        "Sign up with your email.",
+        "Add the name, a profile photo and a one-line bio.",
+        "Keep it a personal account for now."
+      ],
+      "see": "Your profile page with the new name.",
+      "tip": "Business accounts lose most popular songs. Stay personal until you have a reason to switch."
+    },
+    {
+      "title": "Set up Instagram as a creator", "minutes": 3,
+      "where": "Instagram app, **Profile**, then the three lines at the top right.",
+      "do": [
+        "Tap **Account type and tools**.",
+        "Tap **Switch to professional account**.",
+        "Choose **Creator**."
+      ],
+      "see": "A **Professional dashboard** button on your profile.",
+      "tip": "A creator account gives you free view stats and scheduling."
+    },
+    {
+      "title": "Set up a YouTube channel", "minutes": 3,
+      "where": "[YouTube Studio](https://studio.youtube.com) on your Mac.",
+      "do": [
+        "Sign in with your Google account.",
+        "Click **Create channel**.",
+        "Use the same name and photo as the other apps."
+      ],
+      "see": "An empty channel dashboard.",
+      "tip": "YouTube Shorts keep getting found through search for months. TikTok mostly does not."
+    },
+    {
+      "title": "Get the free tools", "minutes": 3,
+      "where": "Your Mac browser.",
+      "do": [
+        "Install [CapCut](https://www.capcut.com) for the desktop. This is your video editor.",
+        "Bookmark [Adobe Podcast Enhance](https://podcast.adobe.com/enhance). It cleans up your voice.",
+        "Bookmark the [YouTube Audio Library](https://studio.youtube.com) (left menu, **Audio library**). Free music.",
+        "Install [Blender](https://www.blender.org/download/) now so it is ready later."
+      ],
+      "see": "CapCut opens to its home screen.",
+      "tip": "Backup editor if CapCut is not available: [DaVinci Resolve](https://www.blackmagicdesign.com/products/davinciresolve), free and more powerful."
+    },
+    {
+      "title": "Find your video folder", "minutes": 1,
+      "where": "Finder, then **Visual Design Project**, then **videos**.",
+      "do": [
+        "Open **01-msg-penn-station**. Claude made it for you.",
+        "Inside: **script.md**, plus **clips**, **voice** and **export** folders.",
+        "**_template** is the blank copy for every future video."
+      ],
+      "see": "Four items in the first video folder.",
+      "tip": "Same folders every time is how a template keeps you fast and uniform."
+    },
+    {
+      "title": "Part 2 of 9 · Read up on the story", "minutes": 10,
+      "where": "Your browser, plus **script.md** open in TextEdit.",
+      "do": [
+        "Read [the old Penn Station](https://en.wikipedia.org/wiki/Pennsylvania_Station_%281910%E2%80%931963%29) page.",
+        "Read the [Madison Square Garden](https://en.wikipedia.org/wiki/Madison_Square_Garden) page.",
+        "Write 3 facts that surprised you under **Sources**, each with its link."
+      ],
+      "see": "Three facts with links in script.md.",
+      "tip": "Check every number in a second place, like the [NYC Landmarks Preservation Commission](https://www.nyc.gov/site/lpc/about/about-lpc.page) site or a news story."
+    },
+    {
+      "title": "Part 3 of 9 · Write the hook", "minutes": 3,
+      "where": "**script.md**, under **Hook**.",
+      "do": [
+        "Read the three sample hooks.",
+        "Write one of your own.",
+        "Keep the one that makes you think: wait, what?"
+      ],
+      "see": "One hook line you would stop scrolling for.",
+      "tip": "The first 2 seconds decide if anyone watches. Lead with the strangest true fact."
+    },
+    {
+      "title": "Rewrite the script in your own words", "minutes": 10,
+      "where": "**script.md**, under **Draft script**.",
+      "do": [
+        "Follow the shape: hook, setup, twist, payoff, question.",
+        "Change any line that does not sound like you.",
+        "Read it out loud with a timer. Aim for 45 to 60 seconds."
+      ],
+      "see": "A script that sounds like you talking to a friend.",
+      "tip": "About 140 spoken words fill 60 seconds. Shorter usually wins."
+    },
+    {
+      "title": "Fact check every line", "minutes": 5,
+      "where": "**script.md** next to your sources.",
+      "do": [
+        "Match each date and number to a source.",
+        "Say opinions as questions, like the last line does.",
+        "Cut anything you cannot back up."
+      ],
+      "see": "Every fact in the script has a source.",
+      "tip": "History comments are brutal about mistakes. One wrong date can take over the comments."
+    },
+    {
+      "title": "Check the shot list", "minutes": 5,
+      "where": "**script.md**, under **Shot list**.",
+      "do": [
+        "Read each row: which line, which style, which camera move, which on-screen text.",
+        "Change any shot you want.",
+        "Aim for a new shot every 2 to 3 seconds."
+      ],
+      "see": "A shot for every line of the script.",
+      "tip": "Pick 2 or 3 styles you use in every video. That repeated look is your brand."
+    },
+    {
+      "title": "Find old photos you are allowed to use", "minutes": 10,
+      "where": "[Library of Congress photos](https://www.loc.gov/photos/) and [Wikimedia Commons](https://commons.wikimedia.org).",
+      "do": [
+        "Search \"Pennsylvania Station New York\".",
+        "Only pick photos marked **No known restrictions** or **Public domain**.",
+        "Save them to the **clips** folder.",
+        "Copy the credit line into **Photo credits** in script.md."
+      ],
+      "see": "Two or three old photos with credits written down.",
+      "tip": "A random photo from Google Images can get your video taken down. Stick to these two sites."
+    },
+    {
+      "title": "Part 4 of 9 · Drop in photos of the real building", "minutes": 5,
+      "where": "Finder, **Visual Design Project**, **references**, **madison-square-garden**.",
+      "do": [
+        "Screenshot the top-down view in [Google Maps](https://www.google.com/maps) satellite mode.",
+        "Add aerial shots from each side, the entrance and the inside bowl.",
+        "Name them like **top-down.jpg** or **aerial-north.jpg**.",
+        "Fill in **notes.md**. Short answers are fine."
+      ],
+      "see": "Five or more photos and a filled-in notes.md.",
+      "tip": "The README in the references folder lists the best photos to grab, in order."
+    },
+    {
+      "title": "Ask Claude to rebuild the model", "minutes": 2,
+      "where": "This chat with Claude.",
+      "do": [
+        "Type: Rebuild Madison Square Garden using the photos in references.",
+        "Compare the new model to your photos.",
+        "Name the 3 things that still look wrong. Claude fixes them."
+      ],
+      "see": "A model you would recognize from the street.",
+      "tip": "Specific notes beat general ones. \"The drum is too short\" helps more than \"looks off\"."
+    },
+    {
+      "title": "Part 5 of 9 · Set up the screen to record", "minutes": 2,
+      "where": "Finder, **stadium-studio**, then double-click **index.html**.",
+      "do": [
+        "Make Chrome full screen with [[Cmd + Ctrl + F]].",
+        "Click **Madison Square Garden** at the top.",
+        "Make sure **Showcase** is selected.",
+        "Turn on Do Not Disturb so no pop-ups land in your shot."
+      ],
+      "see": "The arena filling most of the screen.",
+      "tip": "In Showcase, each style click glides the camera to a new angle. Those glides are your camera moves."
+    },
+    {
+      "title": "Record one shot", "minutes": 2,
+      "where": "Anywhere on your Mac.",
+      "do": [
+        "Press [[Cmd + Shift + 5]].",
+        "Click **Record Selected Portion** in the toolbar.",
+        "Drag a tall box over the arena, shaped like a phone. Keep the side panel out.",
+        "Click **Record**, then click a style and wait for the camera to stop.",
+        "Press [[Cmd + Ctrl + Esc]] to stop."
+      ],
+      "see": "A new video file on your Desktop.",
+      "tip": "In the toolbar, **Options**, then **Save to**, lets you pick the clips folder instead."
+    },
+    {
+      "title": "Record every shot on the list", "minutes": 15,
+      "where": "Same setup as the last step.",
+      "do": [
+        "Record each row of the shot list as its own file.",
+        "Record each one twice. Keep the smoother one.",
+        "Rename them to match the list, like **03-cutaway.mov**.",
+        "For a slow orbit, click **Explore** and drag slowly while recording."
+      ],
+      "see": "One clip per shot in the **clips** folder.",
+      "tip": "Ask Claude for a record button that saves clean vertical clips straight from the page. It skips the cropping."
+    },
+    {
+      "title": "Blender, the other 3D option", "minutes": 3,
+      "where": "Read this step. Nothing to click yet.",
+      "do": [
+        "Our code engine: fast, same look every time, and it can power the map site later.",
+        "[Blender](https://www.blender.org): film-quality light, smooth camera paths, but slow to learn.",
+        "Best of both: Claude can add an export button so our models open in Blender.",
+        "City around the arena: the [Blosm add-on](https://prochitecture.gumroad.com/l/blender-osm) brings in real buildings from [OpenStreetMap](https://www.openstreetmap.org)."
+      ],
+      "see": "You know when to use which.",
+      "tip": "Start videos with the code engine. Learn Blender on the side for the shots that need more polish."
+    },
+    {
+      "title": "Learn Blender basics, on the side", "minutes": 20,
+      "where": "[Blender Guru on YouTube](https://www.youtube.com/@blenderguru), the beginner donut series.",
+      "do": [
+        "Watch one part per sitting. Follow along in Blender.",
+        "Stop after the parts on materials, camera and rendering.",
+        "You do not need the whole series."
+      ],
+      "see": "You can move around a scene, light it and render one picture.",
+      "tip": "Credit [OpenStreetMap](https://www.openstreetmap.org/copyright) in your caption whenever you use its map data."
+    },
+    {
+      "title": "Set Blender to vertical video", "minutes": 2,
+      "where": "Blender, the **Properties** panel on the right, the printer icon (**Output**).",
+      "do": [
+        "Set **Resolution X** to 1080.",
+        "Set **Resolution Y** to 1920.",
+        "Set **Frame Rate** to 30."
+      ],
+      "see": "The camera view turns into a tall phone shape.",
+      "tip": "Save this as your start file: **File**, **Defaults**, **Save Startup File**."
+    },
+    {
+      "title": "Part 6 of 9 · Record your voice", "minutes": 10,
+      "where": "A quiet room. A closet full of clothes works great.",
+      "do": [
+        "Plug in your mic. Keep it about a hand's width from your mouth.",
+        "Open QuickTime Player, then **File**, **New Audio Recording**.",
+        "Read the script three times in a row. Smile while you read.",
+        "Save to the **voice** folder."
+      ],
+      "see": "One audio file with three full takes.",
+      "tip": "Later, for an AI voice, [ElevenLabs](https://elevenlabs.io) is the common pick (paid plans start around $5 a month). Label it when you post."
+    },
+    {
+      "title": "Clean up the audio", "minutes": 3,
+      "where": "[Adobe Podcast Enhance](https://podcast.adobe.com/enhance) in your browser.",
+      "do": [
+        "Upload your voice file.",
+        "Lower the strength slider to about 70 percent if it sounds robotic.",
+        "Download the cleaned file to the **voice** folder."
+      ],
+      "see": "Your voice sounds clear with no room echo.",
+      "tip": "Claude can also clean it for you with the Adobe Enhance Speech connection."
+    },
+    {
+      "title": "Part 7 of 9 · Start a vertical project", "minutes": 2,
+      "where": "CapCut on your Mac.",
+      "do": [
+        "Click **Create project**.",
+        "Import your clips, old photos and the cleaned voice.",
+        "Drag the voice onto the timeline first.",
+        "Set the ratio above the preview to **9:16**."
+      ],
+      "see": "A tall, phone-shaped preview with your voice on the timeline.",
+      "tip": "Voice first, pictures second. The words set the rhythm."
+    },
+    {
+      "title": "Lay the shots over the voice", "minutes": 15,
+      "where": "CapCut timeline.",
+      "do": [
+        "Put each shot above the line it matches.",
+        "Split clips with [[Cmd + B]] and delete the extra.",
+        "Change the shot every 2 to 3 seconds.",
+        "Give old photos a slow zoom so they feel alive."
+      ],
+      "see": "Pictures that change in time with your words.",
+      "tip": "Your strongest shot goes first, with the hook written on it."
+    },
+    {
+      "title": "Add captions", "minutes": 5,
+      "where": "CapCut, the **Captions** or **Text** tab, then **Auto captions**.",
+      "do": [
+        "Let CapCut write the captions from your voice.",
+        "Fix every wrong word, especially names.",
+        "Move them to the middle of the screen."
+      ],
+      "see": "Easy-to-read words that match your voice.",
+      "tip": "Most people watch with the sound off. Captions are not optional."
+    },
+    {
+      "title": "Add music and sound", "minutes": 5,
+      "where": "CapCut, plus your music source.",
+      "do": [
+        "Download one track from the [YouTube Audio Library](https://studio.youtube.com) or [Pixabay Music](https://pixabay.com/music/).",
+        "Drop it under the voice and turn it way down.",
+        "Add a whoosh on the cutaway reveal."
+      ],
+      "see": "Music you can feel but your voice stays clear.",
+      "tip": "Popular songs can get your video muted. Trending sounds are safest added inside each app."
+    },
+    {
+      "title": "Check it on your phone", "minutes": 3,
+      "where": "Export a test copy, AirDrop it to your phone, play it full screen.",
+      "do": [
+        "Can you read every word?",
+        "Is anything hidden behind the right-side buttons or the bottom caption area?",
+        "Does the first second make you want to keep watching?"
+      ],
+      "see": "Clean text, nothing covered, a strong opening.",
+      "tip": "Keep words out of the bottom fifth and the right edge. The apps put buttons there."
+    },
+    {
+      "title": "Export the final video", "minutes": 2,
+      "where": "CapCut, **Export** at the top right.",
+      "do": [
+        "Choose **1080p**, **30 fps**, **MP4**.",
+        "Save it to the **export** folder.",
+        "If a CapCut ending clip appears, delete it and export again."
+      ],
+      "see": "One finished MP4 in the export folder.",
+      "tip": "Upload this same clean file to every app. Never repost one app's download to another."
+    },
+    {
+      "title": "Part 8 of 9 · Write the post text", "minutes": 5,
+      "where": "**script.md** or your Notes app.",
+      "do": [
+        "One line that adds to the hook, then your question.",
+        "Add 3 to 5 hashtags, like #nyc #history #architecture.",
+        "Add the photo credits from script.md."
+      ],
+      "see": "A caption ready to paste three times.",
+      "tip": "Pick a cover frame now too: the most striking shot, with short title text."
+    },
+    {
+      "title": "Post to TikTok", "minutes": 3,
+      "where": "[TikTok Studio upload](https://www.tiktok.com/tiktokstudio/upload) on your Mac.",
+      "do": [
+        "Upload the MP4 and paste the caption.",
+        "Choose your cover frame.",
+        "Post now, or click **Schedule** for a set time."
+      ],
+      "see": "The video is live or scheduled.",
+      "tip": "With an AI voice, turn on the [AI-generated content label](https://support.tiktok.com/en/using-tiktok/creating-videos/ai-generated-content)."
+    },
+    {
+      "title": "Post to Instagram Reels", "minutes": 3,
+      "where": "Instagram app, or [Meta Business Suite](https://business.facebook.com) on your Mac to schedule.",
+      "do": [
+        "Create a new **Reel** and upload the MP4.",
+        "Paste the caption and pick the cover.",
+        "Share it, or schedule it."
+      ],
+      "see": "The Reel on your profile.",
+      "tip": "Posting at a different hour than TikTok is fine. Same day is good."
+    },
+    {
+      "title": "Post to YouTube Shorts", "minutes": 3,
+      "where": "[YouTube Studio](https://studio.youtube.com), **Create**, then **Upload videos**.",
+      "do": [
+        "Upload the MP4. Vertical and under 3 minutes makes it a Short.",
+        "Title it like a search: Why Madison Square Garden Sits on Penn Station.",
+        "Choose **No, it's not made for kids**, then publish or schedule."
+      ],
+      "see": "The video listed under **Shorts** in your channel.",
+      "tip": "For an AI voice, read YouTube's [altered content rules](https://support.google.com/youtube/answer/14328491)."
+    },
+    {
+      "title": "Reply to comments in the first hour", "minutes": 10,
+      "where": "All three apps, on your phone.",
+      "do": [
+        "Reply to every real comment.",
+        "Pin the best one to the top.",
+        "Ignore trolls. If someone shows a real mistake, thank them and pin the correction."
+      ],
+      "see": "Conversations under your video.",
+      "tip": "Replies tell the app people care, which shows your video to more people."
+    },
+    {
+      "title": "Part 9 of 9 · Find where people left", "minutes": 10,
+      "where": "Two days later: TikTok **Analytics**, Instagram **View insights**, YouTube Studio **Analytics**.",
+      "do": [
+        "Find the retention chart on each video.",
+        "Note the second where the line drops the most.",
+        "Write it, and your guess why, under **After posting** in script.md."
+      ],
+      "see": "One clear thing to fix next time.",
+      "tip": "That drop-off second is your best teacher. Fix one thing per video."
+    },
+    {
+      "title": "Batch the next four videos", "minutes": 20,
+      "where": "Finder, **videos** folder.",
+      "do": [
+        "Copy **_template** four times and name each next stadium.",
+        "Write all four scripts in one sitting.",
+        "Then record all the shots, then edit all four.",
+        "Aim for 2 or 3 posts a week."
+      ],
+      "see": "A week of videos ready before the week starts.",
+      "tip": "Ask Claude to build the next stadiums from your reference photos while you write."
+    },
+    {
+      "title": "Point your bio at a home base", "minutes": 5,
+      "where": "Each app's **Edit profile** screen.",
+      "do": [
+        "For now, link your YouTube channel, or a free [Linktree](https://linktr.ee) page.",
+        "Later, swap in your map site: explore every stadium from the videos."
+      ],
+      "see": "A link in all three bios.",
+      "tip": "Social media brings people in. Your own site is the part nobody can take away."
+    }
+  ],
+  "stuck": [
+    {"problem": "The recording captured the whole screen.", "fix": "Press [[Cmd + Shift + 5]] again and click **Record Selected Portion** before **Record**."},
+    {"problem": "The recording looks choppy.", "fix": "Close other apps and tabs, plug in the charger, and draw a smaller box."},
+    {"problem": "The 3D model does not look like the real building.", "fix": "Add more top-down and aerial photos to the references folder, then tell Claude the 3 biggest differences."},
+    {"problem": "CapCut asks you to pay for Pro.", "fix": "Pro is about $10 a month. Try the free [DaVinci Resolve](https://www.blackmagicdesign.com/products/davinciresolve) first, or ask Claude which feature you really need."},
+    {"problem": "My video got muted or flagged for music.", "fix": "Swap the track for one from the [YouTube Audio Library](https://studio.youtube.com) and upload again."},
+    {"problem": "Captions are cut off on the phone.", "fix": "Move them up toward the middle and make the text box narrower."},
+    {"problem": "Barely any views after the first few videos.", "fix": "That is normal for the first 2 to 6 months. Check the drop-off second, sharpen the hook, keep posting."},
+    {"problem": "People are arguing in the comments.", "fix": "Check your source. If you were wrong, pin a correction. If not, let it go. Never argue."}
+  ],
+  "finish_title": "Your first video is out there.",
+  "finish_text": "That is the hardest one. Every video after this uses the same folders, the same looks and the same steps, and gets faster. Take a break, then pick the next four stadiums.",
+  "footer": "From 3D model to posted video, version 1. November 2026."
+}

@@ -6,3 +6,10 @@
 .DS_Store
 .claude/worktrees/
 .ui-check/
+
+# Raw downloads: data/fetch_msg.py can fetch these again any time
+data/msg/raw/
+
+# Local safety copies made before edits
+_backup_before_changes/
+**/_backup_before_changes/
