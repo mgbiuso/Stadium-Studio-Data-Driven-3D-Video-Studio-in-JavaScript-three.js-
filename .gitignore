@@ -1,0 +1,8 @@
+# Secrets: never save keys to git
+.env
+.env.*
+
+# Mac and tool clutter
+.DS_Store
+.claude/worktrees/
+.ui-check/

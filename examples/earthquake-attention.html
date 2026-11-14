@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How long does America care about an earthquake?</title>
+<style>
+  :root {
+    color-scheme: light;
+    --plane: #f9f9f7;
+    --surface: #fcfcfb;
+    --ink: #0b0b0b;
+    --ink-2: #52514e;
+    --muted: #898781;
+    --grid: #e1e0d9;
+    --axis: #c3c2b7;
+    --border: rgba(11, 11, 11, 0.10);
+    --s1: #2a78d6;
+    --s2: #eb6834;
+    --s3: #1baf7a;
+    --s4: #eda100;
+    --land: #e9e8e2;
+    --land-us: #d3d2ca;
+    --critical: #d03b3b;
+    --gutter: 16px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --plane: #0d0d0d;
+      --surface: #1a1a19;
+      --ink: #f0efec;
+      --ink-2: #c3c2b7;
+      --muted: #898781;
+      --grid: #2c2c2a;
+      --axis: #383835;
+      --border: rgba(255, 255, 255, 0.10);
+      --s1: #3987e5;
+      --s2: #d95926;
+      --s3: #199e70;
+      --s4: #c98500;
+      --land: #232322;
+      --land-us: #3a3a37;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--plane);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 17px;
+    line-height: 1.55;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-underline-offset: 3px; }
+  a:focus-visible, button:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--s1);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 var(--gutter); }
+
+  /* ---------- opening ---------- */
+  .hero { padding: 14vh 0 10vh; max-width: 760px; }
+  .kicker {
+    font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-2); margin: 0 0 16px;
+  }
+  h1 {
+    font-size: clamp(34px, 6.4vw, 64px); line-height: 1.04;
+    letter-spacing: -0.02em; margin: 0 0 20px; text-wrap: balance;
+  }
+  .dek { font-size: clamp(18px, 2.2vw, 22px); color: var(--ink-2); margin: 0; max-width: 620px; }
+  .scroll-hint { margin-top: 40px; font-size: 14px; color: var(--muted); }
+
+  /* ---------- scroll story ---------- */
+  .scrolly { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .stage {
+    position: sticky; top: 0; z-index: 2;
+    background: var(--plane);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 0 8px;
+  }
+  .figure { margin: 0; }
+  .fig-title { font-size: 15px; font-weight: 600; margin: 0 0 6px; min-height: 2.6em; display: flex; align-items: flex-end; }
+  .legend { list-style: none; display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 0 0 6px; padding: 0; font-size: 13px; color: var(--ink-2); }
+  .legend li { display: flex; align-items: center; gap: 6px; transition: opacity 0.3s; }
+  .legend li.off { opacity: 0; }
+  .chip { width: 14px; height: 3px; border-radius: 2px; flex: none; }
+  .plot { position: relative; height: max(200px, calc(52vh - 120px)); }
+  .plot svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  .steps { position: relative; z-index: 1; }
+  .step { min-height: 62vh; display: flex; align-items: center; padding: 6vh 0; }
+  .step:last-child { min-height: 80vh; }
+  .step p {
+    margin: 0; padding: 18px 20px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    font-size: 18px; max-width: 460px;
+    opacity: 0.35; transition: opacity 0.3s;
+  }
+  .step.active p { opacity: 1; }
+  .step b { font-weight: 650; }
+
+  @media (min-width: 860px) {
+    .scrolly { grid-template-columns: minmax(0, 36fr) minmax(0, 64fr); column-gap: 48px; }
+    .stage {
+      grid-column: 2; grid-row: 1; height: 100vh; border-bottom: 0;
+      display: flex; align-items: center; padding: 0;
+    }
+    .figure { width: 100%; }
+    .steps { grid-column: 1; grid-row: 1; }
+    .plot { height: min(56vh, 460px); }
+    .fig-title { font-size: 17px; min-height: 0; margin-bottom: 10px; }
+    .legend { font-size: 14px; margin-bottom: 12px; }
+    .step { min-height: 90vh; }
+    .step p { font-size: 20px; }
+  }
+
+  /* chart parts */
+  .gridline { stroke: var(--grid); stroke-width: 1; }
+  .baseline { stroke: var(--axis); stroke-width: 1; }
+  .tick { fill: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+  .axis-label { fill: var(--muted); font-size: 12px; }
+  .line { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; transition: opacity 0.4s; }
+  .ann text { fill: var(--ink); font-size: 13px; }
+  .ann .strong { font-weight: 650; }
+  .ann .soft { fill: var(--ink-2); }
+  .ann .guide { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 3 3; }
+  .ann .ring { fill: var(--surface); stroke-width: 2; }
+  .ann, .bars { animation: fade 0.5s 0.35s both; }
+  .bar-label { fill: var(--ink); font-size: 13px; }
+  .bar-value { fill: var(--ink); font-size: 13px; font-weight: 650; font-variant-numeric: tabular-nums; }
+  .cross { stroke: var(--axis); stroke-width: 1; }
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+  .tip {
+    position: absolute; z-index: 5; pointer-events: none;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    padding: 8px 10px; font-size: 13px; line-height: 1.4; min-width: 150px; max-width: 240px;
+  }
+  .tip[hidden] { display: none; }
+  .tip .t-head { color: var(--ink-2); margin-bottom: 4px; }
+  .tip .t-row { display: flex; align-items: center; gap: 6px; }
+  .tip .t-row span:last-child { margin-left: auto; padding-left: 10px; font-weight: 650; font-variant-numeric: tabular-nums; }
+
+  /* ---------- live panel ---------- */
+  .section { padding: 12vh 0 6vh; }
+  h2 { font-size: clamp(26px, 4vw, 40px); line-height: 1.1; letter-spacing: -0.015em; margin: 0 0 12px; text-wrap: balance; }
+  .lede { color: var(--ink-2); max-width: 640px; margin: 0 0 24px; }
+  .live-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 12px;
+  }
+  .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--s2); animation: pulse 1.8s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+  .live-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  @media (min-width: 860px) { .live-grid { grid-template-columns: minmax(0, 62fr) minmax(0, 38fr); gap: 32px; } }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+  .map-card { position: relative; overflow: hidden; }
+  .map-card svg { display: block; width: 100%; height: auto; }
+  .land { fill: var(--land); stroke: var(--surface); stroke-width: 1; }
+  .land.us { fill: var(--land-us); }
+  .quake { fill: var(--s2); fill-opacity: 0.55; stroke: var(--surface); stroke-width: 1; }
+  .quake:hover { fill-opacity: 0.95; }
+  .map-state {
+    position: absolute; inset: 0; display: flex; flex-direction: column; gap: 12px;
+    align-items: center; justify-content: center; text-align: center; padding: 24px;
+    background: color-mix(in srgb, var(--surface) 82%, transparent);
+  }
+  .map-state[hidden] { display: none; }
+  .map-state.error p { margin: 0; max-width: 340px; }
+  .map-state.error strong { color: var(--critical); }
+  button {
+    font: inherit; font-size: 15px; color: var(--ink); background: var(--surface);
+    border: 1px solid var(--axis); border-radius: 8px; padding: 8px 14px; min-height: 40px; cursor: pointer;
+  }
+  button:hover { background: var(--plane); }
+  .side { padding: 18px 20px; }
+  .stat-label { font-size: 13px; color: var(--ink-2); margin: 0; }
+  .stat { font-size: 44px; font-weight: 650; line-height: 1.1; margin: 2px 0 14px; letter-spacing: -0.02em; }
+  .side h3 { font-size: 15px; margin: 0 0 8px; }
+  .top-list { list-style: none; margin: 0 0 14px; padding: 0; font-size: 15px; }
+  .top-list li { display: flex; gap: 10px; padding: 7px 0; border-top: 1px solid var(--grid); }
+  .top-list .m { font-weight: 650; font-variant-numeric: tabular-nums; flex: none; width: 46px; }
+  .top-list .where { min-width: 0; overflow-wrap: anywhere; }
+  .top-list .when { display: block; font-size: 13px; color: var(--ink-2); }
+  .fetched { font-size: 13px; color: var(--ink-2); margin: 0 0 12px; }
+
+  /* ---------- table + footer ---------- */
+  details { margin: 0 0 32px; }
+  summary { cursor: pointer; font-weight: 600; padding: 8px 0; }
+  .table-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; font-variant-numeric: tabular-nums; }
+  th, td { padding: 6px 12px; text-align: right; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  thead th { color: var(--ink-2); font-weight: 600; }
+  .made { border-top: 1px solid var(--border); padding: 40px 0 80px; color: var(--ink-2); font-size: 15px; }
+  .made h2 { font-size: 20px; color: var(--ink); letter-spacing: 0; }
+  .made ul { padding-left: 20px; max-width: 720px; }
+  .made li { margin-bottom: 8px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ann, .bars, .pulse { animation: none; }
+    .line, .step p, .legend li { transition: none; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <div class="wrap">
+    <header class="hero">
+      <p class="kicker">A sample scroll story</p>
+      <h1>How long does America care about an earthquake?</h1>
+      <p class="dek">When the ground shakes, people rush to Wikipedia. We counted how many came, and how quickly they left.</p>
+      <p class="scroll-hint">Scroll to follow the story ↓</p>
+    </header>
+
+    <section class="scrolly" aria-label="The story, told in six steps">
+      <div class="stage">
+        <figure class="figure">
+          <p class="fig-title" id="figTitle"></p>
+          <ul class="legend" id="legend" aria-label="Chart legend"></ul>
+          <div class="plot" id="plot">
+            <svg id="chart" role="img" aria-labelledby="figTitle" aria-describedby="chartDesc"></svg>
+            <div class="tip" id="tip" hidden></div>
+          </div>
+          <p id="chartDesc" hidden>A chart that changes with each step of the story. Every number it shows is in the table further down the page.</p>
+        </figure>
+      </div>
+
+      <div class="steps">
+        <div class="step" data-step="0"><p>On July 4, 2019, a magnitude 6.4 earthquake shook Ridgecrest, California. A day and a half later a far larger one followed, at magnitude 7.1. On the busiest day, <b>31,407 people</b> opened the Wikipedia article about it.</p></div>
+        <div class="step" data-step="1"><p>Then they left. One week after the peak, the article drew 3,147 readers. <b>Nine in ten had moved on.</b></p></div>
+        <div class="step" data-step="2"><p>Is that normal? Here are three more: Anchorage in 2018, Salt Lake City in 2020, and the New Jersey quake that rattled New York in 2024. Different sizes, different crowds.</p></div>
+        <div class="step" data-step="3"><p>Now line them up by their busiest day and measure each one against its own peak. Three of the four lines nearly collapse into one. Salt Lake City is the odd one out, with bursts of readers coming back. Even so, a week out, <b>between 71 and 96 percent</b> of readers are gone.</p></div>
+        <div class="step" data-step="4"><p>What the crowd does not follow is the size of the quake. Ridgecrest and Anchorage were both magnitude 7.1, yet Ridgecrest drew almost three times the readers. New Jersey's 4.8 released roughly 2,800 times less energy than Anchorage and <b>still drew more readers</b>. It shook the most crowded corridor in the country.</p></div>
+        <div class="step" data-step="5"><p>So here is the pattern. How many people look depends on how many people felt it. How long they keep looking barely changes. By the very next day, <b>59 to 66 percent</b> of readers were already gone.</p></div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="liveHead">
+      <div class="live-badge"><span class="pulse" aria-hidden="true"></span>Live data</div>
+      <h2 id="liveHead">Meanwhile, the ground has not stopped moving</h2>
+      <p class="lede">Every earthquake of magnitude 2.5 or larger in and around the United States over the past 7 days. This part is live. It asks the U.S. Geological Survey for fresh data each time you open the page, and again every 5 minutes.</p>
+
+      <div class="live-grid">
+        <div class="card map-card">
+          <svg id="map" viewBox="-20 0 790 560" role="img" aria-label="Map of North America with a dot for each recent earthquake. The largest ones are listed beside the map.">
+            <path class="land" d="M330.1,230L329.2,230L315.6,220.2L310.6,215.8L298,211.7L294.1,202.8L295,196.7L286.1,192.4L284.9,184.4L276.4,177.1L276.2,172L276.2,172L280.1,167.2L279.9,160.8L268,154.5L260.9,143.1L256.5,135.9L250.1,131.4L245.4,127.3L241.7,122.1L234.6,125.4L227.8,130.9L221.6,124.4L216.7,120L209.9,117.2L203,116.9L203.1,60L203.1,22.9L203.1,22.9L216.2,25.3L227.2,30.1L234.5,31L240.6,26.8L249.1,23.7L259.5,24.9L270,20.6L281.4,18.1L286.2,22.2L291.5,19.9L293,15.2L297.9,16.2L309.7,25.2L319,18.4L320,26L328.6,24.4L331.2,21.4L339.7,22L350.4,26.2L366.8,29.9L376.4,31.6L383.3,30.9L392.7,36L382.9,41L395.5,43.1L414.4,41.9L420.4,40.2L427.8,46.2L435.5,41.1L428.3,36.9L432.8,33.5L441.3,33L446.9,32L452.6,34.4L459.6,39.8L467.5,39L479.8,43.5L490.7,41.9L500.9,42.2L500.1,36L506.3,34.2L517.2,37.6L517.1,47.1L521.6,39.1L527.2,39.4L530.4,29.3L522.9,23.1L514.7,19.1L515.3,8.1L523.5,0.8L532.8,2.4L539.9,6.8L549.4,18.1L543.2,23L556.2,25L556.1,35.3L565.5,27.4L573.9,33.8L571.8,41.3L578.5,48L585.9,40.8L591,32.2L591.3,21.2L601.3,21.9L611.6,23.4L621,28.4L621.5,33.3L616.2,38.7L621.2,44L620.3,48.9L606.6,55.9L596.9,57.4L589.6,54.4L587.5,59.4L580.8,67.9L578.7,72.2L570.6,79L560.6,79.7L555.1,83.9L554.6,90.4L546.5,91.6L537.9,99.8L530.3,111L527.6,118.9L527.2,130.5L537.5,132.2L540.6,141.5L543.9,149.1L553.7,147.2L566.7,151.5L573.7,155.3L578.7,160L587.5,162.8L594.9,167L606.5,167.6L614.1,168.5L612.9,177.2L615.1,187.2L620.2,198.4L630.6,207.9L636,204.7L639.8,194.4L636.1,178.6L631.2,173.3L642.4,168.6L650.3,161.6L654.2,154.7L653.6,148L648.9,139.5L640.4,132L648.6,121.5L645.6,112.4L643.3,96.8L648.1,94.5L660.1,97.2L667.3,98.2L673.1,95.6L679.6,98.9L688.3,104.7L690.4,108.6L702.9,109.4L702.7,117.8L705,130.4L711.4,132L716.5,137.9L726.6,132.3L733.3,121.3L737.9,116.6L743.4,125.6L752.5,138.3L760.2,150.3L757.4,156.6L766.7,162.2L773,168L784.2,170.5L788.7,173.7L791.4,182.2L796.9,183.5L799.7,187.3L800.2,198.5L795.1,202.3L790.1,205.8L778.6,209.4L769.8,217.6L757.9,219.2L743,217.1L732.5,217L725.2,217.7L719.3,224.9L710.4,229.3L700.3,242.6L692.3,251.8L698.2,250.1L709.4,237L724.1,228.7L734.6,227.7L740.8,232.6L734.2,239.3L736.4,250.1L738.7,257.6L747.8,262.6L759.4,261.2L766.4,249.9L766.9,257.2L771.4,260.8L762.7,267.3L747.2,273.3L740.3,277.3L732.5,284.5L727.1,283.8L726.9,275.3L739,267.1L727.8,267.4L720,268.6L715.5,263L715.5,249.3L712.4,246.5L707.7,248.1L705.3,245.5L700,253.1L697.9,260.9L695.4,265.4L692.4,266.9L690.2,267.4L689.5,269.9L676.6,269.9L665.9,270L662.8,271.8L655.4,279L654.5,279.8L652.3,283.7L645.8,283.7L639,283.7L635.8,285.3L636.9,287.3L637.6,290.3L637.4,291.4L628.3,296.3L621.1,297.9L612.9,303.2L611.2,303.2L608.8,301.7L608,300.2L608.2,299.2L609.7,295.7L613,290.2L615,284.3L613.6,275.6L612.1,266.5L604.9,261.8L605.7,260.1L604.7,258.8L602.8,258.8L601.4,257.2L601,254.9L599.6,255.9L597.8,255.6L598.2,254.6L596.5,253.6L595.9,251L590.4,247.8L584.8,244.5L577.9,240.6L571.4,237L565.1,239.8L562.8,239.9L554.2,237.3L548.5,238.6L541.7,235.5L534.6,233.9L529.7,233.3L527.5,231.6L526.3,226.1L523.9,226.2L523.9,230L509.4,230L485.4,230L461.7,230L440.7,230L419.7,230L399,230L377.7,230L370.8,230L350,230L330.1,230ZM602,95.5L607.2,90.9L616.9,91L616.7,92.9L608.5,98.4L603.6,98.2L602,95.5ZM631.6,-8L623.9,-13.3L624.2,-16.9L627.5,-17.6L643.5,-16.5L655.6,-11L656.2,-8.3L648.8,-8.6L641.3,-8.8L633.6,-7.4L631.6,-8ZM627.8,99.1L630.5,96.1L633.4,96.4L635.1,98.4L632.4,103.7L629.3,102.8L627.5,99.8L627.8,99.1ZM534.7,-29.8L530.9,-25.9L520.7,-26.7L512.3,-29.3L516,-33.8L526,-36.5L532.2,-33L534.7,-29.8ZM533.1,-55.2L529.9,-54.9L516.8,-55.6L514.9,-58.3L529,-58.2L534,-56.3L533.1,-55.2ZM512.7,-67.7L521.1,-64.2L519.2,-60.6L508.8,-58.5L503.1,-60.8L500.1,-64.6L499.6,-68.7L508.6,-68.3L512.7,-67.7ZM572.9,-23.9L561.6,-25.2L543,-28.4L540.6,-33.9L539.8,-38.8L532.7,-43.2L518.3,-44.4L510.2,-47.5L512.8,-51.6L527.2,-51L535,-47.8L548.8,-47.8L554.8,-44.5L553.2,-40.7L561.2,-38.5L565.7,-36.1L575.1,-35.7L585.3,-34.8L596.5,-37L610.7,-37.8L622.1,-37.1L629.6,-33.4L631.2,-29.2L626.8,-26.6L616.4,-24.4L607.4,-25.6L587.3,-24.1L572.9,-23.9ZM411.1,-61.5L421,-60L418.7,-57L405.6,-54.1L395.3,-57.3L400.9,-60.5L411.1,-61.5ZM413.3,-68L422.4,-66L413.8,-64.1L402.2,-64.1L402.3,-65.5L409.5,-68.5L413.3,-68ZM602.8,68.9L610.5,72.3L618.5,75.4L619.1,80.2L624.3,79.4L629.3,82.7L623.1,85.9L612.2,83.5L608.2,79L601.3,84.3L591.3,89.5L588.9,83.6L579.4,84.6L585.5,79.6L586.4,71.8L588.8,62.6L593.9,63.4L595.2,67.8L598.8,66.3L602.8,68.9ZM638.6,-3.5L645.2,-7.5L660.8,-2.4L670.4,2.3L671.3,6.7L684.3,4.4L691.6,10.8L708.5,14.7L714.6,18.8L721.2,28.1L708.4,32.8L724.9,39.3L736,41.5L746,50.7L757,51.4L754.9,58.4L742.6,70L734,65.7L723,56.1L713.9,57.4L713,63.1L720.4,68.9L729.9,73.5L732.8,76.2L737.3,86.1L734.9,93.3L726.1,90.5L708.5,82.5L718.4,91.2L725.7,97.2L726.8,100.7L707.9,96.7L692.8,90.9L684.4,86L686.8,83.2L676.4,78.1L666.2,73.2L666.3,76.1L646,77.7L640.1,74.3L644.7,66.9L657.9,66.7L672.3,65.5L669.9,61.9L672.4,56.9L681.4,47.2L679.5,42.7L676.8,39.3L666.1,34.5L651.9,31.1L656.4,28.5L649,22.3L642.8,21.7L637.3,18.3L633.6,21.3L620.9,22.6L595.4,20.3L580.6,17.4L569.2,15.9L563.4,12.4L570.7,7.8L560.8,7.8L558.6,-2.4L563.9,-11.3L571.1,-15.4L589.2,-18L584.1,-11.6L589.6,-5.3L596,-13.4L613.8,-17.5L625.8,-7.2L624.8,-0.6L638.6,-3.5ZM528.5,-21.3L543.1,-21L556.4,-18.6L546,-9.7L537.6,-7.7L530.1,-0.2L522.1,-0.6L517.8,-9.4L517.9,-14.4L521.5,-18.6L528.5,-21.3ZM330,-41.2L330,-41.2L341.9,-48.6L356.3,-55.1L367,-55L376.6,-56.5L375.6,-48.8L370.3,-45.3L363.7,-44.8L350.7,-40.5L339.5,-39L330,-41.2ZM261,179.6L267.8,178.8L265.7,190.2L271.7,198.2L269,198.2L264.7,193.6L262.2,189L258.6,185.9L257.3,181.5L257.7,178.3L261,179.6ZM451.6,-73L465.3,-71.7L484.2,-68L489.6,-63.2L492.3,-59.1L480.9,-60.2L469.4,-63.4L453.8,-63.8L460.5,-66.8L452.1,-69.2L451.6,-73ZM325.4,234.9L321.9,236.3L310.4,231.7L308.3,228.2L302,224.7L300.8,221.9L293.6,220.1L290.9,214.6L291.5,212.3L298.8,214.5L303.1,216L309.7,217L312.1,220.5L315.6,225.2L322.5,229.4L325.4,234.9ZM339.2,-24.5L349.2,-22.4L367.1,-21.9L373.9,-19L381.4,-14.8L372.6,-12.2L355.5,-5.2L346.8,1.8L346.8,6.2L328.4,11L324.7,6.6L308.5,1.3L311.5,-2.9L316.3,-10.2L322.4,-16.8L315.6,-22.9L339.2,-24.5ZM435.3,-38.5L441.5,-40.1L448.8,-39.7L450.1,-34.8L445.8,-30.1L422.1,-28.5L404.4,-24.2L393.8,-23.9L392.9,-27.2L407.4,-31.6L375.8,-30.4L366,-32.2L375.6,-42L382.2,-44.8L401.9,-41.4L414.3,-35.5L426.5,-34.7L416.5,-44.3L422.9,-47.9L430.2,-46.8L432.5,-42L435.3,-38.5ZM444.3,-10.8L452.2,-6.7L456.6,3L458.7,10.1L470.5,15L483.1,19.8L482.4,24.2L470.9,25L475.3,28.8L473,32.5L460.3,30.9L448.3,28.2L440.1,28.8L427,32.2L409.3,33.7L396.8,34.6L393,29.9L383.5,27.2L377.2,28.3L368.6,20.4L373.3,19.3L384.1,17.6L394,18.1L403.1,16.3L389.6,14L374.6,14.8L364.7,14.6L361,10.9L377.2,6.9L366.4,7L354.2,4.4L360.1,-3.1L364.9,-7.1L383.7,-13.1L390.8,-11.2L387.3,-6.5L402.9,-9.6L412.6,-4.5L420.6,-9.6L427,-6.3L432.7,3.5L436.2,-0.7L431.2,-10.9L437.4,-12.4L444.3,-10.8ZM486.9,-7.1L479.2,-13.6L487.5,-18.4L495.9,-16.3L508.3,-17.6L510.2,-14.7L503.6,-9.9L514.2,-5.6L513,3.4L501.5,7.3L494.7,6.4L489.9,2.6L472.5,-5.1L472.6,-8.3L486.9,-7.1ZM443.8,-16L453.2,-16.4L458.5,-14.2L452.3,-7.6L441.4,-14.6L443.8,-16ZM500.5,-47.2L505.9,-42.6L506.1,-37.4L502.9,-30L491.3,-29L483.8,-30.6L484,-36.4L472.5,-35.6L472,-43.4L479.6,-43.1L490.1,-46.5L500,-45.9L500.5,-47.2ZM517.9,-86L522.7,-89.1L529.9,-89.8L526.9,-92.1L543.1,-92.6L552.1,-87.2L563.9,-85.1L575.3,-83.2L580.9,-76.6L589.3,-73.4L579.7,-70.4L566.8,-62.9L554.4,-62.2L539.9,-63.4L532.3,-67.5L532.4,-71.1L538,-73.8L525.2,-73.7L517.5,-77.1L513,-81.6L517.9,-86ZM548.9,-98.9L559.3,-100.8L567.5,-101.2L581.2,-102.8L591.5,-106.5L600.2,-106L607.7,-103.2L613.1,-108.6L622.3,-110.2L634.9,-111.3L656.2,-111.7L660,-110.6L680.2,-112.3L695.3,-111.7L710.5,-111.1L729.2,-110.3L744.2,-109L757.1,-106.3L756.7,-103.6L739.7,-99.3L722.7,-97.3L716.4,-95L731.6,-95.1L715.1,-89L703.7,-86.2L691.7,-78L677.3,-76.3L672.8,-74.3L651.6,-73.2L661.3,-72L656.5,-70.2L662.2,-65.3L655.6,-61.8L644.8,-59L641.5,-55.1L631.7,-52.1L632.7,-49.8L644.6,-50.2L644.8,-47.8L626.1,-41.8L607.8,-44.5L587.2,-43L576.8,-44.2L563.6,-44.7L562.7,-49.5L575.6,-51.8L572.2,-59L576.4,-59.7L595.2,-55.4L585.6,-61.8L574.3,-63.7L579.9,-67.6L592.3,-70L594.3,-73.5L584.4,-77.4L581.5,-82.5L600.6,-82.1L606.1,-81L617.1,-84.6L601.3,-85.8L576.8,-85.2L564.4,-88.6L558.6,-92.6L550.4,-95.5L548.9,-98.9ZM663.5,45.6L658.9,48.5L651.1,49L649.3,44.1L652.3,38.5L658.7,37.1L664.2,39.9L664.3,44.2L663.5,45.6ZM516.2,25.1L520.5,28.9L516.1,32.4L506.7,29.4L501,30.5L491.4,26L497.6,22.9L502.5,18.6L509.9,21.4L514.1,23.2L516.2,25.1ZM738.4,221.3L740.8,220.4L750,222.9L757.2,227.1L757.4,228.9L753.9,229.1L744.9,226L738.4,221.3ZM741.9,249.6L744.3,254.5L749.4,255.8L755.9,255.6L752.5,259.7L749.9,260.3L741,256.1L739.3,252.7L741.9,249.6ZM688,522.9L688.6,528.3L688.1,532.1L686.4,533.8L688.2,536.8L688,539.6L683.4,537.9L680.1,538.5L675.8,537.8L672.5,539.7L668.8,536.6L669.4,533.4L675.9,534.7L681.1,535.5L683.7,533.3L680.5,529L680.5,525.2L676.1,523.6L677.7,520.8L681.9,521.3L688,522.9ZM688,539.6L688.2,536.8L686.4,533.8L688.1,532.1L688.6,528.3L688,522.9L688.9,521.2L694.4,521.2L698.5,523.8L700.3,523.5L701.6,527.1L705.4,526.9L705.2,529.8L708.3,530.2L711.8,533.9L709.2,537.9L705.8,535.8L702.6,536.2L700.3,535.7L699.1,537.5L696.4,538.2L695.3,535.7L693,537.2L690.2,544L688.4,542.4L688,539.6ZM637.1,452.1L640.4,451.3L645.1,451.6L645.3,454.2L637.6,455.8L637.1,452.1ZM645.5,449.6L651,454.1L649.8,461.2L648.5,459.9L648.6,454.7L645.5,450.7L645.5,449.6ZM642.7,467.9L644.8,468.3L647.2,476.6L647.3,482.4L645.5,482.9L643.8,477.1L641.1,474.2L642.7,467.9ZM862.7,-106.3L886.2,-112.3L910.7,-111.8L919.6,-115.5L944.4,-116.5L1000.3,-115.2L1044.1,-107.3L1031.2,-103.4L1004.4,-103L966.7,-102L970.2,-100.2L995,-101.3L1016.1,-97.9L1029.7,-100.9L1035.5,-97.3L1027.8,-91.5L1045.6,-95.2L1079.6,-99.1L1100.6,-97.2L1104.5,-92.9L1076,-85.8L1072,-83.5L1049.7,-81.8L1065.9,-81.3L1057.7,-74L1052.1,-67.5L1052.3,-56.4L1060.7,-49.9L1049.8,-49.4L1038.2,-46.3L1051.2,-41L1052.8,-32.5L1045.3,-31.6L1054.4,-23L1038.8,-22.2L1047,-18.2L1044.7,-14.6L1034.8,-13.1L1025,-13.1L1033.8,-6.3L1033.9,-1.8L1020.1,-6L1016.4,-3.3L1025.9,-0.8L1035.1,5.3L1037.7,13.4L1025.2,15.3L1019.9,11.4L1011.2,5.7L1013.6,12.5L1005.5,17.7L1023.9,18.2L1033.6,18.7L1014.8,27.4L995.8,35.3L975.3,38.7L967.6,38.8L960.3,42.6L950.6,53.2L935.5,60.2L930.7,60.6L921.4,63.1L911.3,65.4L905.3,71.6L905.2,78.6L901.7,85.2L890.3,93.2L893.1,101L889.9,109.3L886.4,119L876.5,119.6L866.2,111.5L852.2,111.4L845.4,105.9L840.7,96.2L828.6,83.7L825,77.2L824.1,68.2L814.4,59L816.9,51.6L812.2,48.1L819.1,36.4L829.7,32.7L832.4,28.5L833.9,20.7L825.9,24.3L822.1,25.7L815.8,27.2L807.2,23.9L806.7,17.1L809.5,11.8L816,11.6L830.3,14.3L818.2,8L812,4.5L805,5.9L799.2,3.5L807,-5.9L802.7,-9.6L797.2,-16.5L788.7,-27.1L779.8,-31L779.9,-35.2L761.1,-41L746.3,-41.8L727.6,-41.3L710.5,-40.6L702.3,-43.8L690.2,-50.1L708.6,-53.2L722.7,-53.8L692.7,-56.4L676.9,-60.4L677.9,-64.3L704.4,-69.1L730,-73.9L732.7,-77.6L713.8,-81.2L719.9,-85.2L744.2,-92.1L754.4,-93.2L751.4,-97.7L768,-100.3L789.5,-101.9L811.1,-102L818.7,-98.9L837.3,-104.4L854,-100.6L863.8,-99.9L878.3,-96.6L861.7,-102L862.7,-106.3ZM370.1,394.6L378.1,393.9L387,392.8L386.3,394.7L396.9,399.6L412.8,406.7L426.8,406.6L432.3,406.6L432.3,402.5L444.4,402.5L447,406L450.6,409.2L454.7,413.6L457.1,418.8L458.8,424.3L462.4,427.3L468.2,430.3L472.6,422.4L478.4,422.2L483.3,426.2L486.8,433L489.2,438.9L493.4,444.6L494.9,451.6L496.9,456.3L502.3,459.4L507.3,461.6L510,461.3L507.3,470.1L506.1,477.3L505.6,490.7L504.9,495.6L506.1,501L508.3,505.9L509.7,513.6L514.3,521.1L516,526.8L518.7,531.7L526.1,534.4L529,538.6L535.2,535.8L540.5,534.8L545.7,533L550.1,531.2L554.6,527.2L556.3,521.3L556.8,512.9L558,510L562.8,507.4L570.2,505.1L576.4,505.4L580.6,504.6L582.3,506.7L582.1,511.5L578.3,517.4L576.7,523.5L577.9,525.3L576.9,529.6L575.1,537.4L573.4,534.8L571.9,535L570.6,535.1L568.1,541.2L566.8,540L565.9,540.4L566,541.9L559.5,541.8L553,541.8L553,547.5L549.8,547.5L552.4,550.8L555,553.1L555.8,555.3L556.9,555.9L556.7,559.3L547.8,559.3L544.4,567.5L545.4,569.4L544.6,571.7L544.4,574.6L536.5,563.8L532.9,560.6L527.2,558L523.2,558.7L517.6,562.5L514.1,563.5L509.2,560.8L503.9,558.9L497.4,554.3L492.1,552.9L484.2,548.3L478.3,543.5L476.6,540.8L472.7,540.2L465.5,537.1L462.6,532.5L455.1,526.8L451.5,520.5L449.9,515.7L452.2,514.7L451.5,511.8L453.1,509.2L453.1,505.8L450.8,501.3L450.1,497.3L447.8,492.3L441.6,482.3L434.6,474.5L431.2,468.3L425.2,464.2L423.9,461.8L425,455.6L421.4,453.2L417.3,448.4L415.5,441.4L411.7,440.6L407.7,435.3L404.4,430.5L404.1,427.3L400.3,419.8L397.9,412.1L398,408.3L392.9,404.3L390.6,404.8L386.6,402L385.4,406.1L386.6,410.9L387.3,418.4L389.7,422.5L394.9,429.4L396,431.7L397.1,432.5L398,435.9L399.3,435.7L400.7,442.2L402.8,444.7L404.3,448.3L408.7,453.4L411,462.7L413.1,467.1L415,471.7L415.4,477L418.8,477.3L421.6,481.9L424.1,486.4L424,488.1L421,491.8L419.8,491.8L417.9,485.7L413.4,480L408.3,475.2L404.7,472.6L405,465.3L403.9,459.9L400.6,456.8L395.7,452.3L394.8,453.6L393.1,451L388.7,448.6L384.6,442.8L385.1,442L388,442.6L390.6,438.8L390.9,434.3L385.5,427.2L381.4,424.4L378.8,418.2L376.2,411.6L372.9,403.6L370.1,394.6ZM544.4,574.6L544.6,571.7L545.4,569.4L544.4,567.5L547.8,559.3L556.7,559.3L556.9,555.9L555.8,555.3L555,553.1L552.4,550.8L549.8,547.5L553,547.5L553,541.8L559.5,541.8L566,541.9L565.9,549.8L565.4,561.1L567.5,561.1L569.8,562.9L570.4,561.4L572.4,562.7L569.2,566.5L565.9,569.3L565.4,571.3L566,573.2L564.5,575.8L562.9,576.4L563.3,577.6L561.9,578.7L559.5,581.2L559.3,582.6L555.7,580.9L551.4,580.7L548.2,578.7L544.4,574.6ZM566,541.9L565.9,540.4L566.8,540L568.1,541.2L570.6,535.1L571.9,535L571.9,536.5L573.3,536.5L573.1,539.2L572,543.6L572.6,545.1L571.9,548.7L572.3,549.6L571.5,554.7L570.1,557.3L568.9,557.7L567.5,561.1L565.4,561.1L565.9,549.8L566,541.9ZM647,535.1L651.7,536L655.4,538.4L656.6,541.1L651.7,541.3L649.6,543L645.6,541.4L641.6,537.7L642.5,535.5L645.4,534.8L647,535.1ZM614.1,488.1L620.2,488.8L625.7,488.9L632.2,492.3L635,496L641.6,494.9L644,497.2L650,503.4L654.3,507.9L656.6,507.8L660.8,509.8L660.3,512.6L665.5,513.1L670.8,517.2L669.9,519.5L665.3,520.8L660.6,521.3L655.7,520.5L645.7,521.4L650.4,515.9L647.6,513.3L643,512.6L640.6,509.7L639,504L635,504.4L628.5,501.7L626.4,499.6L617.3,498.1L614.8,496.1L617.4,493.6L610.6,493.1L605.5,498.3L602.6,498.5L601.6,500.9L598.2,502L595.2,501L598.9,498L600.4,494.3L603.6,492.1L607.1,490.2L612.4,489.2L614.1,488.1Z"/>
+            <path class="land us" d="M330.1,230L350,230L370.8,230L377.7,230L399,230L419.7,230L440.7,230L461.7,230L485.4,230L509.4,230L523.9,230L523.9,226.2L526.3,226.1L527.5,231.6L529.7,233.3L534.6,233.9L541.7,235.5L548.5,238.6L554.2,237.3L562.8,239.9L565.1,239.8L571.4,237L577.9,240.6L584.8,244.5L590.4,247.8L595.9,251L596.5,253.6L598.2,254.6L597.8,255.6L599.6,255.9L601,254.9L601.4,257.2L602.8,258.8L604.7,258.8L605.7,260.1L604.9,261.8L612.1,266.5L613.6,275.6L615,284.3L613,290.2L609.7,295.7L608.2,299.2L608,300.2L608.8,301.7L611.2,303.2L612.9,303.2L621.1,297.9L628.3,296.3L637.4,291.4L637.6,290.3L636.9,287.3L635.8,285.3L639,283.7L645.8,283.7L652.3,283.7L654.5,279.8L655.4,279L662.8,271.8L665.9,270L676.6,269.9L689.5,269.9L690.2,267.4L692.4,266.9L695.4,265.4L697.9,260.9L700,253.1L705.3,245.5L707.7,248.1L712.4,246.5L715.5,249.3L715.5,263L720,268.6L721.2,271.9L713.8,276.7L706.6,280.2L699.2,283.2L695.5,289.1L694.3,291.3L694.2,296.6L696.5,301.9L699.4,302.2L698.7,298.5L700.8,300.8L700.2,303.6L695.5,305.2L692.2,305.1L687,306.8L683.9,307.3L679.9,307.8L674,310.7L684.3,308.8L686.4,310.7L676.6,313.7L672.1,313.7L672.3,312.5L670.2,315.3L672.3,315.7L670.8,322.9L665.7,330.6L665.1,328L663.6,327.5L661.3,325L662.8,330.4L664.5,332.2L664.6,336L662.4,339.8L658.4,347.8L657.8,347.4L659.9,340.6L656.4,336.8L655.6,328.5L654.2,332.8L655.7,339.2L651.1,337.6L655.9,340.8L656.2,350.3L658.2,351L658.9,354.5L659.9,364.5L655.5,371.9L648.2,374.9L643.6,380.7L640.1,381.4L636.6,385.1L635.6,388.4L627.9,394.9L623.9,399.7L620.6,405.6L619.6,412.7L620.8,419.6L623.1,428.2L626.3,435.3L626.3,439.6L629.6,451.2L629.4,457.9L629.1,461.8L627.3,467.9L625.2,469.2L621.8,468L620.7,463.6L618,461.3L614.3,452.7L611.1,445L610,441.1L611.4,434.5L609.5,429L604,420.6L601.3,419.1L594.2,423.6L593,423.1L589.6,418.5L585.2,416L577.3,417.3L571.1,416.2L565.7,416.8L562.8,418.4L564.1,421.1L564,425.1L565.5,427.1L564.1,428.4L561.5,426.9L558.9,428.8L553.8,428.5L548.6,423.2L542.5,424.5L537.4,422.2L533.1,422.9L527.2,425.2L520.8,432.6L513.8,436.9L510,441.7L508.4,446.2L508.3,453.1L508.7,457.9L510,461.3L507.3,461.6L502.3,459.4L496.9,456.3L494.9,451.6L493.4,444.6L489.2,438.9L486.8,433L483.3,426.2L478.4,422.2L472.6,422.4L468.2,430.3L462.4,427.3L458.8,424.3L457.1,418.8L454.7,413.6L450.6,409.2L447,406L444.4,402.5L432.3,402.5L432.3,406.6L426.8,406.6L412.8,406.7L396.9,399.6L386.3,394.7L387,392.8L378.1,393.9L370.1,394.6L368.9,389.5L364.4,383.8L361.1,382.6L360.4,379.7L356.4,379.2L353.9,376.5L347.4,375.5L345.6,373.9L344.8,368.4L338,358.4L332.2,344.5L332.4,342.2L329.3,338.9L323.9,330.5L322.9,322.3L319.2,316.9L320.7,308.6L320.5,300L318.3,292.3L321,282.9L321.9,273.8L322.7,264.8L321.4,251.4L319.2,242.8L317.2,238.2L318,236.2L328.2,239.6L331.9,249L333.6,246.4L332.5,238.2L330.1,230ZM102.2,519.2L103.4,520.1L104.6,521.4L106.3,524.9L106.2,525.5L103.4,527.6L101.2,529.2L100.2,530.8L98.4,529.4L98.6,526.6L97.5,523L97.8,521.9L99,520.2L98.6,518.3L99,517.3L99.5,517.5L102.2,519.2ZM98,512.4L97.4,513.6L95.1,514.3L93.9,512.2L93.1,511.4L93,510.7L93.7,509.9L96.2,510.8L98,512.4ZM92.7,508.2L92.5,509.3L88.7,509L89.2,507.8L92.7,508.2ZM83.8,502.8L84.4,503.5L86.4,506.8L86.1,507.4L85.5,507.2L83.1,506.9L82.2,504.6L82,504.2L83.8,502.8ZM74.4,497.9L74.6,500.2L73.8,501.2L71.4,499.3L71.8,498.6L72.8,497.6L74.4,497.9ZM24.7,116.2L30.3,117.1L30.9,120.9L26.7,122.5L22.1,120.6L17.8,117.9L24.7,116.2ZM117.4,140.3L122,141L125,144.1L119,148.8L112,152.7L108.4,150.1L107.3,145.4L113.7,141.8L117.4,140.3ZM203.1,22.9L203.1,22.9L203.1,60L203,116.9L209.9,117.2L216.7,120L221.6,124.4L227.8,130.9L234.6,125.4L241.7,122.1L245.4,127.3L250.1,131.4L256.5,135.9L260.9,143.1L268,154.5L279.9,160.8L280.1,167.2L276.2,172L276.2,172L276.2,172L272.4,168.2L266.2,165L264.2,156.3L255.2,148.2L251.5,138.8L244.7,138.1L233.6,137.9L225.4,135L210.9,124.6L204.2,122.7L192,119.2L182.3,120L168.5,115.4L160.2,111.2L152.4,113.3L153.9,120.2L150,120.9L141.9,122.9L135.7,126.3L128,128.4L127,122.6L130.1,112.7L137.6,109.7L135.7,107.2L126.7,112.7L122,119.4L111.9,126.5L117,131.4L110.4,138.5L102.8,142.7L95.8,145.8L94.1,150.2L83.2,155.4L81,160.1L72.8,164.3L68,163.6L61.4,166.4L54.3,169.8L48.5,173.1L36.5,176L35.4,174.3L43.1,169.6L49.9,166.5L57.4,161.1L66.1,159.9L69.5,155.8L79.2,149.8L80.8,147.8L85.9,144.3L87.1,136.7L90.7,130.8L82.6,133.8L80.4,132.1L76.6,135.8L72,130.7L70.1,134.3L67.5,129.3L60.5,133.3L56.2,133.3L55.6,127.3L56.9,123.7L52.4,120.1L43.3,122L37.4,117.3L32.6,114.9L32.5,109.3L27.2,105L29.9,99.3L35.6,93.7L38.1,88.5L43.7,87.8L48.5,89.4L54.2,84.6L59.3,85.4L64.6,82.3L63.3,77.8L59.4,76L64.6,72.1L60.3,72.2L52.8,74.4L50.7,76.6L45.2,74.4L35.3,75.5L25,73.1L22.1,69.1L13.2,63.3L23.1,59.1L38.7,54.2L44.4,54.2L43.5,59.2L58.3,58.8L52.6,52.6L44,48.8L39,43.8L32.3,39.6L22.6,36.4L26.6,31.2L39,30.8L47.8,26.3L49.5,21.4L56.6,16.7L63.5,15.5L76.7,11.1L83.2,11.8L93.9,6.4L104.5,8.5L109.6,13L112.7,11.1L124.5,11.7L124.1,14L134.8,15.7L142,14.7L156.7,17.9L170.2,18.8L175.6,20.1L184.9,18.5L195.5,21.5L203.1,22.9L203.1,22.9ZM-12.1,82.2L-7.8,84.1L-3.4,83.1L2.2,85.7L9.2,87L8.6,88.1L3.3,90.2L-2,88.1L-4.7,86.2L-10.9,86.8L-12.5,85.9L-12.1,82.2ZM726,534.9L729.6,535.7L730.9,537.7L729.1,540.2L723.8,540.2L719.7,540.5L719.3,536.3L720.3,534.8L726,534.9Z"/>
+            <g id="dots"></g>
+          </svg>
+          <div class="map-state" id="mapLoading" role="status">Loading the latest earthquakes…</div>
+          <div class="map-state error" id="mapError" role="alert" hidden>
+            <p><strong>Could not reach USGS.</strong> The live earthquake feed did not answer. Check your internet connection, then try again. The story above does not need a connection.</p>
+            <button type="button" id="retry">Try again</button>
+          </div>
+          <div class="tip" id="mapTip" hidden></div>
+        </div>
+
+        <div class="card side" aria-live="polite">
+          <p class="stat-label">Earthquakes this week (M2.5+)</p>
+          <p class="stat" id="count">…</p>
+          <h3>Largest this week</h3>
+          <ul class="top-list" id="topList"><li>Loading…</li></ul>
+          <p class="fetched" id="fetched"></p>
+          <button type="button" id="refresh">Refresh now</button>
+        </div>
+      </div>
+    </section>
+
+    <details>
+      <summary>See the story's numbers as a table</summary>
+      <div class="table-scroll"><table id="dataTable"></table></div>
+    </details>
+
+    <footer class="made">
+      <h2>How this was made</h2>
+      <ul>
+        <li><b>Two sources, one glue.</b> Earthquake times and sizes come from the <a href="https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php">USGS earthquake feeds</a>. Reader counts come from the <a href="https://doc.wikimedia.org/generated-data-platform/aqs/analytics-api/">Wikimedia Pageviews API</a>. The glue that joins them is the date.</li>
+        <li><b>The story is fixed, the map is live.</b> The four reader curves were fetched once and saved inside this page, so the story always works. Only the map calls out to the internet.</li>
+        <li><b>Reader counts</b> are daily views of each quake's English Wikipedia article by people (not bots), for 31 days starting on the day of the first quake. Days follow UTC time, which is why a quake that struck in the evening shows its peak on the "next" day.</li>
+        <li><b>One swap.</b> The plan named the 2020 Puerto Rico earthquakes. Its Wikipedia article was renamed partway through that month, which splits the reader counts across two titles, so Salt Lake City 2020 stands in. Renamed pages are a common trap with this data.</li>
+        <li><b>Four earthquakes is an illustration, not a study.</b> A real piece would test this on dozens.</li>
+        <li>Map shapes are from <a href="https://www.naturalearthdata.com/">Natural Earth</a>. No keys, accounts or paid services were used.</li>
+      </ul>
+    </footer>
+  </div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ================= Part 1: the scroll story ================= */
+
+  var SERIES = [
+    { key: 'ridge', name: 'Ridgecrest 2019', place: 'Ridgecrest, California', mag: 7.1, color: 'var(--s1)', peak: 2,
+      v: [4522,3340,31407,10830,10697,7109,5371,4285,4381,3147,2468,2244,2232,1780,1336,1208,969,848,904,1039,895,807,878,669,673,782,787,780,774,815,685] },
+    { key: 'anch', name: 'Anchorage 2018', place: 'Anchorage, Alaska', mag: 7.1, color: 'var(--s2)', peak: 1,
+      v: [7626,11029,4505,4270,2638,1874,1450,1332,881,782,956,742,800,603,525,414,422,543,445,427,377,241,227,304,333,242,332,569,361,288,229] },
+    { key: 'nj', name: 'New Jersey 2024', place: 'New Jersey', mag: 4.8, color: 'var(--s3)', peak: 1,
+      v: [15708,16221,5503,3812,2076,1681,1113,867,706,523,500,587,507,450,270,200,223,370,385,316,395,396,492,336,254,200,297,242,227,203,194] },
+    { key: 'slc', name: 'Salt Lake City 2020', place: 'Salt Lake City, Utah', mag: 5.7, color: 'var(--s4)', peak: 1,
+      v: [4234,4656,1647,1361,1595,2940,1526,1282,1360,714,432,533,625,682,2490,706,497,475,387,366,290,351,238,259,231,238,266,263,1674,1161,452] }
+  ];
+  var ALL = SERIES.map(function (s) { return s.key; });
+  var STATES = [
+    { mode: 'abs',  show: ['ridge'], ann: 'peak',    title: 'Daily readers of the Wikipedia article on the 2019 Ridgecrest earthquakes' },
+    { mode: 'abs',  show: ['ridge'], ann: 'week',    title: 'Daily readers of the Wikipedia article on the 2019 Ridgecrest earthquakes' },
+    { mode: 'abs',  show: ALL,       ann: 'labels',  title: 'Daily readers of four earthquake articles' },
+    { mode: 'norm', show: ALL,       ann: 'weekout', title: 'Readers as a share of each article’s busiest day' },
+    { mode: 'bars', show: [],        ann: null,      title: 'Readers on the busiest day, ordered by earthquake size' },
+    { mode: 'norm', show: ALL,       ann: 'nextday', title: 'Readers as a share of each article’s busiest day' }
+  ];
+  var Y_MAX = 35000, N_MAX = 105, DAYS = 30;
+  var NS = 'http://www.w3.org/2000/svg';
+  var fmt = new Intl.NumberFormat('en-US');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  var plot = document.getElementById('plot');
+  var svg = document.getElementById('chart');
+  var tip = document.getElementById('tip');
+  var figTitle = document.getElementById('figTitle');
+  var legend = document.getElementById('legend');
+
+  function el(name, attrs, parent) {
+    var n = document.createElementNS(NS, name);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+  function text(parent, x, y, str, cls, anchor) {
+    var t = el('text', { x: x, y: y, 'class': cls || '' }, parent);
+    if (anchor) t.setAttribute('text-anchor', anchor);
+    t.textContent = str;
+    return t;
+  }
+
+  // Build the fixed layers once.
+  var clip = el('clipPath', { id: 'plotClip' }, el('defs', {}, svg));
+  var clipRect = el('rect', {}, clip);
+  var gAxes = el('g', {}, svg);
+  var gLines = el('g', { 'clip-path': 'url(#plotClip)' }, svg);
+  var gCross = el('line', { 'class': 'cross', visibility: 'hidden' }, svg);
+  var gBars = el('g', { 'class': 'bars' }, svg);
+  var gAnn = el('g', { 'class': 'ann' }, svg);
+  var hit = el('rect', { fill: 'transparent' }, svg);
+  var paths = {};
+  SERIES.forEach(function (s) {
+    paths[s.key] = el('path', { 'class': 'line', stroke: s.color, opacity: 0 }, gLines);
+    var li = document.createElement('li');
+    li.dataset.key = s.key;
+    var chip = document.createElement('span');
+    chip.className = 'chip'; chip.style.background = s.color;
+    li.appendChild(chip);
+    li.appendChild(document.createTextNode(s.name));
+    legend.appendChild(li);
+  });
+
+  var G = null;          // current geometry
+  var current = -1;      // current state index
+  var curPts = {};       // current point positions per series
+  var raf = 0;
+
+  function geometry() {
+    var W = plot.clientWidth, H = plot.clientHeight;
+    var m = { l: 44, r: 14, t: 14, b: 36 };
+    return { W: W, H: H, m: m, pw: W - m.l - m.r, ph: H - m.t - m.b };
+  }
+  function xAbs(d) { return G.m.l + (d / DAYS) * G.pw; }
+  function xNorm(d) { return G.m.l + ((d + 2) / DAYS) * G.pw; }
+  function yAbs(v) { return G.m.t + G.ph - (v / Y_MAX) * G.ph; }
+  function yNorm(p) { return G.m.t + G.ph - (p / N_MAX) * G.ph; }
+
+  function targetPts(s, mode) {
+    return s.v.map(function (v, i) {
+      return mode === 'norm'
+        ? [xNorm(i - s.peak), yNorm(v / s.v[s.peak] * 100)]
+        : [xAbs(i), yAbs(v)];
+    });
+  }
+  function pathD(pts) {
+    return 'M' + pts.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join('L');
+  }
+
+  function drawAxes(st) {
+    gAxes.textContent = '';
+    if (st.mode === 'bars') return;
+    var base = G.m.t + G.ph, right = G.m.l + G.pw, i;
+    var yt = st.mode === 'norm' ? [0, 25, 50, 75, 100] : [0, 10000, 20000, 30000];
+    yt.forEach(function (v) {
+      var y = st.mode === 'norm' ? yNorm(v) : yAbs(v);
+      el('line', { x1: G.m.l, x2: right, y1: y, y2: y, 'class': v === 0 ? 'baseline' : 'gridline' }, gAxes);
+      text(gAxes, G.m.l - 8, y + 4, st.mode === 'norm' ? v + '%' : (v === 0 ? '0' : v / 1000 + 'k'), 'tick', 'end');
+    });
+    var xt = st.mode === 'norm' ? [0, 7, 14, 21, 28] : [0, 7, 14, 21, 28];
+    for (i = 0; i < xt.length; i++) {
+      var x = st.mode === 'norm' ? xNorm(xt[i]) : xAbs(xt[i]);
+      text(gAxes, x, base + 16, String(xt[i]), 'tick', 'middle');
+    }
+    text(gAxes, right, base + 32, st.mode === 'norm' ? 'Days after the busiest day' : 'Days after the first quake', 'axis-label', 'end');
+  }
+
+  function ring(x, y, color) {
+    el('circle', { cx: x, cy: y, r: 4.5, 'class': 'ring', stroke: color }, gAnn);
+  }
+
+  function drawAnnotations(st) {
+    gAnn.textContent = '';
+    gAnn.style.animation = 'none'; void gAnn.getBoundingClientRect(); gAnn.style.animation = '';
+    var r = SERIES[0], top = G.m.t, base = G.m.t + G.ph, x, y;
+    if (st.ann === 'peak' || st.ann === 'week') {
+      x = xAbs(2); y = yAbs(r.v[2]);
+      ring(xAbs(0), yAbs(r.v[0]), r.color);
+      ring(x, y, r.color);
+      text(gAnn, x + 10, y + 5, '31,407 readers', 'strong');
+      text(gAnn, x + 10, y + 22, 'July 6, after the M7.1', 'soft');
+    }
+    if (st.ann === 'week') {
+      x = xAbs(9); y = yAbs(r.v[9]);
+      ring(x, y, r.color);
+      text(gAnn, x + 2, y - 28, 'One week later: 3,147', 'strong');
+      text(gAnn, x + 2, y - 12, 'down 90%', 'soft');
+    }
+    if (st.ann === 'labels') {
+      x = xAbs(11);
+      SERIES.forEach(function (s) {
+        var py = yAbs(s.v[s.peak]);
+        ring(xAbs(s.peak), py, s.color);
+        el('rect', { x: x, y: py - 1.5, width: 12, height: 3, rx: 1.5, fill: s.color }, gAnn);
+        var t = text(gAnn, x + 18, py + 4, s.name + '  ', '');
+        var v = el('tspan', { 'class': 'strong' }, t);
+        v.textContent = fmt.format(s.v[s.peak]);
+      });
+    }
+    if (st.ann === 'weekout' || st.ann === 'nextday') {
+      var d = st.ann === 'weekout' ? 7 : 1;
+      x = xNorm(d);
+      el('line', { x1: x, x2: x, y1: top, y2: base, 'class': 'guide' }, gAnn);
+      y = yNorm(st.ann === 'weekout' ? 62 : 82);
+      text(gAnn, x + 8, y, st.ann === 'weekout' ? 'One week later' : 'The next day', 'strong');
+      text(gAnn, x + 8, y + 17, st.ann === 'weekout' ? '4% to 29% remain' : '34% to 41% remain', 'soft');
+    }
+  }
+
+  function drawBars(st) {
+    gBars.textContent = '';
+    if (st.mode !== 'bars') return;
+    gBars.style.animation = 'none'; void gBars.getBoundingClientRect(); gBars.style.animation = '';
+    var order = ['ridge', 'anch', 'slc', 'nj'];
+    var rowH = (G.H - 8) / order.length;
+    var thick = Math.max(14, Math.min(26, rowH * 0.36));
+    var x0 = 2, maxW = G.W - x0 - 62, maxV = 31407;
+    order.forEach(function (key, i) {
+      var s = SERIES.filter(function (q) { return q.key === key; })[0];
+      var v = s.v[s.peak], w = Math.max(6, v / maxV * maxW);
+      var yTop = 4 + i * rowH + (rowH - thick - 22) / 2;
+      text(gBars, x0, yTop + 12, 'M' + s.mag.toFixed(1) + '  ' + s.place, 'bar-label');
+      var by = yTop + 22, r = 4;
+      var d = 'M' + x0 + ',' + by + 'h' + (w - r) + 'a' + r + ',' + r + ' 0 0 1 ' + r + ',' + r +
+              'v' + (thick - 2 * r) + 'a' + r + ',' + r + ' 0 0 1 -' + r + ',' + r + 'h-' + (w - r) + 'z';
+      var p = el('path', { d: d, fill: s.color }, gBars);
+      el('title', {}, p).textContent = s.place + ', magnitude ' + s.mag.toFixed(1) + ': ' + fmt.format(v) + ' readers on the busiest day';
+      text(gBars, x0 + w + 8, by + thick / 2 + 5, fmt.format(v), 'bar-value');
+    });
+  }
+
+  function render(idx, animate) {
+    var st = STATES[idx];
+    G = geometry();
+    if (G.W < 50) return;
+    svg.setAttribute('viewBox', '0 0 ' + G.W + ' ' + G.H);
+    clipRect.setAttribute('x', G.m.l - 3); clipRect.setAttribute('y', 0);
+    clipRect.setAttribute('width', G.pw + 6); clipRect.setAttribute('height', G.m.t + G.ph + 2);
+    hit.setAttribute('x', G.m.l); hit.setAttribute('y', G.m.t);
+    hit.setAttribute('width', G.pw); hit.setAttribute('height', G.ph);
+    hit.style.display = st.mode === 'bars' ? 'none' : '';
+    hideTip();
+
+    figTitle.textContent = st.title;
+    Array.prototype.forEach.call(legend.children, function (li) {
+      li.classList.toggle('off', st.show.indexOf(li.dataset.key) < 0);
+    });
+    drawAxes(st);
+    drawAnnotations(st);
+    drawBars(st);
+
+    var from = {}, to = {};
+    SERIES.forEach(function (s) {
+      var mode = st.mode === 'bars' ? (STATES[Math.max(0, idx - 1)].mode) : st.mode;
+      to[s.key] = targetPts(s, mode);
+      from[s.key] = curPts[s.key] || to[s.key];
+      paths[s.key].setAttribute('opacity', st.show.indexOf(s.key) >= 0 ? 1 : 0);
+    });
+    cancelAnimationFrame(raf);
+    function apply(t) {
+      SERIES.forEach(function (s) {
+        var a = from[s.key], b = to[s.key];
+        var pts = b.map(function (p, i) { return [a[i][0] + (p[0] - a[i][0]) * t, a[i][1] + (p[1] - a[i][1]) * t]; });
+        curPts[s.key] = pts;
+        paths[s.key].setAttribute('d', pathD(pts));
+      });
+    }
+    if (!animate || reduce.matches) { apply(1); current = idx; return; }
+    var start = performance.now(), dur = 700;
+    (function frame(now) {
+      var t = Math.min(1, (now - start) / dur);
+      apply(t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
+      if (t < 1) raf = requestAnimationFrame(frame);
+    })(start);
+    current = idx;
+  }
+
+  /* hover: crosshair + tooltip listing every visible line */
+  function hideTip() { tip.hidden = true; gCross.setAttribute('visibility', 'hidden'); }
+  function tipRow(parent, color, label, value) {
+    var row = document.createElement('div'); row.className = 't-row';
+    var chip = document.createElement('span'); chip.className = 'chip'; chip.style.background = color;
+    var a = document.createElement('span'); a.textContent = label;
+    var b = document.createElement('span'); b.textContent = value;
+    row.appendChild(chip); row.appendChild(a); row.appendChild(b); parent.appendChild(row);
+  }
+  hit.addEventListener('pointermove', function (e) {
+    var st = STATES[current]; if (!st || st.mode === 'bars') return;
+    var box = plot.getBoundingClientRect();
+    var px = e.clientX - box.left;
+    var norm = st.mode === 'norm';
+    var d = Math.round((px - G.m.l) / G.pw * DAYS) - (norm ? 2 : 0);
+    d = Math.max(norm ? -2 : 0, Math.min(norm ? 28 : 30, d));
+    var x = norm ? xNorm(d) : xAbs(d);
+    var rows = [];
+    SERIES.forEach(function (s) {
+      if (st.show.indexOf(s.key) < 0) return;
+      var i = norm ? d + s.peak : d;
+      if (i < 0 || i > 30) return;
+      rows.push({ s: s, raw: norm ? s.v[i] / s.v[s.peak] * 100 : s.v[i] });
+    });
+    if (!rows.length) { hideTip(); return; }
+    rows.sort(function (a, b) { return b.raw - a.raw; });
+    tip.textContent = '';
+    var head = document.createElement('div'); head.className = 't-head';
+    head.textContent = norm
+      ? (d === 0 ? 'Busiest day' : Math.abs(d) + (Math.abs(d) === 1 ? ' day ' : ' days ') + (d > 0 ? 'after' : 'before'))
+      : (d === 0 ? 'Day of the first quake' : 'Day ' + d);
+    tip.appendChild(head);
+    rows.forEach(function (r) {
+      tipRow(tip, r.s.color, r.s.name, norm ? Math.round(r.raw) + '%' : fmt.format(r.raw));
+    });
+    tip.hidden = false;
+    var tw = tip.offsetWidth;
+    tip.style.left = Math.max(0, Math.min(G.W - tw, x + 12 + tw > G.W ? x - 12 - tw : x + 12)) + 'px';
+    tip.style.top = G.m.t + 'px';
+    gCross.setAttribute('x1', x); gCross.setAttribute('x2', x);
+    gCross.setAttribute('y1', G.m.t); gCross.setAttribute('y2', G.m.t + G.ph);
+    gCross.setAttribute('visibility', 'visible');
+  });
+  hit.addEventListener('pointerleave', hideTip);
+
+  /* scroll steps */
+  var steps = Array.prototype.slice.call(document.querySelectorAll('.step'));
+  function activate(i) {
+    steps.forEach(function (s, k) { s.classList.toggle('active', k === i); });
+    if (i !== current) render(i, current >= 0);
+  }
+  var wide = window.matchMedia('(min-width: 860px)');
+  var observer = null;
+  function watch() {
+    if (observer) observer.disconnect();
+    // A thin trigger band: mid-screen on wide layouts, lower on phones where the chart is pinned on top.
+    observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) activate(Number(en.target.dataset.step)); });
+    }, { rootMargin: wide.matches ? '-50% 0px -49% 0px' : '-76% 0px -23% 0px' });
+    steps.forEach(function (s) { observer.observe(s); });
+  }
+  wide.addEventListener('change', watch);
+  watch();
+  activate(0);
+  new ResizeObserver(function () { if (current >= 0) { curPts = {}; render(current, false); } }).observe(plot);
+
+  /* table view of the story data */
+  (function () {
+    var table = document.getElementById('dataTable');
+    var thead = table.createTHead().insertRow();
+    ['Days after first quake'].concat(SERIES.map(function (s) { return s.name + ' (M' + s.mag.toFixed(1) + ')'; }))
+      .forEach(function (h) { var th = document.createElement('th'); th.scope = 'col'; th.textContent = h; thead.appendChild(th); });
+    var body = table.createTBody();
+    for (var i = 0; i <= 30; i++) {
+      var row = body.insertRow();
+      var th = document.createElement('th'); th.scope = 'row'; th.textContent = i; row.appendChild(th);
+      SERIES.forEach(function (s) { row.insertCell().textContent = fmt.format(s.v[i]); });
+    }
+  })();
+
+  /* ================= Part 2: the live panel ================= */
+
+  var FEED = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojson';
+  // Add ?fail=1 to the page address to see the error state on purpose.
+  var forceFail = /[?&]fail=1/.test(location.search);
+  var dots = document.getElementById('dots');
+  var mapEl = document.getElementById('map');
+  var mapTip = document.getElementById('mapTip');
+  var loading = document.getElementById('mapLoading');
+  var errorBox = document.getElementById('mapError');
+  var countEl = document.getElementById('count');
+  var topList = document.getElementById('topList');
+  var fetchedEl = document.getElementById('fetched');
+  var refreshBtn = document.getElementById('refresh');
+  var busy = false;
+
+  function project(lon, lat) { return [(lon + 170) * 7, (72 - lat) * 10]; }
+  function ago(ms) {
+    var mins = Math.max(0, Math.round((Date.now() - ms) / 60000));
+    if (mins < 60) return mins <= 1 ? 'just now' : mins + ' minutes ago';
+    var hrs = Math.round(mins / 60);
+    if (hrs < 24) return hrs + (hrs === 1 ? ' hour ago' : ' hours ago');
+    var days = Math.round(hrs / 24);
+    return days + (days === 1 ? ' day ago' : ' days ago');
+  }
+  function safeUrl(u) { return typeof u === 'string' && u.indexOf('https://earthquake.usgs.gov/') === 0 ? u : null; }
+
+  function showQuakes(list) {
+    dots.textContent = '';
+    list.slice().sort(function (a, b) { return a.mag - b.mag; }).forEach(function (q) {
+      var p = project(q.lon, q.lat);
+      var c = el('circle', { cx: p[0].toFixed(1), cy: p[1].toFixed(1), r: (6 + (q.mag - 2.5) * 5).toFixed(1), 'class': 'quake' }, dots);
+      c.addEventListener('pointerenter', function () {
+        mapTip.textContent = '';
+        var head = document.createElement('div'); head.className = 't-head'; head.textContent = ago(q.time);
+        var body = document.createElement('div'); body.textContent = 'M' + q.mag.toFixed(1) + ', ' + q.place;
+        mapTip.appendChild(head); mapTip.appendChild(body);
+        mapTip.hidden = false;
+        var box = mapEl.getBoundingClientRect(), k = box.width / 790, cx = (p[0] + 20) * k;
+        var tw = mapTip.offsetWidth, left = cx + 12;
+        if (left + tw > box.width) left = cx - 12 - tw;
+        mapTip.style.left = Math.max(0, left) + 'px';
+        mapTip.style.top = Math.max(0, p[1] * k - 20) + 'px';
+      });
+      c.addEventListener('pointerleave', function () { mapTip.hidden = true; });
+    });
+
+    countEl.textContent = fmt.format(list.length);
+    topList.textContent = '';
+    if (!list.length) {
+      var none = document.createElement('li');
+      none.textContent = 'No earthquakes of magnitude 2.5 or larger in this area in the past 7 days. A quiet week.';
+      topList.appendChild(none);
+      return;
+    }
+    list.slice().sort(function (a, b) { return b.mag - a.mag; }).slice(0, 5).forEach(function (q) {
+      var li = document.createElement('li');
+      var m = document.createElement('span'); m.className = 'm'; m.textContent = 'M' + q.mag.toFixed(1);
+      var where = document.createElement('span'); where.className = 'where';
+      var url = safeUrl(q.url), name;
+      if (url) { name = document.createElement('a'); name.href = url; name.rel = 'noopener'; }
+      else { name = document.createElement('span'); }
+      name.textContent = q.place;
+      var when = document.createElement('span'); when.className = 'when'; when.textContent = ago(q.time);
+      where.appendChild(name); where.appendChild(when);
+      li.appendChild(m); li.appendChild(where); topList.appendChild(li);
+    });
+  }
+
+  function load() {
+    if (busy) return;
+    busy = true;
+    refreshBtn.disabled = true;
+    errorBox.hidden = true;
+    loading.hidden = false;
+    var ctrl = new AbortController();
+    var timer = setTimeout(function () { ctrl.abort(); }, 15000);
+    fetch(forceFail ? 'https://earthquake.usgs.invalid/feed.geojson' : FEED, { signal: ctrl.signal, cache: 'no-store' })
+      .then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+      .then(function (data) {
+        var list = (data.features || []).map(function (f) {
+          var c = (f.geometry && f.geometry.coordinates) || [], p = f.properties || {};
+          return { lon: c[0], lat: c[1], mag: Number(p.mag), place: String(p.place || 'Unknown location'), time: Number(p.time), url: p.url };
+        }).filter(function (q) {
+          return isFinite(q.mag) && isFinite(q.time) && q.lon >= -170 && q.lon <= -64 && q.lat >= 16 && q.lat <= 72;
+        });
+        showQuakes(list);
+        loading.hidden = true;
+        fetchedEl.textContent = 'Fetched from USGS at ' + new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) + '.';
+      })
+      .catch(function () {
+        loading.hidden = true;
+        errorBox.hidden = false;
+        if (countEl.textContent === '…') { countEl.textContent = 'n/a'; topList.textContent = ''; var li = document.createElement('li'); li.textContent = 'Not available right now.'; topList.appendChild(li); }
+        fetchedEl.textContent = 'Last attempt failed at ' + new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) + '.';
+      })
+      .then(function () { clearTimeout(timer); busy = false; refreshBtn.disabled = false; });
+  }
+  refreshBtn.addEventListener('click', load);
+  document.getElementById('retry').addEventListener('click', load);
+  load();
+  setInterval(function () { if (!document.hidden) load(); }, 5 * 60 * 1000);
+})();
+</script>
+</body>
+</html>
