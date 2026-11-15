@@ -15,10 +15,11 @@ function buildMSG(){
   const opened=D&&D.facts.opened?new Date(D.facts.opened+'T12:00'):null;
   const V=newVenue('msg',{name:'Madison Square Garden',eyebrow:D?'3D study · Midtown Manhattan · built from city data':'3D study · Midtown Manhattan',
     spec:[opened?'Opened '+opened.getFullYear():'Opened 1968',`Drum ${Math.round(R*2)} m across`,'Above Penn Station'],
-    center:new THREE.Vector3(0,0,0),scale:1,indoor:true,station:!!D,Ri,studio:{bg:'#c42a2a',seat:'#c8102e',trim:'#0038a8'},cut:{x:0,z:0},section:{axis:'x',c:0},
+    center:new THREE.Vector3(0,0,0),scale:1,indoor:true,station:!!D,Ri,studio:{bg:'#13408f',seat:'#0038a8',trim:'#c8102e'},cut:{x:0,z:0},section:{axis:'x',c:0},
     dayK:{ceil:'#d6b083',ceil2:'#c39c6d',beam:'#4a3a2b',seat:'#1d1e23',seat2:'#1d1e23',aisle:'#3b3d43',walk:'#3b3d43',riser:'#2a2b30',fascia:'#0f1830',soffit:'#2c2e34',back:'#cdbf9f',cap:'#3a3c42',ground:'#2a2d33',inner:'#c9b994',roof:'#8f8b84',roofTop:'#7f7466',boards:'#f3f3f0',cable:'#34373e'},
-    sheet:{title:'Madison Square Garden',addr:'4 Pennsylvania Plaza · New York, NY',elev:'south',elevName:'South elevation · 31st Street',planName:'Plan at the event level',
-      rows:[['Architect','Charles Luckman Associates'],['Opened',opened?opened.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}):'February 11, 1968'],
+    sheet:{title:'Madison Square Garden',addr:'4 Pennsylvania Plaza · New York, NY',elevDir:[.95,.24,.7],elevName:'Seventh Avenue elevation',planName:'Plan at the event level',secName:'Stands cross section',sec:{h:[-68,-12],y:[-2,47]},
+      callouts:[{p:[0,0,0],t:'NHL rink'},{p:[0,10,24],t:'100 level'},{p:[-22,25,-46],t:'200 level'},{p:[-75,0,0],t:'8th Ave entrance'},{p:[62,0,-30],t:'7th Ave glass box'},{p:[-49,0,49],t:'Stair tower'},{p:[44,0,46],t:'The drum · 129 m'}],
+      rows:[['Architect','Charles Luckman Associates'],['Roof engineer','Severud Associates'],['Cost','$123 million (1968)'],['Groundbreaking','October 29, 1964'],['Opened',opened?opened.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}):'February 11, 1968'],
         ['Capacity',D&&D.facts.capacity?D.facts.capacity.toLocaleString('en-US')+' (basketball)':'19,812 (basketball)'],['Drum',`${Math.round(R*2)} m across · ${Math.round(HT)} m tall`],
         ['Drawn from','NYC Open Data, OpenStreetMap']]}});
   V.city=new THREE.Group(); V.G.base.add(V.city);
@@ -248,28 +249,8 @@ function buildMSG(){
   kbBr.mesh(V,V.hang);
 
   // ---------------------------------------------------------------- buildings: walls get a window texture, roofs are flat
-  function blocks(list,group,mat){
-    const pos=[],uv=[],kinds=[],kbT=new KB();
-    list.forEach(b=>{
-      let pts=b.pts; const A=pts.reduce((s,p,i)=>{const q=pts[(i+1)%pts.length]; return s+p[0]*q[1]-q[0]*p[1];},0);
-      const sgn=A>0?1:-1, h=b.h, y0=b.minh||0; let acc=0;
-      pts.forEach((a,i)=>{const c=pts[(i+1)%pts.length],dx=c[0]-a[0],dz=c[1]-a[1],len=Math.hypot(dx,dz); if(len<.05) return;
-        if(b.skipEdge && b.skipEdge(a,c)){acc+=len; return;}
-        const n=[sgn*dz,0,-sgn*dx], A0=[a[0],y0,a[1]],B0=[c[0],y0,c[1]],B1=[c[0],h,c[1]],A1=[a[0],h,a[1]];
-        const u0=acc/32,u1=(acc+len)/32,v0=y0/28.8,v1=h/28.8; acc+=len;
-        const cr=(p,q,r)=>{const ux=q[0]-p[0],uy=q[1]-p[1],uz=q[2]-p[2],vx=r[0]-p[0],vy=r[1]-p[1],vz=r[2]-p[2]; return [uy*vz-uz*vy,uz*vx-ux*vz,ux*vy-uy*vx];};
-        const nn=cr(A0,B0,B1), ok=nn[0]*n[0]+nn[2]*n[2]>=0;
-        const T=ok?[[A0,u0,v0],[B0,u1,v0],[B1,u1,v1],[A0,u0,v0],[B1,u1,v1],[A1,u0,v1]]:[[A0,u0,v0],[B1,u1,v1],[B0,u1,v0],[A0,u0,v0],[A1,u0,v1],[B1,u1,v1]];
-        T.forEach(([p,u,v])=>{pos.push(...p); uv.push(u,v); kinds.push(b.k);});});
-      const holes=b.hole?[b.hole.map(p=>new THREE.Vector2(p[0],p[1]))]:[];
-      const all=pts.concat(b.hole||[]);
-      THREE.ShapeUtils.triangulateShape(pts.map(p=>new THREE.Vector2(p[0],p[1])),holes).forEach(f=>kbT.triF([all[f[0]][0],h,all[f[0]][1]],[all[f[1]][0],h,all[f[1]][1]],[all[f[2]][0],h,all[f[2]][1]],b.kt,up));
-    });
-    if(pos.length){const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3)); g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));
-      g.setAttribute('color',new THREE.Float32BufferAttribute(new Float32Array(kinds.length*3),3)); g.computeVertexNormals();
-      const m=new THREE.Mesh(g,mat); m.userData.kinds=Uint8Array.from(kinds); m.castShadow=m.receiveShadow=true; V.kindMeshes.push(m); V.edgeTargets.push(m); group.add(m);}
-    if(kbT.p.length) kbT.mesh(V,group);
-  }
+  // buildings: the shared city kit in engine/core.js
+  const blocks=(list,group,mat)=>SS.blocks(V,list,group,mat);
   if(D){
     // the arena's own block: city outline (minus the drum) as a low base, OpenStreetMap building parts on top
     const minD=Math.min(...D.complex.map(p=>Math.hypot(p[0],p[1]))), hr=Math.min(R-1.3,minD-1);
@@ -285,21 +266,8 @@ function buildMSG(){
     // video screens on the two 7th Avenue glass boxes
     V.glassBoxes.forEach((b,k)=>{const xs=b.pts.map(p=>p[0]),zs=b.pts.map(p=>p[1]),zw=Math.max(...zs)-Math.min(...zs);
       const s=new THREE.Mesh(new THREE.PlaneGeometry(Math.min(zw*.82,15),10.5),k?V.mats.ad:V.mats.marquee); s.position.set(Math.max(...xs)+.2,26,b.cz); s.rotation.y=Math.PI/2; V.annex.add(s); V.roadHide.push(s);});
-    // neighbors from the city's footprints (Two Penn Plaza comes from the building parts instead)
-    const nb=D.buildings.filter(b=>b.bin!=='1083026').map(b=>({pts:b.pts,h:b.h,k:b.h>80?K.curtain:(parseInt(b.bin||'0',10)%3===0?K.nbr2:K.nbr),kt:K.nbrTop}));
-    blocks(nb.filter(b=>b.k!==K.curtain),V.city,V.mats.win); blocks(nb.filter(b=>b.k===K.curtain),V.city,V.mats.glassWall);
-    // streets, sidewalks and crosswalks painted onto the ground
-    const [x0,x1,z0,z1]=BOX, W=x1-x0, H=z1-z0, sc=2048/W, c=mk(2048,Math.round(H*sc)), x=c.getContext('2d');
-    x.setTransform(sc,0,0,sc,-x0*sc,-z0*sc); x.lineCap='round'; x.lineJoin='round';
-    x.fillStyle='#bab5ab'; x.fillRect(x0,z0,W,H);
-    const line=(pts)=>{x.beginPath(); pts.forEach((p,i)=>i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]));};
-    D.streets.forEach(s=>{line(s.pts); x.strokeStyle='#9d9890'; x.lineWidth=s.w+.8; x.stroke();});
-    D.streets.forEach(s=>{line(s.pts); x.strokeStyle='#3c3e43'; x.lineWidth=s.w; x.stroke();});
-    D.streets.forEach(s=>{line(s.pts); x.setLineDash(s.w>14?[3,6]:[2.5,7]); x.strokeStyle='rgba(240,240,236,.75)'; x.lineWidth=.18; x.stroke(); x.setLineDash([]);});
-    D.paths.filter(p=>p.kind==='crossing').forEach(p=>{line(p.pts); x.setLineDash([.6,.6]); x.strokeStyle='#efefea'; x.lineWidth=3.2; x.lineCap='butt'; x.stroke(); x.setLineDash([]); x.lineCap='round';});
-    D.paths.filter(p=>p.kind==='pedestrian').forEach(p=>{line(p.pts); x.strokeStyle='#d6d1c6'; x.lineWidth=6; x.stroke();});
-    V.tex.streets=tex(c); V.mats.streets=std({map:V.tex.streets,roughness:1});
-    const gp=new THREE.Mesh(new THREE.PlaneGeometry(W,H).rotateX(-Math.PI/2),V.mats.streets); gp.position.set((x0+x1)/2,.04,(z0+z1)/2); gp.receiveShadow=true; V.city.add(gp);
+    // the neighborhood: real buildings, streets, sidewalks, census trees, signals, subway entrances (shared city kit)
+    SS.buildCity(V,D,V.city,{skipBins:['1083026'],box:BOX});
   }
   // "Madison Square Garden" letters over the 8th Avenue entrance
   V.letters=new THREE.Mesh(new THREE.PlaneGeometry(30,2.4),V.mats.letters); V.letters.position.set(-R-6.6,21.2,0); V.letters.rotation.y=-Math.PI/2; V.annex.add(V.letters);
@@ -308,7 +276,7 @@ function buildMSG(){
   // ---------------------------------------------------------------- ground block, trees, road
   const rx=(a,b,c,d,r)=>{const pts=[]; [[b-r,d-r,0],[a+r,d-r,90],[a+r,c+r,180],[b-r,c+r,270]].forEach(([cx,cz,a0])=>{for(let t=a0;t<=a0+90;t+=10) pts.push([cx+r*Math.cos(t*deg),cz+r*Math.sin(t*deg)]);}); return pts;};
   addGrounds(V,rx(BOX[0],BOX[1],BOX[2],BOX[3],10));
-  addTrees(V,D?D.trees.map(t=>[t[0],t[1],.85]):[]); V.city.add(V.trees);
+  if(!V.trees){V.trees=new THREE.Group(); V.G.base.add(V.trees);}
   V.road=new THREE.Group(); V.G.base.add(V.road);
   // the lot for the iso map icons: the arena's own block, cut out like a little island (curb, sidewalk, its real street trees)
   {const cx=D?D.complex.map(p=>p[0]):[-R,R], cz=D?D.complex.map(p=>p[1]):[-R,R];
@@ -358,37 +326,32 @@ function buildMSG(){
     const endMat=std({color:lin('#9da3ab')},false); endMat.clippingPlanes=V.trainClip; V.trainMats.push(endMat); endMat.userData.plain=true;
     const TL=230, xStop=(PX[0]+PX[1])/2+20, xOut=BOX[1]+TL/2+20;
     const overlaps=(a,b)=>[-60,0,60].some(s=>a[0]<b[1]+s&&b[0]+s<a[1]);
-    V.trains=[]; V.moves=D.trains.moves; V.trainDate=D.trains.date;
-    D.trains.moves.forEach(mv=>{const m=mv.min, iv=mv.kind==='dep'?[m-9,m+2.5]:[m-2.5,m+9];
-      const tr=tracks.find(t=>t.busy.every(b=>!overlaps(iv,b))); if(!tr) return; tr.busy.push(iv);
-      const mesh=new THREE.Mesh(new THREE.BoxGeometry(TL,3.9,3.1),[endMat,endMat,endMat,endMat,tmat,tmat]); mesh.position.set(xOut,-21.6,tr.z); mesh.visible=false; mesh.castShadow=true; V.G.under.add(mesh);
-      V.trains.push({mesh,mv,iv});});
+    V.trains=[]; V.trainDate=D.trains.date;
+    const trainGeo=new THREE.BoxGeometry(TL,3.9,3.1);
+    // one train per arrival or departure, each on a free LIRR track; called again with live MTA data
+    const makeTrains=moves=>{V.trains.forEach(T=>V.G.under.remove(T.mesh)); V.trains=[]; tracks.forEach(t=>t.busy=[]); V.moves=moves;
+      moves.forEach(mv=>{const m=mv.min, iv=mv.kind==='dep'?[m-9,m+2.5]:[m-2.5,m+9];
+        const tr=tracks.find(t=>t.busy.every(b=>!overlaps(iv,b))); if(!tr) return; tr.busy.push(iv);
+        const mesh=new THREE.Mesh(trainGeo,[endMat,endMat,endMat,endMat,tmat,tmat]); mesh.position.set(xOut,-21.6,tr.z); mesh.visible=false; mesh.castShadow=true; V.G.under.add(mesh);
+        V.trains.push({mesh,mv,iv});});};
+    makeTrains(D.trains.moves); V.resetTrains=()=>makeTrains(D.trains.moves);
+    V.setLive=(arr,base)=>makeTrains((arr||[]).filter(a=>a.line==='LIRR').map(a=>{const d=new Date(a.t*1000); return {min:(a.t-base)/60,kind:a.kind,line:'LIRR',to:a.kind==='dep'?'LIRR departure':'LIRR arrival',t:`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`};}));
     const ease2=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
     V.trainAt=(tm)=>{V.trains.forEach(T=>{let x=null; for(const s of [0,60,-60]){const t=tm+s, m=T.mv.min; if(t<T.iv[0]||t>T.iv[1]) continue;
         if(T.mv.kind==='dep') x=t<m?xStop:xStop+ease2(Math.min(1,(t-m)/2.5))*(xOut-xStop);
         else x=t<m?xOut-ease2((t-(m-2.5))/2.5)*(xOut-xStop):(t<m+6.5?xStop:xStop+ease2((t-m-6.5)/2.5)*(xOut-xStop));}
       T.mesh.visible=x!==null; if(x!==null) T.mesh.position.x=x;});};
-    V.drawBoard=(tm)=>{const x=bc.getContext('2d'),hh=17+Math.floor(tm/60),mm=Math.floor(tm)%60, clock=`${hh-12}:${String(mm).padStart(2,'0')} PM`;
+    V.drawBoard=(tm,live)=>{const x=bc.getContext('2d'),hh=17+Math.floor(tm/60),mm=Math.floor(tm)%60, clock=live||`${hh-12}:${String(mm).padStart(2,'0')} PM`;
       x.fillStyle='#06080c'; x.fillRect(0,0,512,128); x.textBaseline='middle'; x.font='700 22px Helvetica,Arial,sans-serif'; x.fillStyle='#ffffff'; x.fillText('LIRR DEPARTURES',14,20); x.textAlign='right'; x.fillStyle='#ffc94a'; x.fillText(clock,498,20); x.textAlign='left';
       const next=V.moves.filter(m=>m.kind==='dep'&&m.min>=Math.floor(tm)).slice(0,3);
-      x.font='600 20px Helvetica,Arial,sans-serif'; next.forEach((m,k)=>{x.fillStyle='#ffc94a'; x.fillText(`${+m.t.slice(0,2)-12}:${m.t.slice(3)}`,14,56+k*26); x.fillStyle='#e8edf5'; x.fillText(m.to.toUpperCase().slice(0,26),96,56+k*26);});
+      x.font='600 20px Helvetica,Arial,sans-serif'; next.forEach((m,k)=>{x.fillStyle='#ffc94a'; x.fillText(`${(+m.t.slice(0,2))%12||12}:${m.t.slice(3)}`,14,56+k*26); x.fillStyle='#e8edf5'; x.fillText(m.to.toUpperCase().slice(0,26),96,56+k*26);});
       V.depMap.needsUpdate=true; return clock;};
     V.drawBoard(0);
   }
   V.EXP={base:0,lower:12,facade:0,middle:30,upper:54,crown:78,roof:102,under:[0,-40,0]};
   V.flyGuard=R+24; V.boxR=78;
 
-  // ---------------------------------------------------------------- Rangers shot map (NHL play-by-play, folded so each team attacks one end)
-  if(D&&D.shots&&D.shots.team_shots){
-    const c=mk(2048,872),x=c.getContext('2d'),k=2048/61, X=v=>(v+30.5)*k;
-    const dot=(v,col,r)=>{x.fillStyle=col; x.beginPath(); x.arc(X(v[0]),(13-v[1])*(872/26),r,0,TAU); x.fill();};
-    D.shots.opp.forEach(v=>!v[2]&&dot(v,'rgba(110,118,132,.32)',9)); D.shots.team_shots.forEach(v=>!v[2]&&dot(v,'rgba(0,56,168,.32)',9));
-    D.shots.opp.forEach(v=>v[2]&&dot(v,'rgba(242,169,0,.95)',13)); D.shots.team_shots.forEach(v=>v[2]&&dot(v,'rgba(200,16,46,.95)',13));
-    x.font='700 44px Helvetica,Arial,sans-serif'; x.textAlign='center'; x.fillStyle='rgba(0,40,120,.8)'; x.fillText('RANGERS SHOOT THIS WAY  →',1500,70); x.fillStyle='rgba(70,76,88,.8)'; x.fillText('←  OPPONENTS SHOOT THIS WAY',548,70);
-    const sm=new THREE.MeshBasicMaterial({map:tex(c),transparent:true,depthWrite:false});
-    V.shotPlane=new THREE.Mesh(new THREE.PlaneGeometry(61,26).rotateX(-Math.PI/2),sm); V.shotPlane.position.y=.09; V.shotPlane.visible=false; V.shotPlane.renderOrder=2; V.G.base.add(V.shotPlane);
-    V.shots=D.shots;
-  }
+  // Rangers shot map: removed for now (2026-11-15). The NHL shots are still in data/msg-data.js for a future data layer.
 
   // ---------------------------------------------------------------- labels + sightlines
   V.labels.exploded=[{g:'roof',p:P(R-6,-50*deg,HT-1),t:'Cable-suspended roof'},{g:'crown',p:P(48,-50*deg,yC(48)-1),t:'Ceiling, banners & light rings'},{g:'upper',p:[-10,30,0],t:'Scoreboard & Chase Bridges'},
@@ -398,9 +361,17 @@ function buildMSG(){
   addSight(V,[row(T1,2,iS),row(T1,10,iS),row(T2,3,iS),row(T2,10,iS),row(T2,17,iS),[0,35.4,-36]],L.pos(iS,-2.5,1.07));
   V.labels.section=[{p:[0,HT-1,-30],t:'Cable roof & ceiling'},{p:[0,25,8],t:'Center-hung scoreboard'},{p:[0,35.5,-44],t:'Chase Bridge'},{p:row(T2,12,iS),t:'200 level'},{p:row(T1,6,iS),t:'100 level'},
     {p:[0,.5,6],t:'Event level · NHL rink'},{p:[0,-10.5,-40],t:'Penn Station concourse'},{p:[0,-21.4,-20],t:'Train platforms · tracks 1 to 21'},{p:[-90,-6,30],t:'A C E subway · 8th Ave'}];
+  // blueprint cross section: the real outlines at the north side (x = 0), drawn as lines
+  {const iN=L.idxAtPhi(180), z=r=>[0,0,-r], Pz=(r,y)=>[0,y,-r], prof=[SS.tierProfile(L,iN,T1),SS.tierProfile(L,iN,T2)];
+   const ceil=[],roof=[]; for(let r=Rin;r<=Ri;r+=2) ceil.push(Pz(r,yC(r))); for(let r=7;r<=Rm;r+=2) roof.push(Pz(r,yd(r)));
+   prof.push(ceil,roof,[Pz(R-3,HT),Pz(R+.4,HT),Pz(R+.4,HT-3),Pz(Rw-.7,HT-3),Pz(Rw-.7,Hw),Pz(Rw,Hw),Pz(Rw,0)],[Pz(R+18,0),Pz(0,0)],
+     [Pz(edge[iN]-.3+15.5,34),Pz(edge[iN]-.3+15.5,HT-3.2)],[Pz(41.8,34.2),Pz(46.2,34.2),Pz(46.2,35.8),Pz(41.8,35.8),Pz(41.8,34.2)],
+     [Pz(-2,-11),Pz(R+18,-11)],[Pz(-2,-21.9),Pz(R+18,-21.9)],[Pz(-2,-24.1),Pz(R+18,-24.1)]);
+   V.sheet.profile=prof;}
   // cameras + lights
   const bo=row(T2,17,L.idxAtPhi(16));
   V.camOv.bowl={abs:true,pos:bo,tgt:[-4,6,-16],fov:66};
+  V.bowlOpts=[['seat','200 level'],['up','Lower bowl, look up']];
   V.camOv.bowlUp={abs:true,pos:row(T1,2,L.idxAtPhi(12)),tgt:[0,30,-10],fov:84};
   V.camOv.shots={abs:true,pos:[0,62,40],tgt:[0,0,1],fov:46};
   V.camOv.aerial={off:[-175,150,210],tgt:[12,2,0]}; V.camOv.pastel={size:122,tgt:[14,-8,0]}; V.camOv.night={off:[-210,150,195],tgt:[0,14,0]}; V.camOv.road={off:[260,240,300]};

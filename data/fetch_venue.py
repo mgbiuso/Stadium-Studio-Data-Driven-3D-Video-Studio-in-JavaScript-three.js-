@@ -119,8 +119,9 @@ def fetch_osm():
   way["railway"]{bb};
   way["public_transport"="platform"]{bb};
   node["natural"="tree"]{bb};
+  node["highway"~"traffic_signals|street_lamp"]{bb};
+  node["railway"~"subway_entrance|station"]{bb};
   way["leisure"]{bb};
-  way["name"="Madison Square Garden"];
 );
 out geom tags;"""
     return overpass(q)
@@ -248,6 +249,61 @@ def clip_line(pts, box=BOX, pad=0):
     return lines
 
 
+def schedule(feed, gtfs):
+    """One weekday hour of trains at the station. Terminal stations (LIRR at Penn) list arrivals and departures;
+    "through" stations (a subway stop) list every train that stops there, with its line and direction."""
+    z = zipfile.ZipFile(io.BytesIO(gtfs))
+    rd = lambda n: list(csv.DictReader(io.TextIOWrapper(z.open(n), "utf-8-sig")))
+    stops = rd("stops.txt")
+    here = {s["stop_id"] for s in stops if feed["stop_match"] in s["stop_name"].lower().replace("–", "-")}
+    routes = {r["route_id"]: (r.get("route_short_name") if feed.get("through") else None) or r.get("route_long_name") or r.get("route_short_name") for r in rd("routes.txt")}
+    trips = {t["trip_id"]: t for t in rd("trips.txt")}
+    names = z.namelist()
+    day = date.today()
+    while day.weekday() != 2:            # next Wednesday: a normal weekday
+        day += timedelta(days=1)
+    ds = day.strftime("%Y%m%d")
+    active = set()
+    if "calendar.txt" in names:
+        wk = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"][day.weekday()]
+        for c in rd("calendar.txt"):
+            if c["start_date"] <= ds <= c["end_date"] and c[wk] == "1":
+                active.add(c["service_id"])
+    if "calendar_dates.txt" in names:
+        for c in rd("calendar_dates.txt"):
+            if c["date"] == ds:
+                (active.add if c["exception_type"] == "1" else active.discard)(c["service_id"])
+    moves = []
+    if feed.get("through"):
+        for st in rd("stop_times.txt"):
+            if st["stop_id"] in here and st["trip_id"] in trips and trips[st["trip_id"]]["service_id"] in active:
+                tm = st["arrival_time"] or st["departure_time"]; hh, mm = int(tm[:2]), int(tm[3:5])
+                if feed["hours"][0] <= hh < feed["hours"][1]:
+                    tr = trips[st["trip_id"]]
+                    moves.append({"t": f"{hh:02d}:{mm:02d}", "min": mm, "kind": "stop", "line": routes.get(tr["route_id"], ""),
+                                  "to": tr.get("trip_headsign", ""), "dir": tr.get("direction_id", ""), "stop": st["stop_id"]})
+    else:
+        by_trip = {}
+        for st in rd("stop_times.txt"):
+            if st["trip_id"] in trips and trips[st["trip_id"]]["service_id"] in active:
+                by_trip.setdefault(st["trip_id"], []).append(st)
+        for tid, sts in by_trip.items():
+            sts.sort(key=lambda s: int(s["stop_sequence"]))
+            first, last = sts[0], sts[-1]
+            tr = trips[tid]
+            if first["stop_id"] in here:
+                tm, kind, other = first["departure_time"], "dep", tr.get("trip_headsign", "")
+            elif last["stop_id"] in here:
+                tm, kind, other = last["arrival_time"], "arr", next((s["stop_name"] for s in stops if s["stop_id"] == first["stop_id"]), "")
+            else:
+                continue
+            hh, mm = int(tm[:2]), int(tm[3:5])
+            if feed["hours"][0] <= hh < feed["hours"][1]:
+                moves.append({"t": f"{hh:02d}:{mm:02d}", "min": mm, "kind": kind, "line": routes.get(tr["route_id"], ""), "to": other})
+    moves.sort(key=lambda m: (m["min"], m["kind"]))
+    return moves, day
+
+
 def osm_footprints(osm):
     """Outside NYC: turn OpenStreetMap buildings into the same shape as the city footprint rows."""
     out = []
@@ -314,8 +370,7 @@ def main():
     else:
         print("    none for this city yet (see data/README.md)")
     print("4/6 Transit")
-    feed = TRANSIT[0] if TRANSIT else None
-    gtfs = cached(f"gtfs-{feed['name']}.zip", lambda: fetch_gtfs(feed["url"])) if feed else None
+    feeds = [(f, cached(f"gtfs-{f['name']}.zip", lambda f=f: fetch_gtfs(f["url"]))) for f in TRANSIT]
     print("5/6 Sport")
     pbps = []
     if SPORT.get("league") == "nhl":
@@ -358,7 +413,9 @@ def main():
     for b in fp:
         for poly in b["the_geom"]["coordinates"]:
             pts = [to_local(lat, lon) for lon, lat in poly[0]]
-            if min(math.hypot(*p) for p in pts) < 70 and area(pts) > 10000 and (msg_fp is None or area(pts) > area(msg_fp[1])):
+            near = (min(math.hypot(*p) for p in pts) < 70) if CFG.get("shape") == "round" else \
+                   (math.hypot(sum(p[0] for p in pts) / len(pts), sum(p[1] for p in pts) / len(pts)) < 150)   # big venues: the shape's middle is near the center
+            if near and area(pts) > 10000 and (msg_fp is None or area(pts) > area(msg_fp[1])):
                 msg_fp = (b, pts)
     if msg_fp is None:
         sys.exit("Could not find the venue's own building near its center. Check 'center' in venues.json.")
@@ -379,10 +436,16 @@ def main():
 
     # ---- streets, sidewalks, trees, rails, platforms
     streets, paths, rails, platforms, trees, pitches, parts = [], [], [], [], [], [], []
+    els, furniture = [], []
     for el in osm:
         t = el.get("tags", {})
         if el["type"] == "node" and t.get("natural") == "tree":
             trees.append(G(el["lat"], el["lon"]))
+            continue
+        if el["type"] == "node":
+            kind = t.get("highway") or t.get("railway")
+            if kind in ("traffic_signals", "street_lamp", "subway_entrance", "station"):
+                furniture.append({"kind": kind, "name": t.get("name", ""), "p": G(el["lat"], el["lon"])})
             continue
         if el["type"] != "way" or not el.get("geometry"):
             continue
@@ -404,6 +467,9 @@ def main():
         if t.get("railway") in ("rail", "subway") and under:
             rails.append({"ref": t.get("railway:track_ref") or t.get("ref", ""), "service": t.get("service", ""), "layer": layer, "pts": pts,
                           "subway": t.get("railway") == "subway"})
+        if t.get("railway") in ("rail", "subway") and not under and t.get("service") not in ("yard", "siding"):
+            els.append({"ref": t.get("ref", ""), "name": t.get("name", ""), "bridge": t.get("bridge", ""), "layer": layer, "pts": pts,
+                        "subway": t.get("railway") == "subway"})          # above-ground track, like the 4 train over River Avenue
         if (t.get("railway") == "platform" or t.get("public_transport") == "platform") and under:
             platforms.append({"ref": t.get("ref", ""), "layer": layer, "closed": pts[0] == pts[-1], "pts": pts,
                               "subway": "subway" in (t.get("network", "") + t.get("name", "") + t.get("subway", "")).lower() or t.get("subway") == "yes"})
@@ -426,7 +492,9 @@ def main():
     grid = {"x_lo": mean_coord(GRID.get("x_lo"), 0), "x_hi": mean_coord(GRID.get("x_hi"), 0),
             "z_lo": mean_coord(GRID.get("z_lo"), 1), "z_hi": mean_coord(GRID.get("z_hi"), 1)}
     streets = clipped(streets, 25); paths = clipped(paths, 0)
-    rails = clipped(rails, 0); platforms = [dict(p, pts=clip_poly(p["pts"])) for p in platforms]; platforms = [p for p in platforms if len(p["pts"]) >= 3]
+    rails = clipped(rails, 0); els = clipped(els, 0)
+    furniture = [f for f in furniture if BOX[0] < f["p"][0] < BOX[1] and BOX[2] < f["p"][1] < BOX[3]]
+    platforms = [dict(p, pts=clip_poly(p["pts"])) for p in platforms]; platforms = [p for p in platforms if len(p["pts"]) >= 3]
     trees = [t for t in trees if BOX[0] < t[0] < BOX[1] and BOX[2] < t[1] < BOX[3]]
     # keep only the parts on the arena's own block (between 8th and 7th Ave, 33rd and 31st St)
     def on_block(pts):
@@ -463,49 +531,12 @@ def main():
     print(f"    venue roof height: {drum_h:.1f} m;  {len(buildings)} other building pieces")
 
     # ---- transit: one weekday hour at the venue's station (from venues.json)
-    moves, day = [], date.today()
-    if gtfs:
-      z = zipfile.ZipFile(io.BytesIO(gtfs))
-      rd = lambda n: list(csv.DictReader(io.TextIOWrapper(z.open(n), "utf-8-sig")))
-      stops = rd("stops.txt")
-      penn = {s["stop_id"] for s in stops if feed["stop_match"] in s["stop_name"].lower()}
-      routes = {r["route_id"]: r.get("route_long_name") or r.get("route_short_name") for r in rd("routes.txt")}
-      trips = {t["trip_id"]: t for t in rd("trips.txt")}
-      names = z.namelist()
-      day = date.today()
-      while day.weekday() != 2:            # next Wednesday: a normal weekday
-          day += timedelta(days=1)
-      ds = day.strftime("%Y%m%d")
-      active = set()
-      if "calendar.txt" in names:
-          wk = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"][day.weekday()]
-          for c in rd("calendar.txt"):
-              if c["start_date"] <= ds <= c["end_date"] and c[wk] == "1":
-                  active.add(c["service_id"])
-      if "calendar_dates.txt" in names:
-          for c in rd("calendar_dates.txt"):
-              if c["date"] == ds:
-                  (active.add if c["exception_type"] == "1" else active.discard)(c["service_id"])
-      by_trip = {}
-      for st in rd("stop_times.txt"):
-          if st["trip_id"] in trips and trips[st["trip_id"]]["service_id"] in active:
-              by_trip.setdefault(st["trip_id"], []).append(st)
-      for tid, sts in by_trip.items():
-          sts.sort(key=lambda s: int(s["stop_sequence"]))
-          first, last = sts[0], sts[-1]
-          tr = trips[tid]
-          if first["stop_id"] in penn:
-              tm, kind, other = first["departure_time"], "dep", tr.get("trip_headsign", "")
-          elif last["stop_id"] in penn:
-              tm, kind, other = last["arrival_time"], "arr", next((s["stop_name"] for s in stops if s["stop_id"] == first["stop_id"]), "")
-          else:
-              continue
-          hh, mm = int(tm[:2]), int(tm[3:5])
-          if feed["hours"][0] <= hh < feed["hours"][1]:
-              moves.append({"t": f"{hh:02d}:{mm:02d}", "min": mm, "kind": kind, "line": routes.get(tr["route_id"], ""), "to": other})
-    moves.sort(key=lambda m: (m["min"], m["kind"]))
-    if feed:
+    transit = []
+    for feed, gtfs in feeds:
+        moves, day = schedule(feed, gtfs)
+        transit.append({"label": feed["label"], "through": bool(feed.get("through")), "hours": feed["hours"], "date": day.isoformat(), "moves": moves})
         print(f"    {len(moves)} {feed['label']} trains between {feed['hours'][0]}:00 and {feed['hours'][1]}:00 on {day.isoformat()}")
+    first = transit[0] if transit else None
 
     # ---- NHL shots, folded so the home team attacks the +x end and opponents the -x end
     team_id = SPORT.get("team_id")
@@ -552,8 +583,8 @@ def main():
                  "note": "x = grid east, z = grid south (along the local street grid), meters, venue center at 0,0"},
         "drum": {"R": rnd(R), "h": rnd(drum_h)}, "complex": cplx, "grid": grid, "box": BOX, "parts": parts,
         "streets": streets, "paths": paths, "buildings": buildings,
-        "rails": rails, "platforms": platforms, "trees": trees, "pitches": pitches,
-        "trains": {"date": day.isoformat(), "label": feed["label"] if feed else None, "hours": feed["hours"] if feed else None, "moves": moves},
+        "rails": rails, "els": els, "furniture": furniture, "platforms": platforms, "trees": trees, "pitches": pitches,
+        "trains": first, "transit": transit,
         "shots": {"season": SPORT.get("season"), "team": SPORT.get("team"), "games": len(pbps), "team_shots": rangers, "opp": opp, "goals": goals} if pbps else None,
         "city": city_extra(extra, G),
         "facts": facts,

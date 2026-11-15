@@ -9,6 +9,16 @@ python3 data/fetch_venue.py msg --refresh   # downloads everything again
 
 Output: `stadium-studio/data/<venue>-data.js`. Raw downloads are kept in `data/<venue>/raw/` (not saved to git).
 
+## Live trains (optional, for recording)
+
+```
+python3 data/live_trains.py
+```
+
+Leave that window open while you record. Stadium Studio (opened on this Mac) switches from the
+sped-up timetable to real MTA trains at real speed: the 4 train at 161 St-Yankee Stadium and the LIRR
+under MSG. Press Ctrl + C to stop. The shared link always uses the timetable.
+
 ## Add a new venue or landmark (about 10 minutes)
 
 1. Open `data/venues.json` and copy the `msg` entry. Give it a short key, like `fenway`.
@@ -35,6 +45,8 @@ Output: `stadium-studio/data/<venue>-data.js`. Raw downloads are kept in `data/<
 | NYC | PLUTO tax lots (64uk-42ks) | Year built, floors, building type for each lot | No |
 | NYC | Planimetric sidewalks (52n9-sdep) | Exact sidewalk shapes | No |
 | Transit | Any GTFS feed (MTA, NJ Transit, Amtrak, most world cities) | Real train and bus times | Usually no |
+| Live | MTA GTFS-realtime (subway lines and LIRR) | Trains due at the station right now | No |
+| Everywhere | OpenStreetMap nodes | Traffic signals, subway entrances, stations, elevated track | No |
 | Sport | NHL web API (unofficial) | Shot and goal locations | No |
 
 ## Packs to add for other cities (when we get there)

@@ -1,0 +1,1215 @@
+[{"tree_dbh":"18","spc_common":"Norway maple","status":"Alive","latitude":"40.83230633","longitude":"-73.92817071"}
+,{"tree_dbh":"1","spc_common":"Norway maple","status":"Alive","latitude":"40.83201885","longitude":"-73.9283925"}
+,{"tree_dbh":"4","spc_common":"cherry","status":"Alive","latitude":"40.83064272","longitude":"-73.92443894"}
+,{"tree_dbh":"8","spc_common":"silver maple","status":"Alive","latitude":"40.83279427","longitude":"-73.92685206"}
+,{"tree_dbh":"4","spc_common":"hawthorn","status":"Alive","latitude":"40.8314093","longitude":"-73.92886274"}
+,{"tree_dbh":"9","spc_common":"silver maple","status":"Alive","latitude":"40.83292725","longitude":"-73.92674914"}
+,{"tree_dbh":"10","spc_common":"silver maple","status":"Alive","latitude":"40.83269679","longitude":"-73.92692751"}
+,{"tree_dbh":"3","spc_common":"silver maple","status":"Alive","latitude":"40.83108809","longitude":"-73.92812295"}
+,{"tree_dbh":"7","spc_common":"silver maple","status":"Alive","latitude":"40.83300202","longitude":"-73.92669127"}
+,{"tree_dbh":"4","status":"Dead","latitude":"40.82954305","longitude":"-73.92366255"}
+,{"tree_dbh":"8","spc_common":"cherry","status":"Alive","latitude":"40.83236483","longitude":"-73.92812558"}
+,{"tree_dbh":"7","spc_common":"common hackberry","status":"Alive","latitude":"40.83369402","longitude":"-73.92652251"}
+,{"tree_dbh":"5","spc_common":"common hackberry","status":"Alive","latitude":"40.83364744","longitude":"-73.92637935"}
+,{"tree_dbh":"4","spc_common":"hawthorn","status":"Alive","latitude":"40.83146234","longitude":"-73.92882182"}
+,{"tree_dbh":"4","spc_common":"silver maple","status":"Alive","latitude":"40.83115512","longitude":"-73.92850457"}
+,{"tree_dbh":"5","spc_common":"cherry","status":"Alive","latitude":"40.83368319","longitude":"-73.92710616"}
+,{"tree_dbh":"3","status":"Dead","latitude":"40.82681725","longitude":"-73.92200129"}
+,{"tree_dbh":"7","spc_common":"Sophora","status":"Alive","latitude":"40.82828143","longitude":"-73.92352254"}
+,{"tree_dbh":"6","spc_common":"ginkgo","status":"Alive","latitude":"40.82878458","longitude":"-73.9241072"}
+,{"tree_dbh":"21","spc_common":"London planetree","status":"Alive","latitude":"40.82932416","longitude":"-73.92379087"}
+,{"tree_dbh":"4","spc_common":"London planetree","status":"Alive","latitude":"40.82997657","longitude":"-73.92340839"}
+,{"tree_dbh":"8","spc_common":"Sophora","status":"Alive","latitude":"40.82834534","longitude":"-73.92348499"}
+,{"tree_dbh":"4","spc_common":"London planetree","status":"Alive","latitude":"40.82962178","longitude":"-73.92361639"}
+,{"tree_dbh":"12","spc_common":"London planetree","status":"Alive","latitude":"40.82940916","longitude":"-73.92374104"}
+,{"tree_dbh":"10","spc_common":"London planetree","status":"Alive","latitude":"40.82662935","longitude":"-73.92141072"}
+,{"tree_dbh":"6","spc_common":"Sophora","status":"Alive","latitude":"40.82840449","longitude":"-73.92345023"}
+,{"tree_dbh":"9","spc_common":"ginkgo","status":"Alive","latitude":"40.8300654","longitude":"-73.92264188"}
+,{"tree_dbh":"9","spc_common":"ginkgo","status":"Alive","latitude":"40.83012367","longitude":"-73.92281103"}
+,{"tree_dbh":"5","spc_common":"Sophora","status":"Alive","latitude":"40.82703399","longitude":"-73.92232346"}
+,{"tree_dbh":"7","spc_common":"Sophora","status":"Alive","latitude":"40.82845813","longitude":"-73.92341872"}
+,{"tree_dbh":"7","spc_common":"Sophora","status":"Alive","latitude":"40.82855288","longitude":"-73.92336305"}
+,{"tree_dbh":"0","status":"Stump","latitude":"40.82862556","longitude":"-73.92332035"}
+,{"tree_dbh":"4","status":"Dead","latitude":"40.82736937","longitude":"-73.92135576"}
+,{"tree_dbh":"7","spc_common":"Sophora","status":"Alive","latitude":"40.8274874","longitude":"-73.92207157"}
+,{"tree_dbh":"3","spc_common":"European hornbeam","status":"Alive","latitude":"40.83101871","longitude":"-73.92111514"}
+,{"tree_dbh":"3","spc_common":"ginkgo","status":"Alive","latitude":"40.82789597","longitude":"-73.92462812"}
+,{"tree_dbh":"9","spc_common":"ginkgo","status":"Alive","latitude":"40.82835231","longitude":"-73.9243606"}
+,{"tree_dbh":"15","spc_common":"ginkgo","status":"Alive","latitude":"40.82889966","longitude":"-73.92403973"}
+,{"tree_dbh":"4","spc_common":"European hornbeam","status":"Alive","latitude":"40.83098276","longitude":"-73.92101122"}
+,{"tree_dbh":"8","spc_common":"Sophora","status":"Alive","latitude":"40.82822002","longitude":"-73.92355862"}
+,{"tree_dbh":"8","spc_common":"ginkgo","status":"Alive","latitude":"40.829015","longitude":"-73.92397211"}
+,{"tree_dbh":"9","spc_common":"ginkgo","status":"Alive","latitude":"40.82884826","longitude":"-73.92406986"}
+,{"tree_dbh":"5","spc_common":"red maple","status":"Alive","latitude":"40.83382966","longitude":"-73.92139055"}
+,{"tree_dbh":"5","spc_common":"Callery pear","status":"Alive","latitude":"40.82718749","longitude":"-73.92223818"}
+,{"tree_dbh":"7","spc_common":"Callery pear","status":"Alive","latitude":"40.8273463","longitude":"-73.92214996"}
+,{"tree_dbh":"7","spc_common":"Sophora","status":"Alive","latitude":"40.82791549","longitude":"-73.92373754"}
+,{"tree_dbh":"7","spc_common":"Sophora","status":"Alive","latitude":"40.82714096","longitude":"-73.92226403"}
+,{"tree_dbh":"19","spc_common":"London planetree","status":"Alive","latitude":"40.82843003","longitude":"-73.92431504"}
+,{"tree_dbh":"18","spc_common":"London planetree","status":"Alive","latitude":"40.82850576","longitude":"-73.92427065"}
+,{"tree_dbh":"4","spc_common":"London planetree","status":"Alive","latitude":"40.82977473","longitude":"-73.92352672"}
+,{"tree_dbh":"4","spc_common":"crab apple","status":"Alive","latitude":"40.83294694","longitude":"-73.92063276"}
+,{"tree_dbh":"8","spc_common":"ginkgo","status":"Alive","latitude":"40.83009261","longitude":"-73.92272086"}
+,{"tree_dbh":"8","spc_common":"American elm","status":"Alive","latitude":"40.82947825","longitude":"-73.92281935"}
+,{"tree_dbh":"16","spc_common":"London planetree","status":"Alive","latitude":"40.82922487","longitude":"-73.92384908"}
+,{"tree_dbh":"3","spc_common":"crab apple","status":"Alive","latitude":"40.83309972","longitude":"-73.9205426"}
+,{"tree_dbh":"19","spc_common":"London planetree","status":"Alive","latitude":"40.8287076","longitude":"-73.92415232"}
+,{"tree_dbh":"8","spc_common":"American elm","status":"Alive","latitude":"40.83282822","longitude":"-73.92070283"}
+,{"tree_dbh":"4","spc_common":"Sophora","status":"Alive","latitude":"40.82670061","longitude":"-73.92163468"}
+,{"tree_dbh":"6","spc_common":"Chinese elm","status":"Alive","latitude":"40.82800397","longitude":"-73.92368556"}
+,{"tree_dbh":"5","spc_common":"American elm","status":"Alive","latitude":"40.83246656","longitude":"-73.92091627"}
+,{"tree_dbh":"7","spc_common":"American elm","status":"Alive","latitude":"40.83268496","longitude":"-73.92078738"}
+,{"tree_dbh":"3","status":"Dead","latitude":"40.83370023","longitude":"-73.92100805"}
+,{"tree_dbh":"10","spc_common":"Callery pear","status":"Alive","latitude":"40.827452","longitude":"-73.92209124"}
+,{"tree_dbh":"6","spc_common":"Chinese elm","status":"Alive","latitude":"40.83366671","longitude":"-73.92090903"}
+,{"tree_dbh":"8","spc_common":"Chinese elm","status":"Alive","latitude":"40.83361733","longitude":"-73.92076314"}
+,{"tree_dbh":"4","spc_common":"crab apple","status":"Alive","latitude":"40.83287981","longitude":"-73.92067238"}
+,{"tree_dbh":"5","spc_common":"red maple","status":"Alive","latitude":"40.83395174","longitude":"-73.92174619"}
+,{"tree_dbh":"5","spc_common":"red maple","status":"Alive","latitude":"40.83390675","longitude":"-73.92161513"}
+,{"tree_dbh":"5","spc_common":"red maple","status":"Alive","latitude":"40.83398294","longitude":"-73.92183708"}
+,{"tree_dbh":"5","spc_common":"red maple","status":"Alive","latitude":"40.83386131","longitude":"-73.92148275"}
+,{"tree_dbh":"4","spc_common":"Callery pear","status":"Alive","latitude":"40.82709519","longitude":"-73.92228946"}
+,{"tree_dbh":"8","spc_common":"Callery pear","status":"Alive","latitude":"40.82730685","longitude":"-73.92217188"}
+,{"tree_dbh":"7","spc_common":"Callery pear","status":"Alive","latitude":"40.82726411","longitude":"-73.92219562"}
+,{"tree_dbh":"10","spc_common":"American elm","status":"Alive","latitude":"40.82957149","longitude":"-73.92276457"}
+,{"tree_dbh":"8","spc_common":"American elm","status":"Alive","latitude":"40.82980183","longitude":"-73.92262923"}
+,{"tree_dbh":"6","spc_common":"Chinese elm","status":"Alive","latitude":"40.83357152","longitude":"-73.92062781"}
+,{"tree_dbh":"9","spc_common":"American elm","status":"Alive","latitude":"40.82938501","longitude":"-73.92287414"}
+,{"tree_dbh":"9","spc_common":"American elm","status":"Alive","latitude":"40.82987953","longitude":"-73.92258357"}
+,{"tree_dbh":"8","spc_common":"Chinese elm","status":"Alive","latitude":"40.83359409","longitude":"-73.92069448"}
+,{"tree_dbh":"10","spc_common":"American elm","status":"Alive","latitude":"40.82897621","longitude":"-73.92311433"}
+,{"tree_dbh":"0","status":"Stump","latitude":"40.83010495","longitude":"-73.92333313"}
+,{"tree_dbh":"6","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82815121","longitude":"-73.92447849"}
+,{"tree_dbh":"0","status":"Stump","latitude":"40.8299675","longitude":"-73.92253188"}
+,{"tree_dbh":"6","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82774026","longitude":"-73.9247194"}
+,{"tree_dbh":"0","status":"Stump","latitude":"40.82972789","longitude":"-73.92267267"}
+,{"tree_dbh":"10","spc_common":"Sophora","status":"Alive","latitude":"40.82725028","longitude":"-73.92099997"}
+,{"tree_dbh":"0","status":"Stump","latitude":"40.82795589","longitude":"-73.92459299"}
+,{"tree_dbh":"3","spc_common":"Sophora","status":"Alive","latitude":"40.82808226","longitude":"-73.92451891"}
+,{"tree_dbh":"5","spc_common":"Callery pear","status":"Alive","latitude":"40.82739704","longitude":"-73.92143842"}
+,{"tree_dbh":"5","spc_common":"Callery pear","status":"Alive","latitude":"40.82750594","longitude":"-73.92176379"}
+,{"tree_dbh":"4","spc_common":"Callery pear","status":"Alive","latitude":"40.82734413","longitude":"-73.92128037"}
+,{"tree_dbh":"8","spc_common":"Sophora","status":"Alive","latitude":"40.82867945","longitude":"-73.92328869"}
+,{"tree_dbh":"4","spc_common":"Sophora","status":"Alive","latitude":"40.82722618","longitude":"-73.92221669"}
+,{"tree_dbh":"7","spc_common":"Sophora","status":"Alive","latitude":"40.82728171","longitude":"-73.92109388"}
+,{"tree_dbh":"20","spc_common":"London planetree","status":"Alive","latitude":"40.82907844","longitude":"-73.92393492"}
+,{"tree_dbh":"5","spc_common":"Sophora","status":"Alive","latitude":"40.82879801","longitude":"-73.92321903"}
+,{"tree_dbh":"4","spc_common":"Sophora","status":"Alive","latitude":"40.82687175","longitude":"-73.9221726"}
+,{"tree_dbh":"7","spc_common":"Callery pear","status":"Alive","latitude":"40.82754822","longitude":"-73.9218901"}
+,{"tree_dbh":"3","spc_common":"Sophora","status":"Alive","latitude":"40.82782024","longitude":"-73.92467251"}
+,{"tree_dbh":"3","status":"Dead","latitude":"40.82985572","longitude":"-73.92347925"}
+,{"tree_dbh":"4","spc_common":"pin oak","status":"Alive","latitude":"40.82737259","longitude":"-73.92051833"}
+,{"tree_dbh":"3","spc_common":"Sophora","status":"Alive","latitude":"40.82801231","longitude":"-73.92455992"}
+,{"tree_dbh":"6","spc_common":"pin oak","status":"Alive","latitude":"40.83377078","longitude":"-73.92090989"}
+,{"tree_dbh":"5","spc_common":"pin oak","status":"Alive","latitude":"40.83373363","longitude":"-73.92079955"}
+,{"tree_dbh":"27","spc_common":"London planetree","status":"Alive","latitude":"40.8339263","longitude":"-73.92455684"}
+,{"tree_dbh":"7","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83393421","longitude":"-73.92139643"}
+,{"tree_dbh":"8","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83396142","longitude":"-73.9214762"}
+,{"tree_dbh":"28","spc_common":"London planetree","status":"Alive","latitude":"40.83316919","longitude":"-73.92495855"}
+,{"tree_dbh":"5","spc_common":"London planetree","status":"Alive","latitude":"40.83364168","longitude":"-73.92470785"}
+,{"tree_dbh":"30","spc_common":"London planetree","status":"Alive","latitude":"40.83300474","longitude":"-73.92504581"}
+,{"tree_dbh":"6","spc_common":"London planetree","status":"Alive","latitude":"40.83372926","longitude":"-73.92466139"}
+,{"tree_dbh":"33","spc_common":"London planetree","status":"Alive","latitude":"40.83308671","longitude":"-73.92500232"}
+,{"tree_dbh":"4","spc_common":"eastern redbud","status":"Alive","latitude":"40.82782895","longitude":"-73.92522743"}
+,{"tree_dbh":"21","spc_common":"London planetree","status":"Alive","latitude":"40.83383822","longitude":"-73.92460357"}
+,{"tree_dbh":"11","spc_common":"London planetree","status":"Alive","latitude":"40.83347977","longitude":"-73.92479376"}
+,{"tree_dbh":"27","spc_common":"London planetree","status":"Alive","latitude":"40.83333874","longitude":"-73.92486859"}
+,{"tree_dbh":"27","spc_common":"London planetree","status":"Alive","latitude":"40.83356735","longitude":"-73.9247473"}
+,{"tree_dbh":"29","spc_common":"London planetree","status":"Alive","latitude":"40.83325575","longitude":"-73.92491263"}
+,{"tree_dbh":"29","spc_common":"London planetree","status":"Alive","latitude":"40.8329276","longitude":"-73.92508674"}
+,{"tree_dbh":"29","spc_common":"London planetree","status":"Alive","latitude":"40.83284919","longitude":"-73.92512834"}
+,{"tree_dbh":"3","status":"Dead","latitude":"40.83173209","longitude":"-73.92300347"}
+,{"tree_dbh":"7","spc_common":"ginkgo","status":"Alive","latitude":"40.83277994","longitude":"-73.92516508"}
+,{"tree_dbh":"3","spc_common":"eastern redbud","status":"Alive","latitude":"40.82760149","longitude":"-73.92449848"}
+,{"tree_dbh":"3","status":"Dead","latitude":"40.83208932","longitude":"-73.92367113"}
+,{"tree_dbh":"7","spc_common":"pin oak","status":"Alive","latitude":"40.83083803","longitude":"-73.92406864"}
+,{"tree_dbh":"15","spc_common":"pin oak","status":"Alive","latitude":"40.83101662","longitude":"-73.92396417"}
+,{"tree_dbh":"17","spc_common":"pin oak","status":"Alive","latitude":"40.83125239","longitude":"-73.92382625"}
+,{"tree_dbh":"17","spc_common":"pin oak","status":"Alive","latitude":"40.83165171","longitude":"-73.92359266"}
+,{"tree_dbh":"13","spc_common":"pin oak","status":"Alive","latitude":"40.83106929","longitude":"-73.92393336"}
+,{"tree_dbh":"15","spc_common":"pin oak","status":"Alive","latitude":"40.83184836","longitude":"-73.92347762"}
+,{"tree_dbh":"15","spc_common":"pin oak","status":"Alive","latitude":"40.83158649","longitude":"-73.92363081"}
+,{"tree_dbh":"17","spc_common":"pin oak","status":"Alive","latitude":"40.83176859","longitude":"-73.92352429"}
+,{"tree_dbh":"3","spc_common":"American elm","status":"Alive","latitude":"40.83145338","longitude":"-73.92219611"}
+,{"tree_dbh":"30","spc_common":"London planetree","status":"Alive","latitude":"40.83176752","longitude":"-73.92596645"}
+,{"tree_dbh":"6","spc_common":"American elm","status":"Alive","latitude":"40.8316854","longitude":"-73.92604263"}
+,{"tree_dbh":"7","spc_common":"American elm","status":"Alive","latitude":"40.83201881","longitude":"-73.92573332"}
+,{"tree_dbh":"28","spc_common":"London planetree","status":"Alive","latitude":"40.83184874","longitude":"-73.9258911"}
+,{"tree_dbh":"3","spc_common":"American elm","status":"Alive","latitude":"40.83152218","longitude":"-73.92238943"}
+,{"tree_dbh":"10","spc_common":"American elm","status":"Alive","latitude":"40.83152431","longitude":"-73.92619208"}
+,{"tree_dbh":"6","spc_common":"American elm","status":"Alive","latitude":"40.83192772","longitude":"-73.92581783"}
+,{"tree_dbh":"5","spc_common":"pin oak","status":"Alive","latitude":"40.83076228","longitude":"-73.92411295"}
+,{"tree_dbh":"15","spc_common":"pin oak","status":"Alive","latitude":"40.83142897","longitude":"-73.92372295"}
+,{"tree_dbh":"24","spc_common":"pin oak","status":"Alive","latitude":"40.83119621","longitude":"-73.92385912"}
+,{"tree_dbh":"5","spc_common":"pin oak","status":"Alive","latitude":"40.83106395","longitude":"-73.92277045"}
+,{"tree_dbh":"2","status":"Dead","latitude":"40.83146292","longitude":"-73.92253583"}
+,{"tree_dbh":"16","spc_common":"Turkish hazelnut","status":"Alive","latitude":"40.82658885","longitude":"-73.92128341"}
+,{"tree_dbh":"4","spc_common":"American elm","status":"Alive","latitude":"40.83149189","longitude":"-73.92230837"}
+,{"tree_dbh":"3","spc_common":"European hornbeam","status":"Alive","latitude":"40.83230658","longitude":"-73.92756445"}
+,{"tree_dbh":"12","status":"Dead","latitude":"40.83238557","longitude":"-73.92485842"}
+,{"tree_dbh":"3","spc_common":"European hornbeam","status":"Alive","latitude":"40.83234694","longitude":"-73.92765477"}
+,{"tree_dbh":"8","spc_common":"honeylocust","status":"Alive","latitude":"40.83053166","longitude":"-73.92308347"}
+,{"tree_dbh":"6","spc_common":"honeylocust","status":"Alive","latitude":"40.83078277","longitude":"-73.92293581"}
+,{"tree_dbh":"7","spc_common":"honeylocust","status":"Alive","latitude":"40.83047152","longitude":"-73.92311884"}
+,{"tree_dbh":"4","spc_common":"Amur maple","status":"Alive","latitude":"40.83022163","longitude":"-73.9227666"}
+,{"tree_dbh":"7","spc_common":"honeylocust","status":"Alive","latitude":"40.83111608","longitude":"-73.9227398"}
+,{"tree_dbh":"7","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83135569","longitude":"-73.92140126"}
+,{"tree_dbh":"9","spc_common":"American elm","status":"Alive","latitude":"40.83032781","longitude":"-73.92308171"}
+,{"tree_dbh":"0","status":"Stump","latitude":"40.83019158","longitude":"-73.92267741"}
+,{"tree_dbh":"4","status":"Dead","latitude":"40.83015196","longitude":"-73.92255982"}
+,{"tree_dbh":"7","spc_common":"honeylocust","status":"Alive","latitude":"40.83073967","longitude":"-73.92296115"}
+,{"tree_dbh":"6","spc_common":"honeylocust","status":"Alive","latitude":"40.83084041","longitude":"-73.92290191"}
+,{"tree_dbh":"9","spc_common":"American elm","status":"Alive","latitude":"40.83029086","longitude":"-73.92297205"}
+,{"tree_dbh":"7","spc_common":"honeylocust","status":"Alive","latitude":"40.83095369","longitude":"-73.9228353"}
+,{"tree_dbh":"9","spc_common":"honeylocust","status":"Alive","latitude":"40.83059833","longitude":"-73.92304427"}
+,{"tree_dbh":"8","spc_common":"honeylocust","status":"Alive","latitude":"40.83120329","longitude":"-73.92268851"}
+,{"tree_dbh":"31","spc_common":"London planetree","status":"Alive","latitude":"40.83145161","longitude":"-73.92625951"}
+,{"tree_dbh":"11","spc_common":"American elm","status":"Alive","latitude":"40.8302617","longitude":"-73.92288551"}
+,{"tree_dbh":"0","status":"Stump","latitude":"40.83154371","longitude":"-73.92211407"}
+,{"tree_dbh":"7","spc_common":"London planetree","status":"Alive","latitude":"40.83180756","longitude":"-73.92286288"}
+,{"tree_dbh":"6","spc_common":"London planetree","status":"Alive","latitude":"40.83184262","longitude":"-73.92296335"}
+,{"tree_dbh":"16","spc_common":"pin oak","status":"Alive","latitude":"40.83133878","longitude":"-73.92606081"}
+,{"tree_dbh":"8","spc_common":"American elm","status":"Alive","latitude":"40.83245907","longitude":"-73.92507244"}
+,{"tree_dbh":"20","spc_common":"pin oak","status":"Alive","latitude":"40.83131468","longitude":"-73.9259895"}
+,{"tree_dbh":"6","spc_common":"pin oak","status":"Alive","latitude":"40.83136823","longitude":"-73.92614797"}
+,{"tree_dbh":"20","spc_common":"pin oak","status":"Alive","latitude":"40.83118121","longitude":"-73.92090393"}
+,{"tree_dbh":"24","spc_common":"pin oak","status":"Alive","latitude":"40.8316395","longitude":"-73.92273656"}
+,{"tree_dbh":"11","spc_common":"pin oak","status":"Alive","latitude":"40.83092616","longitude":"-73.92483992"}
+,{"tree_dbh":"7","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83132738","longitude":"-73.92132056"}
+,{"tree_dbh":"11","spc_common":"pin oak","status":"Alive","latitude":"40.83089403","longitude":"-73.92474484"}
+,{"tree_dbh":"8","spc_common":"pin oak","status":"Alive","latitude":"40.83080945","longitude":"-73.92449458"}
+,{"tree_dbh":"7","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.8312574","longitude":"-73.9211211"}
+,{"tree_dbh":"6","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83121643","longitude":"-73.92100432"}
+,{"tree_dbh":"18","status":"Dead","latitude":"40.83126402","longitude":"-73.92583961"}
+,{"tree_dbh":"18","spc_common":"pin oak","status":"Alive","latitude":"40.83121292","longitude":"-73.9256884"}
+,{"tree_dbh":"6","spc_common":"American linden","status":"Alive","latitude":"40.83201419","longitude":"-73.92381645"}
+,{"tree_dbh":"3","spc_common":"pin oak","status":"Alive","latitude":"40.83078357","longitude":"-73.92441799"}
+,{"tree_dbh":"26","spc_common":"pin oak","status":"Alive","latitude":"40.83118993","longitude":"-73.92562039"}
+,{"tree_dbh":"21","spc_common":"pin oak","status":"Alive","latitude":"40.83108706","longitude":"-73.92531599"}
+,{"tree_dbh":"7","spc_common":"London planetree","status":"Alive","latitude":"40.83187723","longitude":"-73.92306252"}
+,{"tree_dbh":"21","spc_common":"pin oak","status":"Alive","latitude":"40.83116316","longitude":"-73.92554116"}
+,{"tree_dbh":"13","spc_common":"pin oak","status":"Alive","latitude":"40.83111161","longitude":"-73.92538863"}
+,{"tree_dbh":"29","spc_common":"London planetree","status":"Alive","latitude":"40.83238497","longitude":"-73.92539363"}
+,{"tree_dbh":"17","spc_common":"Callery pear","status":"Alive","latitude":"40.83231229","longitude":"-73.92464506"}
+,{"tree_dbh":"12","spc_common":"pin oak","status":"Alive","latitude":"40.83106251","longitude":"-73.92524336"}
+,{"tree_dbh":"5","spc_common":"purple-leaf plum","status":"Alive","latitude":"40.83157647","longitude":"-73.92221353"}
+,{"tree_dbh":"11","status":"Dead","latitude":"40.8324737","longitude":"-73.9247741"}
+,{"tree_dbh":"6","status":"Dead","latitude":"40.83205846","longitude":"-73.92115678"}
+,{"tree_dbh":"5","spc_common":"American linden","status":"Alive","latitude":"40.83113839","longitude":"-73.92546786"}
+,{"tree_dbh":"5","spc_common":"London planetree","status":"Alive","latitude":"40.83207625","longitude":"-73.92568004"}
+,{"tree_dbh":"29","spc_common":"London planetree","status":"Alive","latitude":"40.83230779","longitude":"-73.92546523"}
+,{"tree_dbh":"31","spc_common":"London planetree","status":"Alive","latitude":"40.83222612","longitude":"-73.925541"}
+,{"tree_dbh":"36","spc_common":"London planetree","status":"Alive","latitude":"40.83246215","longitude":"-73.92532202"}
+,{"tree_dbh":"5","spc_common":"Callery pear","status":"Alive","latitude":"40.83120091","longitude":"-73.92283885"}
+,{"tree_dbh":"30","spc_common":"London planetree","status":"Alive","latitude":"40.83214894","longitude":"-73.9256126"}
+,{"tree_dbh":"20","spc_common":"Sophora","status":"Alive","latitude":"40.83067952","longitude":"-73.92404114"}
+,{"tree_dbh":"5","spc_common":"American linden","status":"Alive","latitude":"40.8324341","longitude":"-73.92466046"}
+,{"tree_dbh":"4","status":"Dead","latitude":"40.83218204","longitude":"-73.92393717"}
+,{"tree_dbh":"8","spc_common":"honeylocust","status":"Alive","latitude":"40.83109828","longitude":"-73.92289961"}
+,{"tree_dbh":"9","spc_common":"honeylocust","status":"Alive","latitude":"40.83089902","longitude":"-73.92301756"}
+,{"tree_dbh":"11","spc_common":"honeylocust","status":"Alive","latitude":"40.8307388","longitude":"-73.9231124"}
+,{"tree_dbh":"6","spc_common":"honeylocust","status":"Alive","latitude":"40.83059161","longitude":"-73.92319954"}
+,{"tree_dbh":"7","spc_common":"American linden","status":"Alive","latitude":"40.83171402","longitude":"-73.92136074"}
+,{"tree_dbh":"5","spc_common":"ginkgo","status":"Alive","latitude":"40.83181464","longitude":"-73.92130115"}
+,{"tree_dbh":"9","spc_common":"honeylocust","status":"Alive","latitude":"40.83080039","longitude":"-73.92307595"}
+,{"tree_dbh":"6","spc_common":"honeylocust","status":"Alive","latitude":"40.83214052","longitude":"-73.92125563"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.83217911","longitude":"-73.92123292"}
+,{"tree_dbh":"5","spc_common":"ginkgo","status":"Alive","latitude":"40.83191678","longitude":"-73.92124067"}
+,{"tree_dbh":"4","spc_common":"swamp white oak","status":"Alive","latitude":"40.83021367","longitude":"-73.92307234"}
+,{"tree_dbh":"8","spc_common":"London planetree","status":"Alive","latitude":"40.83184483","longitude":"-73.92142961"}
+,{"tree_dbh":"16","spc_common":"Amur maple","status":"Alive","latitude":"40.83161289","longitude":"-73.92142062"}
+,{"tree_dbh":"2","status":"Dead","latitude":"40.83223087","longitude":"-73.9244137"}
+,{"tree_dbh":"6","spc_common":"ash","status":"Alive","latitude":"40.83309575","longitude":"-73.92069357"}
+,{"tree_dbh":"5","status":"Dead","latitude":"40.83232124","longitude":"-73.92433662"}
+,{"tree_dbh":"5","spc_common":"ash","status":"Alive","latitude":"40.8329018","longitude":"-73.9208077"}
+,{"tree_dbh":"7","spc_common":"northern red oak","status":"Alive","latitude":"40.83213605","longitude":"-73.92111083"}
+,{"tree_dbh":"5","spc_common":"Callery pear","status":"Alive","latitude":"40.83127001","longitude":"-73.92279795"}
+,{"tree_dbh":"0","status":"Stump","latitude":"40.83236504","longitude":"-73.92112352"}
+,{"tree_dbh":"6","spc_common":"northern red oak","status":"Alive","latitude":"40.83218962","longitude":"-73.92107911"}
+,{"tree_dbh":"18","spc_common":"northern red oak","status":"Alive","latitude":"40.83259458","longitude":"-73.92098846"}
+,{"tree_dbh":"5","spc_common":"London planetree","status":"Alive","latitude":"40.83176665","longitude":"-73.92147561"}
+,{"tree_dbh":"5","spc_common":"ash","status":"Alive","latitude":"40.83285419","longitude":"-73.92083571"}
+,{"tree_dbh":"9","spc_common":"ash","status":"Alive","latitude":"40.83322204","longitude":"-73.92061926"}
+,{"tree_dbh":"4","spc_common":"American elm","status":"Alive","latitude":"40.83243571","longitude":"-73.92108194"}
+,{"tree_dbh":"4","spc_common":"katsura tree","status":"Alive","latitude":"40.83294239","longitude":"-73.92078381"}
+,{"tree_dbh":"6","spc_common":"ash","status":"Alive","latitude":"40.83269983","longitude":"-73.92092654"}
+,{"tree_dbh":"4","spc_common":"honeylocust","status":"Alive","latitude":"40.83225529","longitude":"-73.9211881"}
+,{"tree_dbh":"6","spc_common":"London planetree","status":"Alive","latitude":"40.83173032","longitude":"-73.92264156"}
+,{"tree_dbh":"16","spc_common":"Sophora","status":"Alive","latitude":"40.83175717","longitude":"-73.92307578"}
+,{"tree_dbh":"4","status":"Dead","latitude":"40.83216863","longitude":"-73.92070056"}
+,{"tree_dbh":"10","spc_common":"pin oak","status":"Alive","latitude":"40.83086502","longitude":"-73.924659"}
+,{"tree_dbh":"4","spc_common":"Amur maple","status":"Alive","latitude":"40.83224522","longitude":"-73.92093018"}
+,{"tree_dbh":"15","spc_common":"pin oak","status":"Alive","latitude":"40.83254346","longitude":"-73.92101854"}
+,{"tree_dbh":"8","spc_common":"pin oak","status":"Alive","latitude":"40.83331626","longitude":"-73.92056382"}
+,{"tree_dbh":"7","spc_common":"American linden","status":"Alive","latitude":"40.83212426","longitude":"-73.92056756"}
+,{"tree_dbh":"5","spc_common":"American linden","status":"Alive","latitude":"40.83222271","longitude":"-73.92086268"}
+,{"tree_dbh":"8","spc_common":"pin oak","status":"Alive","latitude":"40.83338442","longitude":"-73.92052372"}
+,{"tree_dbh":"15","spc_common":"Sophora","status":"Alive","latitude":"40.83177633","longitude":"-73.92313101"}
+,{"tree_dbh":"3","spc_common":"tulip-poplar","status":"Alive","latitude":"40.83241814","longitude":"-73.92495325"}
+,{"tree_dbh":"6","spc_common":"American elm","status":"Alive","latitude":"40.83227546","longitude":"-73.92420524"}
+,{"tree_dbh":"7","spc_common":"American elm","status":"Alive","latitude":"40.83254123","longitude":"-73.92496789"}
+,{"tree_dbh":"17","spc_common":"littleleaf linden","status":"Alive","latitude":"40.83223561","longitude":"-73.92409088"}
+,{"tree_dbh":"6","spc_common":"London planetree","status":"Alive","latitude":"40.83193855","longitude":"-73.92137447"}
+,{"tree_dbh":"17","spc_common":"ginkgo","status":"Alive","latitude":"40.8305317","longitude":"-73.92369616"}
+,{"tree_dbh":"3","spc_common":"American elm","status":"Alive","latitude":"40.83230377","longitude":"-73.92075742"}
+,{"tree_dbh":"3","spc_common":"American elm","status":"Alive","latitude":"40.83227837","longitude":"-73.92068292"}
+,{"tree_dbh":"3","spc_common":"American elm","status":"Alive","latitude":"40.83233255","longitude":"-73.92084182"}
+,{"tree_dbh":"19","spc_common":"Sophora","status":"Alive","latitude":"40.83058238","longitude":"-73.92384286"}
+,{"tree_dbh":"8","spc_common":"Sophora","status":"Alive","latitude":"40.83049807","longitude":"-73.9235988"}
+,{"tree_dbh":"9","spc_common":"Sophora","status":"Alive","latitude":"40.8304545","longitude":"-73.92346422"}
+,{"tree_dbh":"2","spc_common":"two-winged silverbell","status":"Alive","latitude":"40.83205113","longitude":"-73.92391656"}
+,{"tree_dbh":"5","spc_common":"black pine","status":"Alive","latitude":"40.8336472","longitude":"-73.93076593"}
+,{"tree_dbh":"8","status":"Dead","latitude":"40.8312659","longitude":"-73.93135956"}
+,{"tree_dbh":"16","spc_common":"ash","status":"Alive","latitude":"40.83037908","longitude":"-73.92358163"}
+,{"tree_dbh":"11","spc_common":"Sophora","status":"Alive","latitude":"40.83052238","longitude":"-73.92398964"}
+,{"tree_dbh":"0","status":"Stump","latitude":"40.83350388","longitude":"-73.93009592"}
+,{"tree_dbh":"0","status":"Stump","latitude":"40.82571089","longitude":"-73.92463962"}
+,{"tree_dbh":"9","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83207204","longitude":"-73.93078507"}
+,{"tree_dbh":"8","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83187174","longitude":"-73.93070374"}
+,{"tree_dbh":"4","status":"Dead","latitude":"40.83148676","longitude":"-73.9298081"}
+,{"tree_dbh":"3","status":"Dead","latitude":"40.83248061","longitude":"-73.93055408"}
+,{"tree_dbh":"6","spc_common":"pin oak","status":"Alive","latitude":"40.83072497","longitude":"-73.93136326"}
+,{"tree_dbh":"9","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83230659","longitude":"-73.93065246"}
+,{"tree_dbh":"4","status":"Dead","latitude":"40.8317714","longitude":"-73.93038845"}
+,{"tree_dbh":"0","status":"Stump","latitude":"40.82553849","longitude":"-73.92414267"}
+,{"tree_dbh":"8","spc_common":"pin oak","status":"Alive","latitude":"40.83383281","longitude":"-73.92991019"}
+,{"tree_dbh":"12","spc_common":"cherry","status":"Alive","latitude":"40.83138597","longitude":"-73.93129177"}
+,{"tree_dbh":"5","spc_common":"crab apple","status":"Alive","latitude":"40.83137014","longitude":"-73.92944068"}
+,{"tree_dbh":"4","spc_common":"American linden","status":"Alive","latitude":"40.82563267","longitude":"-73.92441415"}
+,{"tree_dbh":"5","spc_common":"crab apple","status":"Alive","latitude":"40.83134009","longitude":"-73.92934599"}
+,{"tree_dbh":"0","status":"Stump","latitude":"40.82557999","longitude":"-73.9242623"}
+,{"tree_dbh":"5","spc_common":"American linden","status":"Alive","latitude":"40.83151385","longitude":"-73.92989346"}
+,{"tree_dbh":"9","spc_common":"honeylocust","status":"Alive","latitude":"40.83180152","longitude":"-73.9304831"}
+,{"tree_dbh":"13","spc_common":"honeylocust","status":"Alive","latitude":"40.83149106","longitude":"-73.93027588"}
+,{"tree_dbh":"5","spc_common":"American linden","status":"Alive","latitude":"40.83356543","longitude":"-73.93006117"}
+,{"tree_dbh":"12","spc_common":"honeylocust","status":"Alive","latitude":"40.83231793","longitude":"-73.92830664"}
+,{"tree_dbh":"10","spc_common":"honeylocust","status":"Alive","latitude":"40.83365518","longitude":"-73.92727408"}
+,{"tree_dbh":"19","spc_common":"American elm","status":"Alive","latitude":"40.82574236","longitude":"-73.92473033"}
+,{"tree_dbh":"4","spc_common":"ginkgo","status":"Alive","latitude":"40.83092495","longitude":"-73.93059897"}
+,{"tree_dbh":"6","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83215577","longitude":"-73.93073773"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.83373705","longitude":"-73.92721072"}
+,{"tree_dbh":"14","spc_common":"honeylocust","status":"Alive","latitude":"40.83316961","longitude":"-73.92764979"}
+,{"tree_dbh":"4","spc_common":"cherry","status":"Alive","latitude":"40.83236512","longitude":"-73.92826973"}
+,{"tree_dbh":"2","spc_common":"cherry","status":"Alive","latitude":"40.83305436","longitude":"-73.93034974"}
+,{"tree_dbh":"4","spc_common":"crab apple","status":"Alive","latitude":"40.83141078","longitude":"-73.92956871"}
+,{"tree_dbh":"4","spc_common":"crab apple","status":"Alive","latitude":"40.83144782","longitude":"-73.92968541"}
+,{"tree_dbh":"4","status":"Dead","latitude":"40.83254296","longitude":"-73.92950702"}
+,{"tree_dbh":"6","spc_common":"honeylocust","status":"Alive","latitude":"40.83351367","longitude":"-73.92738357"}
+,{"tree_dbh":"9","spc_common":"honeylocust","status":"Alive","latitude":"40.83340435","longitude":"-73.92746816"}
+,{"tree_dbh":"9","spc_common":"honeylocust","status":"Alive","latitude":"40.83356952","longitude":"-73.92734036"}
+,{"tree_dbh":"6","spc_common":"cherry","status":"Alive","latitude":"40.83348212","longitude":"-73.92818122"}
+,{"tree_dbh":"5","spc_common":"cherry","status":"Alive","latitude":"40.83243584","longitude":"-73.93069898"}
+,{"tree_dbh":"5","spc_common":"cherry","status":"Alive","latitude":"40.83289292","longitude":"-73.9304409"}
+,{"tree_dbh":"10","spc_common":"cherry","status":"Alive","latitude":"40.83132644","longitude":"-73.93132538"}
+,{"tree_dbh":"5","spc_common":"cherry","status":"Alive","latitude":"40.83120031","longitude":"-73.9313966"}
+,{"tree_dbh":"12","spc_common":"honeylocust","status":"Alive","latitude":"40.83217822","longitude":"-73.92841588"}
+,{"tree_dbh":"6","spc_common":"honeylocust","status":"Alive","latitude":"40.83360691","longitude":"-73.92731143"}
+,{"tree_dbh":"8","spc_common":"honeylocust","status":"Alive","latitude":"40.83299924","longitude":"-73.92778162"}
+,{"tree_dbh":"10","spc_common":"honeylocust","status":"Alive","latitude":"40.83308774","longitude":"-73.92771314"}
+,{"tree_dbh":"5","spc_common":"pin oak","status":"Alive","latitude":"40.83069181","longitude":"-73.93126324"}
+,{"tree_dbh":"8","spc_common":"Sophora","status":"Alive","latitude":"40.82836084","longitude":"-73.92158441"}
+,{"tree_dbh":"10","spc_common":"pin oak","status":"Alive","latitude":"40.83378034","longitude":"-73.92993981"}
+,{"tree_dbh":"8","spc_common":"pin oak","status":"Alive","latitude":"40.83372838","longitude":"-73.92996915"}
+,{"tree_dbh":"7","spc_common":"Callery pear","status":"Alive","latitude":"40.82567372","longitude":"-73.92453247"}
+,{"tree_dbh":"10","spc_common":"Sophora","status":"Alive","latitude":"40.83042884","longitude":"-73.92372332"}
+,{"tree_dbh":"2","spc_common":"American hophornbeam","status":"Alive","latitude":"40.83277064","longitude":"-73.9303901"}
+,{"tree_dbh":"6","spc_common":"northern red oak","status":"Alive","latitude":"40.83259895","longitude":"-73.9282278"}
+,{"tree_dbh":"6","spc_common":"katsura tree","status":"Alive","latitude":"40.83330591","longitude":"-73.92754433"}
+,{"tree_dbh":"18","spc_common":"honeylocust","status":"Alive","latitude":"40.83247115","longitude":"-73.92971917"}
+,{"tree_dbh":"5","spc_common":"sycamore maple","status":"Alive","latitude":"40.83074716","longitude":"-73.93070043"}
+,{"tree_dbh":"6","spc_common":"honeylocust","status":"Alive","latitude":"40.82786524","longitude":"-73.92186175"}
+,{"tree_dbh":"13","spc_common":"honeylocust","status":"Alive","latitude":"40.8321802","longitude":"-73.92988401"}
+,{"tree_dbh":"5","spc_common":"European hornbeam","status":"Alive","latitude":"40.83374299","longitude":"-73.92667298"}
+,{"tree_dbh":"4","spc_common":"purple-leaf plum","status":"Alive","latitude":"40.83194143","longitude":"-73.93097814"}
+,{"tree_dbh":"13","spc_common":"honeylocust","status":"Alive","latitude":"40.83199035","longitude":"-73.92999157"}
+,{"tree_dbh":"5","status":"Dead","latitude":"40.83108159","longitude":"-73.93050957"}
+,{"tree_dbh":"0","status":"Stump","latitude":"40.83204635","longitude":"-73.92889374"}
+,{"tree_dbh":"11","spc_common":"American linden","status":"Alive","latitude":"40.83013487","longitude":"-73.92912562"}
+,{"tree_dbh":"5","spc_common":"cherry","status":"Alive","latitude":"40.83256737","longitude":"-73.93050503"}
+,{"tree_dbh":"12","spc_common":"Callery pear","status":"Alive","latitude":"40.82775662","longitude":"-73.92192254"}
+,{"tree_dbh":"9","spc_common":"Sophora","status":"Alive","latitude":"40.82807894","longitude":"-73.92174216"}
+,{"tree_dbh":"3","spc_common":"serviceberry","status":"Alive","latitude":"40.83220446","longitude":"-73.92433981"}
+,{"tree_dbh":"7","spc_common":"cherry","status":"Alive","latitude":"40.83313054","longitude":"-73.93030672"}
+,{"tree_dbh":"8","spc_common":"common hackberry","status":"Alive","latitude":"40.82761336","longitude":"-73.92176583"}
+,{"tree_dbh":"5","spc_common":"London planetree","status":"Alive","latitude":"40.83365068","longitude":"-73.92820952"}
+,{"tree_dbh":"8","spc_common":"common hackberry","status":"Alive","latitude":"40.82839387","longitude":"-73.92133416"}
+,{"tree_dbh":"4","spc_common":"ginkgo","status":"Alive","latitude":"40.82616262","longitude":"-73.92579121"}
+,{"tree_dbh":"12","spc_common":"honeylocust","status":"Alive","latitude":"40.82584614","longitude":"-73.92920139"}
+,{"tree_dbh":"7","spc_common":"American linden","status":"Alive","latitude":"40.83012283","longitude":"-73.92922556"}
+,{"tree_dbh":"11","spc_common":"ginkgo","status":"Alive","latitude":"40.82580945","longitude":"-73.9260013"}
+,{"tree_dbh":"3","spc_common":"ginkgo","status":"Alive","latitude":"40.82601505","longitude":"-73.925879"}
+,{"tree_dbh":"6","spc_common":"cherry","status":"Alive","latitude":"40.83262739","longitude":"-73.93047109"}
+,{"tree_dbh":"4","spc_common":"American elm","status":"Alive","latitude":"40.8263897","longitude":"-73.92174417"}
+,{"tree_dbh":"5","spc_common":"cherry","status":"Alive","latitude":"40.83085284","longitude":"-73.92825702"}
+,{"tree_dbh":"5","spc_common":"cherry","status":"Alive","latitude":"40.83269801","longitude":"-73.93043117"}
+,{"tree_dbh":"6","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83183949","longitude":"-73.93060242"}
+,{"tree_dbh":"2","status":"Dead","latitude":"40.82749012","longitude":"-73.92570835"}
+,{"tree_dbh":"7","spc_common":"cherry","status":"Alive","latitude":"40.83280218","longitude":"-73.92921657"}
+,{"tree_dbh":"7","status":"Dead","latitude":"40.8310979","longitude":"-73.93145442"}
+,{"tree_dbh":"4","spc_common":"American elm","status":"Alive","latitude":"40.82649872","longitude":"-73.92208756"}
+,{"tree_dbh":"3","spc_common":"American elm","status":"Alive","latitude":"40.8263027","longitude":"-73.92147013"}
+,{"tree_dbh":"3","spc_common":"Chinese elm","status":"Alive","latitude":"40.82646887","longitude":"-73.92199354"}
+,{"tree_dbh":"4","status":"Dead","latitude":"40.83239637","longitude":"-73.9306017"}
+,{"tree_dbh":"5","spc_common":"American elm","status":"Alive","latitude":"40.82742906","longitude":"-73.92121886"}
+,{"tree_dbh":"6","spc_common":"littleleaf linden","status":"Alive","latitude":"40.83201709","longitude":"-73.92880725"}
+,{"tree_dbh":"11","spc_common":"ginkgo","status":"Alive","latitude":"40.82587248","longitude":"-73.9259638"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.82813754","longitude":"-73.92170937"}
+,{"tree_dbh":"20","spc_common":"honeylocust","status":"Alive","latitude":"40.83260499","longitude":"-73.92968072"}
+,{"tree_dbh":"12","spc_common":"honeylocust","status":"Alive","latitude":"40.8279779","longitude":"-73.92179871"}
+,{"tree_dbh":"4","spc_common":"ginkgo","status":"Alive","latitude":"40.82595302","longitude":"-73.9259159"}
+,{"tree_dbh":"6","spc_common":"honeylocust","status":"Alive","latitude":"40.83239278","longitude":"-73.9295915"}
+,{"tree_dbh":"6","spc_common":"crab apple","status":"Alive","latitude":"40.83209297","longitude":"-73.92993343"}
+,{"tree_dbh":"11","spc_common":"honeylocust","status":"Alive","latitude":"40.82824565","longitude":"-73.92164887"}
+,{"tree_dbh":"3","status":"Dead","latitude":"40.82632429","longitude":"-73.92153814"}
+,{"tree_dbh":"3","spc_common":"ginkgo","status":"Alive","latitude":"40.82560685","longitude":"-73.92612182"}
+,{"tree_dbh":"5","spc_common":"American linden","status":"Alive","latitude":"40.83015326","longitude":"-73.92897287"}
+,{"tree_dbh":"5","spc_common":"American linden","status":"Alive","latitude":"40.83017209","longitude":"-73.92881655"}
+,{"tree_dbh":"3","spc_common":"ginkgo","status":"Alive","latitude":"40.82568188","longitude":"-73.92607718"}
+,{"tree_dbh":"9","spc_common":"London planetree","status":"Alive","latitude":"40.83399906","longitude":"-73.92797149"}
+,{"tree_dbh":"4","spc_common":"London planetree","status":"Alive","latitude":"40.82554891","longitude":"-73.92320495"}
+,{"tree_dbh":"3","status":"Dead","latitude":"40.83124788","longitude":"-73.93024123"}
+,{"tree_dbh":"2","spc_common":"cherry","status":"Alive","latitude":"40.8320948","longitude":"-73.93089155"}
+,{"tree_dbh":"5","spc_common":"London planetree","status":"Alive","latitude":"40.83373595","longitude":"-73.92815126"}
+,{"tree_dbh":"4","spc_common":"London planetree","status":"Alive","latitude":"40.82574203","longitude":"-73.92309015"}
+,{"tree_dbh":"11","spc_common":"Sophora","status":"Alive","latitude":"40.83056247","longitude":"-73.92410378"}
+,{"tree_dbh":"11","spc_common":"Sophora","status":"Alive","latitude":"40.83047584","longitude":"-73.92385714"}
+,{"tree_dbh":"5","spc_common":"white oak","status":"Alive","latitude":"40.83112324","longitude":"-73.92908542"}
+,{"tree_dbh":"22","spc_common":"pin oak","status":"Alive","latitude":"40.83271643","longitude":"-73.92895122"}
+,{"tree_dbh":"8","spc_common":"pin oak","status":"Alive","latitude":"40.82565399","longitude":"-73.92194001"}
+,{"tree_dbh":"16","spc_common":"Sophora","status":"Alive","latitude":"40.83121606","longitude":"-73.93043282"}
+,{"tree_dbh":"12","spc_common":"Sophora","status":"Alive","latitude":"40.83034245","longitude":"-73.92347733"}
+,{"tree_dbh":"17","spc_common":"pin oak","status":"Alive","latitude":"40.83261198","longitude":"-73.92862801"}
+,{"tree_dbh":"14","spc_common":"honeylocust","status":"Alive","latitude":"40.82550832","longitude":"-73.9289873"}
+,{"tree_dbh":"13","spc_common":"honeylocust","status":"Alive","latitude":"40.82561961","longitude":"-73.92905782"}
+,{"tree_dbh":"12","spc_common":"honeylocust","status":"Alive","latitude":"40.82578283","longitude":"-73.92916127"}
+,{"tree_dbh":"14","spc_common":"honeylocust","status":"Alive","latitude":"40.82568242","longitude":"-73.92909763"}
+,{"tree_dbh":"13","spc_common":"honeylocust","status":"Alive","latitude":"40.82594605","longitude":"-73.92926471"}
+,{"tree_dbh":"9","spc_common":"honeylocust","status":"Alive","latitude":"40.83117723","longitude":"-73.92904377"}
+,{"tree_dbh":"20","spc_common":"honeylocust","status":"Alive","latitude":"40.8335417","longitude":"-73.92894423"}
+,{"tree_dbh":"3","spc_common":"Chinese elm","status":"Alive","latitude":"40.8265201","longitude":"-73.9221549"}
+,{"tree_dbh":"8","spc_common":"northern red oak","status":"Alive","latitude":"40.83268341","longitude":"-73.92847891"}
+,{"tree_dbh":"3","status":"Dead","latitude":"40.82641151","longitude":"-73.92181285"}
+,{"tree_dbh":"7","spc_common":"cherry","status":"Alive","latitude":"40.83272141","longitude":"-73.92940663"}
+,{"tree_dbh":"4","spc_common":"Chinese elm","status":"Alive","latitude":"40.82608358","longitude":"-73.92583823"}
+,{"tree_dbh":"4","spc_common":"maple","status":"Alive","latitude":"40.82870059","longitude":"-73.92474698"}
+,{"tree_dbh":"6","spc_common":"cherry","status":"Alive","latitude":"40.83277725","longitude":"-73.92913942"}
+,{"tree_dbh":"9","spc_common":"northern red oak","status":"Alive","latitude":"40.83271954","longitude":"-73.92799803"}
+,{"tree_dbh":"6","spc_common":"Chinese elm","status":"Alive","latitude":"40.83223196","longitude":"-73.92944236"}
+,{"tree_dbh":"16","spc_common":"pin oak","status":"Alive","latitude":"40.82597095","longitude":"-73.92286881"}
+,{"tree_dbh":"15","spc_common":"pin oak","status":"Alive","latitude":"40.83254622","longitude":"-73.9284245"}
+,{"tree_dbh":"5","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82573407","longitude":"-73.92217468"}
+,{"tree_dbh":"5","spc_common":"pin oak","status":"Alive","latitude":"40.82835201","longitude":"-73.92120289"}
+,{"tree_dbh":"15","spc_common":"pin oak","status":"Alive","latitude":"40.82569763","longitude":"-73.9220679"}
+,{"tree_dbh":"4","spc_common":"hedge maple","status":"Alive","latitude":"40.83282365","longitude":"-73.92791747"}
+,{"tree_dbh":"10","spc_common":"honeylocust","status":"Alive","latitude":"40.83020572","longitude":"-73.92994119"}
+,{"tree_dbh":"4","spc_common":"pin oak","status":"Alive","latitude":"40.83092906","longitude":"-73.92923523"}
+,{"tree_dbh":"5","spc_common":"pin oak","status":"Alive","latitude":"40.83022668","longitude":"-73.92977709"}
+,{"tree_dbh":"5","spc_common":"pin oak","status":"Alive","latitude":"40.83002993","longitude":"-73.93092864"}
+,{"tree_dbh":"11","spc_common":"pin oak","status":"Alive","latitude":"40.83010965","longitude":"-73.93088364"}
+,{"tree_dbh":"6","spc_common":"Callery pear","status":"Alive","latitude":"40.83337573","longitude":"-73.93016828"}
+,{"tree_dbh":"8","spc_common":"pin oak","status":"Alive","latitude":"40.83041792","longitude":"-73.93070966"}
+,{"tree_dbh":"22","spc_common":"London planetree","status":"Alive","latitude":"40.83100495","longitude":"-73.92932245"}
+,{"tree_dbh":"7","spc_common":"cherry","status":"Alive","latitude":"40.83079292","longitude":"-73.92829126"}
+,{"tree_dbh":"6","spc_common":"Callery pear","status":"Alive","latitude":"40.83095273","longitude":"-73.93040782"}
+,{"tree_dbh":"6","spc_common":"Callery pear","status":"Alive","latitude":"40.8306611","longitude":"-73.93057241"}
+,{"tree_dbh":"6","spc_common":"cherry","status":"Alive","latitude":"40.83346157","longitude":"-73.92898977"}
+,{"tree_dbh":"5","spc_common":"Callery pear","status":"Alive","latitude":"40.83114243","longitude":"-73.93030075"}
+,{"tree_dbh":"5","spc_common":"Callery pear","status":"Alive","latitude":"40.83101781","longitude":"-73.93037108"}
+,{"tree_dbh":"5","spc_common":"Callery pear","status":"Alive","latitude":"40.83053447","longitude":"-73.93064388"}
+,{"tree_dbh":"7","spc_common":"Callery pear","status":"Alive","latitude":"40.8283078","longitude":"-73.9210643"}
+,{"tree_dbh":"6","spc_common":"Callery pear","status":"Alive","latitude":"40.83108239","longitude":"-73.93033463"}
+,{"tree_dbh":"5","spc_common":"Callery pear","status":"Alive","latitude":"40.83071509","longitude":"-73.93054194"}
+,{"tree_dbh":"29","spc_common":"London planetree","status":"Alive","latitude":"40.83078207","longitude":"-73.92949499"}
+,{"tree_dbh":"9","spc_common":"American elm","status":"Alive","latitude":"40.82616725","longitude":"-73.92283403"}
+,{"tree_dbh":"21","spc_common":"London planetree","status":"Alive","latitude":"40.82559126","longitude":"-73.92697943"}
+,{"tree_dbh":"8","spc_common":"Callery pear","status":"Alive","latitude":"40.8308382","longitude":"-73.93047246"}
+,{"tree_dbh":"5","spc_common":"hawthorn","status":"Alive","latitude":"40.83324627","longitude":"-73.92848584"}
+,{"tree_dbh":"6","status":"Dead","latitude":"40.83077229","longitude":"-73.92935617"}
+,{"tree_dbh":"6","status":"Dead","latitude":"40.83235467","longitude":"-73.92978516"}
+,{"tree_dbh":"6","status":"Dead","latitude":"40.83046109","longitude":"-73.92848091"}
+,{"tree_dbh":"4","status":"Dead","latitude":"40.83063021","longitude":"-73.92946578"}
+,{"tree_dbh":"8","spc_common":"northern red oak","status":"Alive","latitude":"40.83263577","longitude":"-73.92806285"}
+,{"tree_dbh":"6","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83051654","longitude":"-73.92955348"}
+,{"tree_dbh":"4","status":"Dead","latitude":"40.83043223","longitude":"-73.92961851"}
+,{"tree_dbh":"5","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82580651","longitude":"-73.92238694"}
+,{"tree_dbh":"4","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82577951","longitude":"-73.92230784"}
+,{"tree_dbh":"4","status":"Dead","latitude":"40.82896368","longitude":"-73.92484736"}
+,{"tree_dbh":"11","spc_common":"American linden","status":"Alive","latitude":"40.83135256","longitude":"-73.93035492"}
+,{"tree_dbh":"5","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82991038","longitude":"-73.93062179"}
+,{"tree_dbh":"5","spc_common":"pin oak","status":"Alive","latitude":"40.83035219","longitude":"-73.92968026"}
+,{"tree_dbh":"5","spc_common":"hedge maple","status":"Alive","latitude":"40.83045415","longitude":"-73.92974886"}
+,{"tree_dbh":"7","spc_common":"red maple","status":"Alive","latitude":"40.83116063","longitude":"-73.92920192"}
+,{"tree_dbh":"2","spc_common":"pin oak","status":"Alive","latitude":"40.82588056","longitude":"-73.92229845"}
+,{"tree_dbh":"9","spc_common":"Callery pear","status":"Alive","latitude":"40.8327757","longitude":"-73.92954662"}
+,{"tree_dbh":"4","spc_common":"Callery pear","status":"Alive","latitude":"40.83180276","longitude":"-73.93074914"}
+,{"tree_dbh":"11","spc_common":"cherry","status":"Alive","latitude":"40.83072142","longitude":"-73.92833213"}
+,{"tree_dbh":"5","spc_common":"hedge maple","status":"Alive","latitude":"40.83051377","longitude":"-73.9297027"}
+,{"tree_dbh":"5","spc_common":"Callery pear","status":"Alive","latitude":"40.82602183","longitude":"-73.92271322"}
+,{"tree_dbh":"10","spc_common":"Callery pear","status":"Alive","latitude":"40.82821493","longitude":"-73.92077311"}
+,{"tree_dbh":"8","spc_common":"Callery pear","status":"Alive","latitude":"40.82828613","longitude":"-73.92099633"}
+,{"tree_dbh":"6","spc_common":"Callery pear","status":"Alive","latitude":"40.82599353","longitude":"-73.92263013"}
+,{"tree_dbh":"6","spc_common":"honeylocust","status":"Alive","latitude":"40.83377349","longitude":"-73.92718253"}
+,{"tree_dbh":"3","spc_common":"Callery pear","status":"Alive","latitude":"40.83175346","longitude":"-73.93096683"}
+,{"tree_dbh":"2","spc_common":"Callery pear","status":"Alive","latitude":"40.83182722","longitude":"-73.9308246"}
+,{"tree_dbh":"8","spc_common":"cherry","status":"Alive","latitude":"40.83105552","longitude":"-73.92913767"}
+,{"tree_dbh":"8","spc_common":"hawthorn","status":"Alive","latitude":"40.83336808","longitude":"-73.92840261"}
+,{"tree_dbh":"4","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82556541","longitude":"-73.92656101"}
+,{"tree_dbh":"5","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83040683","longitude":"-73.9297855"}
+,{"tree_dbh":"0","status":"Stump","latitude":"40.8330926","longitude":"-73.92845135"}
+,{"tree_dbh":"19","spc_common":"honeylocust","status":"Alive","latitude":"40.82980491","longitude":"-73.93087647"}
+,{"tree_dbh":"4","spc_common":"Callery pear","status":"Alive","latitude":"40.83178219","longitude":"-73.93068922"}
+,{"tree_dbh":"6","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.830001","longitude":"-73.93021999"}
+,{"tree_dbh":"5","spc_common":"ginkgo","status":"Alive","latitude":"40.83152806","longitude":"-73.93109453"}
+,{"tree_dbh":"4","spc_common":"hawthorn","status":"Alive","latitude":"40.83285509","longitude":"-73.92861605"}
+,{"tree_dbh":"8","spc_common":"hawthorn","status":"Alive","latitude":"40.83308938","longitude":"-73.92859303"}
+,{"tree_dbh":"4","spc_common":"hawthorn","status":"Alive","latitude":"40.83296","longitude":"-73.9285433"}
+,{"tree_dbh":"5","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82552372","longitude":"-73.92643674"}
+,{"tree_dbh":"5","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82554629","longitude":"-73.92684718"}
+,{"tree_dbh":"2","status":"Dead","latitude":"40.82794467","longitude":"-73.92475729"}
+,{"tree_dbh":"4","status":"Dead","latitude":"40.83077261","longitude":"-73.93050948"}
+,{"tree_dbh":"5","spc_common":"ginkgo","status":"Alive","latitude":"40.83158202","longitude":"-73.93106396"}
+,{"tree_dbh":"7","spc_common":"northern red oak","status":"Alive","latitude":"40.82994819","longitude":"-73.93097476"}
+,{"tree_dbh":"6","status":"Dead","latitude":"40.82639027","longitude":"-73.92613952"}
+,{"tree_dbh":"8","status":"Dead","latitude":"40.83094869","longitude":"-73.93142276"}
+,{"tree_dbh":"6","spc_common":"pin oak","status":"Alive","latitude":"40.83394364","longitude":"-73.92729554"}
+,{"tree_dbh":"16","spc_common":"honeylocust","status":"Alive","latitude":"40.8328937","longitude":"-73.92786328"}
+,{"tree_dbh":"9","spc_common":"ash","status":"Alive","latitude":"40.82827815","longitude":"-73.92060226"}
+,{"tree_dbh":"40","spc_common":"scarlet oak","status":"Alive","latitude":"40.82585189","longitude":"-73.9216566"}
+,{"tree_dbh":"7","spc_common":"scarlet oak","status":"Alive","latitude":"40.83262495","longitude":"-73.92830511"}
+,{"tree_dbh":"4","status":"Dead","latitude":"40.82839672","longitude":"-73.92097486"}
+,{"tree_dbh":"4","spc_common":"northern red oak","status":"Alive","latitude":"40.82845696","longitude":"-73.92116417"}
+,{"tree_dbh":"4","spc_common":"northern red oak","status":"Alive","latitude":"40.82850023","longitude":"-73.92130014"}
+,{"tree_dbh":"7","spc_common":"scarlet oak","status":"Alive","latitude":"40.83265541","longitude":"-73.92839565"}
+,{"tree_dbh":"8","spc_common":"pin oak","status":"Alive","latitude":"40.83367642","longitude":"-73.9299985"}
+,{"tree_dbh":"13","spc_common":"honeylocust","status":"Alive","latitude":"40.8282527","longitude":"-73.92052228"}
+,{"tree_dbh":"13","spc_common":"honeylocust","status":"Alive","latitude":"40.82994768","longitude":"-73.93049909"}
+,{"tree_dbh":"4","spc_common":"littleleaf linden","status":"Alive","latitude":"40.83133718","longitude":"-73.93019083"}
+,{"tree_dbh":"4","spc_common":"purple-leaf plum","status":"Alive","latitude":"40.8319952","longitude":"-73.92874255"}
+,{"tree_dbh":"5","spc_common":"cherry","status":"Alive","latitude":"40.83262045","longitude":"-73.92946343"}
+,{"tree_dbh":"3","spc_common":"London planetree","status":"Alive","latitude":"40.82687058","longitude":"-73.93008443"}
+,{"tree_dbh":"4","spc_common":"London planetree","status":"Alive","latitude":"40.82691427","longitude":"-73.93019706"}
+,{"tree_dbh":"4","spc_common":"London planetree","status":"Alive","latitude":"40.82694572","longitude":"-73.93027815"}
+,{"tree_dbh":"4","spc_common":"London planetree","status":"Alive","latitude":"40.82702037","longitude":"-73.93047059"}
+,{"tree_dbh":"8","spc_common":"honeylocust","status":"Alive","latitude":"40.82830976","longitude":"-73.92070158"}
+,{"tree_dbh":"7","spc_common":"American linden","status":"Alive","latitude":"40.82833903","longitude":"-73.92079356"}
+,{"tree_dbh":"17","spc_common":"honeylocust","status":"Alive","latitude":"40.82614192","longitude":"-73.92938884"}
+,{"tree_dbh":"11","spc_common":"honeylocust","status":"Alive","latitude":"40.83369388","longitude":"-73.92803437"}
+,{"tree_dbh":"21","spc_common":"London planetree","status":"Alive","latitude":"40.83091977","longitude":"-73.92938839"}
+,{"tree_dbh":"5","status":"Dead","latitude":"40.8305477","longitude":"-73.92843141"}
+,{"tree_dbh":"11","spc_common":"honeylocust","status":"Alive","latitude":"40.83386435","longitude":"-73.92791615"}
+,{"tree_dbh":"12","spc_common":"honeylocust","status":"Alive","latitude":"40.82599254","longitude":"-73.92929418"}
+,{"tree_dbh":"5","spc_common":"London planetree","status":"Alive","latitude":"40.82697693","longitude":"-73.9303586"}
+,{"tree_dbh":"15","spc_common":"honeylocust","status":"Alive","latitude":"40.82608949","longitude":"-73.92935562"}
+,{"tree_dbh":"23","spc_common":"scarlet oak","status":"Alive","latitude":"40.82579313","longitude":"-73.92170465"}
+,{"tree_dbh":"6","spc_common":"maple","status":"Alive","latitude":"40.83398998","longitude":"-73.92970156"}
+,{"tree_dbh":"5","spc_common":"eastern redbud","status":"Alive","latitude":"40.83074496","longitude":"-73.93142353"}
+,{"tree_dbh":"6","spc_common":"common hackberry","status":"Alive","latitude":"40.83006653","longitude":"-73.92969308"}
+,{"tree_dbh":"4","spc_common":"maple","status":"Alive","latitude":"40.82877071","longitude":"-73.92477374"}
+,{"tree_dbh":"6","spc_common":"maple","status":"Alive","latitude":"40.82910261","longitude":"-73.92490037"}
+,{"tree_dbh":"4","spc_common":"maple","status":"Alive","latitude":"40.82884347","longitude":"-73.9248015"}
+,{"tree_dbh":"11","spc_common":"maple","status":"Alive","latitude":"40.82917326","longitude":"-73.92492732"}
+,{"tree_dbh":"6","spc_common":"common hackberry","status":"Alive","latitude":"40.83171598","longitude":"-73.93049372"}
+,{"tree_dbh":"2","spc_common":"eastern redbud","status":"Alive","latitude":"40.82736527","longitude":"-73.92527603"}
+,{"tree_dbh":"6","spc_common":"maple","status":"Alive","latitude":"40.83099347","longitude":"-73.92918554"}
+,{"tree_dbh":"5","spc_common":"common hackberry","status":"Alive","latitude":"40.83166694","longitude":"-73.93034526"}
+,{"tree_dbh":"5","spc_common":"pin oak","status":"Alive","latitude":"40.83033063","longitude":"-73.93075892"}
+,{"tree_dbh":"6","spc_common":"pin oak","status":"Alive","latitude":"40.83084002","longitude":"-73.92930392"}
+,{"tree_dbh":"4","spc_common":"maple","status":"Alive","latitude":"40.83393203","longitude":"-73.92973453"}
+,{"tree_dbh":"4","spc_common":"maple","status":"Alive","latitude":"40.82857035","longitude":"-73.9246973"}
+,{"tree_dbh":"9","spc_common":"maple","status":"Alive","latitude":"40.82902748","longitude":"-73.9248717"}
+,{"tree_dbh":"8","spc_common":"Sophora","status":"Alive","latitude":"40.83088516","longitude":"-73.93145876"}
+,{"tree_dbh":"5","spc_common":"Callery pear","status":"Alive","latitude":"40.83088411","longitude":"-73.93044654"}
+,{"tree_dbh":"8","spc_common":"ginkgo","status":"Alive","latitude":"40.82718948","longitude":"-73.92519203"}
+,{"tree_dbh":"4","spc_common":"American elm","status":"Alive","latitude":"40.83102322","longitude":"-73.92836174"}
+,{"tree_dbh":"6","spc_common":"littleleaf linden","status":"Alive","latitude":"40.82634284","longitude":"-73.92600121"}
+,{"tree_dbh":"4","spc_common":"Callery pear","status":"Alive","latitude":"40.83361508","longitude":"-73.92991487"}
+,{"tree_dbh":"7","spc_common":"Callery pear","status":"Alive","latitude":"40.83337068","longitude":"-73.93005392"}
+,{"tree_dbh":"13","spc_common":"American linden","status":"Alive","latitude":"40.83116508","longitude":"-73.92879121"}
+,{"tree_dbh":"5","spc_common":"ginkgo","status":"Alive","latitude":"40.82706331","longitude":"-73.9252667"}
+,{"tree_dbh":"14","spc_common":"ginkgo","status":"Alive","latitude":"40.82643923","longitude":"-73.92563608"}
+,{"tree_dbh":"5","spc_common":"European beech","status":"Alive","latitude":"40.83313436","longitude":"-73.92934907"}
+,{"tree_dbh":"0","status":"Stump","latitude":"40.83284025","longitude":"-73.92951005"}
+,{"tree_dbh":"5","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82985696","longitude":"-73.93076349"}
+,{"tree_dbh":"3","spc_common":"Chinese elm","status":"Alive","latitude":"40.82689208","longitude":"-73.92536805"}
+,{"tree_dbh":"4","spc_common":"Chinese elm","status":"Alive","latitude":"40.83107883","longitude":"-73.92853008"}
+,{"tree_dbh":"7","spc_common":"Callery pear","status":"Alive","latitude":"40.83297452","longitude":"-73.92972788"}
+,{"tree_dbh":"7","spc_common":"littleleaf linden","status":"Alive","latitude":"40.82631348","longitude":"-73.92591558"}
+,{"tree_dbh":"13","spc_common":"Callery pear","status":"Alive","latitude":"40.83389021","longitude":"-73.92975833"}
+,{"tree_dbh":"9","spc_common":"Callery pear","status":"Alive","latitude":"40.83383881","longitude":"-73.92978757"}
+,{"tree_dbh":"4","spc_common":"'Schubert' chokecherry","status":"Alive","latitude":"40.83165336","longitude":"-73.9311408"}
+,{"tree_dbh":"12","spc_common":"honeylocust","status":"Alive","latitude":"40.83387527","longitude":"-73.92111774"}
+,{"tree_dbh":"6","spc_common":"Callery pear","status":"Alive","latitude":"40.83293082","longitude":"-73.92959528"}
+,{"tree_dbh":"11","spc_common":"Sophora","status":"Alive","latitude":"40.83207769","longitude":"-73.92849449"}
+,{"tree_dbh":"5","spc_common":"hawthorn","status":"Alive","latitude":"40.83336604","longitude":"-73.92826172"}
+,{"tree_dbh":"5","spc_common":"Sophora","status":"Alive","latitude":"40.82568274","longitude":"-73.92691071"}
+,{"tree_dbh":"6","spc_common":"Sophora","status":"Alive","latitude":"40.82562729","longitude":"-73.92674545"}
+,{"tree_dbh":"6","spc_common":"Sophora","status":"Alive","latitude":"40.82565502","longitude":"-73.92682808"}
+,{"tree_dbh":"4","status":"Dead","latitude":"40.83396954","longitude":"-73.92106244"}
+,{"tree_dbh":"7","spc_common":"Callery pear","status":"Alive","latitude":"40.83379865","longitude":"-73.92897348"}
+,{"tree_dbh":"10","spc_common":"Callery pear","status":"Alive","latitude":"40.83374912","longitude":"-73.92983861"}
+,{"tree_dbh":"13","spc_common":"Callery pear","status":"Alive","latitude":"40.83368562","longitude":"-73.92987473"}
+,{"tree_dbh":"6","spc_common":"American linden","status":"Alive","latitude":"40.83357577","longitude":"-73.92993723"}
+,{"tree_dbh":"7","spc_common":"American linden","status":"Alive","latitude":"40.83350724","longitude":"-73.92997622"}
+,{"tree_dbh":"10","spc_common":"golden raintree","status":"Alive","latitude":"40.82642595","longitude":"-73.92593402"}
+,{"tree_dbh":"11","spc_common":"golden raintree","status":"Alive","latitude":"40.82645382","longitude":"-73.92601656"}
+,{"tree_dbh":"5","spc_common":"hawthorn","status":"Alive","latitude":"40.83343549","longitude":"-73.92821356"}
+,{"tree_dbh":"4","spc_common":"maple","status":"Alive","latitude":"40.83321557","longitude":"-73.92930316"}
+,{"tree_dbh":"9","spc_common":"Sophora","status":"Alive","latitude":"40.83303597","longitude":"-73.92963611"}
+,{"tree_dbh":"3","spc_common":"'Schubert' chokecherry","status":"Alive","latitude":"40.8328122","longitude":"-73.93048648"}
+,{"tree_dbh":"10","spc_common":"Callery pear","status":"Alive","latitude":"40.83384607","longitude":"-73.92894667"}
+,{"tree_dbh":"14","spc_common":"maple","status":"Alive","latitude":"40.83199557","longitude":"-73.9285587"}
+,{"tree_dbh":"8","spc_common":"hawthorn","status":"Alive","latitude":"40.8338524","longitude":"-73.9280717"}
+,{"tree_dbh":"2","spc_common":"willow oak","status":"Alive","latitude":"40.83038788","longitude":"-73.92213346"}
+,{"tree_dbh":"14","spc_common":"pin oak","status":"Alive","latitude":"40.83311211","longitude":"-73.9298652"}
+,{"tree_dbh":"8","spc_common":"honeylocust","status":"Alive","latitude":"40.83027009","longitude":"-73.92220272"}
+,{"tree_dbh":"4","spc_common":"London planetree","status":"Alive","latitude":"40.83396979","longitude":"-73.92121315"}
+,{"tree_dbh":"14","spc_common":"ginkgo","status":"Alive","latitude":"40.82667104","longitude":"-73.92549888"}
+,{"tree_dbh":"7","spc_common":"Callery pear","status":"Alive","latitude":"40.8330711","longitude":"-73.93002093"}
+,{"tree_dbh":"5","spc_common":"Callery pear","status":"Alive","latitude":"40.83301822","longitude":"-73.92986048"}
+,{"tree_dbh":"7","spc_common":"sawtooth oak","status":"Alive","latitude":"40.82556849","longitude":"-73.92691248"}
+,{"tree_dbh":"5","spc_common":"white ash","status":"Alive","latitude":"40.83073447","longitude":"-73.92192965"}
+,{"tree_dbh":"5","spc_common":"American beech","status":"Alive","latitude":"40.82749695","longitude":"-73.92142034"}
+,{"tree_dbh":"5","spc_common":"white ash","status":"Alive","latitude":"40.83087581","longitude":"-73.92184654"}
+,{"tree_dbh":"7","spc_common":"hawthorn","status":"Alive","latitude":"40.83318488","longitude":"-73.92852778"}
+,{"tree_dbh":"4","spc_common":"hawthorn","status":"Alive","latitude":"40.83362443","longitude":"-73.92808253"}
+,{"tree_dbh":"6","spc_common":"scarlet oak","status":"Alive","latitude":"40.83106678","longitude":"-73.92173425"}
+,{"tree_dbh":"9","spc_common":"golden raintree","status":"Alive","latitude":"40.82637958","longitude":"-73.92579666"}
+,{"tree_dbh":"6","spc_common":"white ash","status":"Alive","latitude":"40.8309936","longitude":"-73.92177728"}
+,{"tree_dbh":"16","spc_common":"pin oak","status":"Alive","latitude":"40.82558665","longitude":"-73.92186297"}
+,{"tree_dbh":"25","spc_common":"scarlet oak","status":"Alive","latitude":"40.8257465","longitude":"-73.92174278"}
+,{"tree_dbh":"4","spc_common":"maple","status":"Alive","latitude":"40.83361858","longitude":"-73.92907529"}
+,{"tree_dbh":"5","spc_common":"maple","status":"Alive","latitude":"40.8334022","longitude":"-73.92919764"}
+,{"tree_dbh":"6","spc_common":"maple","status":"Alive","latitude":"40.8334708","longitude":"-73.92915885"}
+,{"tree_dbh":"5","spc_common":"white ash","status":"Alive","latitude":"40.83080314","longitude":"-73.92188927"}
+,{"tree_dbh":"6","spc_common":"Sophora","status":"Alive","latitude":"40.83048211","longitude":"-73.92207805"}
+,{"tree_dbh":"8","spc_common":"Sophora","status":"Alive","latitude":"40.83067633","longitude":"-73.92196384"}
+,{"tree_dbh":"7","spc_common":"Sophora","status":"Alive","latitude":"40.8305841","longitude":"-73.92201807"}
+,{"tree_dbh":"11","spc_common":"crimson king maple","status":"Alive","latitude":"40.83014178","longitude":"-73.92227817"}
+,{"tree_dbh":"2","spc_common":"'Schubert' chokecherry","status":"Alive","latitude":"40.83399403","longitude":"-73.92782621"}
+,{"tree_dbh":"16","spc_common":"black walnut","status":"Alive","latitude":"40.82738929","longitude":"-73.92212608"}
+,{"tree_dbh":"10","spc_common":"Siberian elm","status":"Alive","latitude":"40.83161405","longitude":"-73.92610882"}
+,{"tree_dbh":"6","spc_common":"northern red oak","status":"Alive","latitude":"40.82837258","longitude":"-73.92198615"}
+,{"tree_dbh":"8","spc_common":"northern red oak","status":"Alive","latitude":"40.82824825","longitude":"-73.92201046"}
+,{"tree_dbh":"6","status":"Dead","latitude":"40.8284215","longitude":"-73.9218179"}
+,{"tree_dbh":"5","spc_common":"northern red oak","status":"Alive","latitude":"40.82834036","longitude":"-73.92185721"}
+,{"tree_dbh":"9","status":"Dead","latitude":"40.82793672","longitude":"-73.92205273"}
+,{"tree_dbh":"6","spc_common":"northern red oak","status":"Alive","latitude":"40.82815565","longitude":"-73.92205585"}
+,{"tree_dbh":"7","spc_common":"northern red oak","status":"Alive","latitude":"40.82868452","longitude":"-73.9215279"}
+,{"tree_dbh":"11","spc_common":"sawtooth oak","status":"Alive","latitude":"40.8281804","longitude":"-73.92193469"}
+,{"tree_dbh":"7","spc_common":"northern red oak","status":"Alive","latitude":"40.82996591","longitude":"-73.92085727"}
+,{"tree_dbh":"5","spc_common":"purple-leaf plum","status":"Alive","latitude":"40.82801528","longitude":"-73.92201467"}
+,{"tree_dbh":"6","spc_common":"sawtooth oak","status":"Alive","latitude":"40.83280121","longitude":"-73.92893803"}
+,{"tree_dbh":"4","spc_common":"northern red oak","status":"Alive","latitude":"40.83024689","longitude":"-73.92070129"}
+,{"tree_dbh":"4","spc_common":"purple-leaf plum","status":"Alive","latitude":"40.82825819","longitude":"-73.92189701"}
+,{"tree_dbh":"6","spc_common":"sawtooth oak","status":"Alive","latitude":"40.83285744","longitude":"-73.92911074"}
+,{"tree_dbh":"7","spc_common":"sawtooth oak","status":"Alive","latitude":"40.83282835","longitude":"-73.9290214"}
+,{"tree_dbh":"5","spc_common":"northern red oak","status":"Alive","latitude":"40.82973425","longitude":"-73.92098587"}
+,{"tree_dbh":"5","spc_common":"purple-leaf plum","status":"Alive","latitude":"40.82785867","longitude":"-73.92209053"}
+,{"tree_dbh":"5","status":"Dead","latitude":"40.83004356","longitude":"-73.92081417"}
+,{"tree_dbh":"3","spc_common":"northern red oak","status":"Alive","latitude":"40.82831651","longitude":"-73.92201363"}
+,{"tree_dbh":"4","spc_common":"purple-leaf plum","status":"Alive","latitude":"40.82809668","longitude":"-73.92197524"}
+,{"tree_dbh":"6","spc_common":"purple-leaf plum","status":"Alive","latitude":"40.8272011","longitude":"-73.92241488"}
+,{"tree_dbh":"5","spc_common":"purple-leaf plum","status":"Alive","latitude":"40.82712502","longitude":"-73.92245442"}
+,{"tree_dbh":"9","spc_common":"sweetgum","status":"Alive","latitude":"40.82980785","longitude":"-73.92094502"}
+,{"tree_dbh":"8","spc_common":"Amur maackia","status":"Alive","latitude":"40.82658542","longitude":"-73.92554955"}
+,{"tree_dbh":"6","spc_common":"Amur maackia","status":"Alive","latitude":"40.82672937","longitude":"-73.92546436"}
+,{"tree_dbh":"19","spc_common":"northern red oak","status":"Alive","latitude":"40.82973479","longitude":"-73.92811897"}
+,{"tree_dbh":"17","spc_common":"northern red oak","status":"Alive","latitude":"40.8299056","longitude":"-73.92794471"}
+,{"tree_dbh":"4","spc_common":"Amur maackia","status":"Alive","latitude":"40.83374381","longitude":"-73.92882937"}
+,{"tree_dbh":"15","spc_common":"northern red oak","status":"Alive","latitude":"40.8295742","longitude":"-73.92830646"}
+,{"tree_dbh":"11","spc_common":"northern red oak","status":"Alive","latitude":"40.82884284","longitude":"-73.92144378"}
+,{"tree_dbh":"4","spc_common":"Amur maackia","status":"Alive","latitude":"40.83331743","longitude":"-73.92907168"}
+,{"tree_dbh":"4","spc_common":"Amur maackia","status":"Alive","latitude":"40.83390458","longitude":"-73.928738"}
+,{"tree_dbh":"7","spc_common":"sweetgum","status":"Alive","latitude":"40.83030506","longitude":"-73.920669"}
+,{"tree_dbh":"8","spc_common":"mulberry","status":"Alive","latitude":"40.82751973","longitude":"-73.92472469"}
+,{"tree_dbh":"6","spc_common":"European hornbeam","status":"Alive","latitude":"40.83397399","longitude":"-73.92738771"}
+,{"tree_dbh":"8","spc_common":"sweetgum","status":"Alive","latitude":"40.8272782","longitude":"-73.9223748"}
+,{"tree_dbh":"6","spc_common":"northern red oak","status":"Alive","latitude":"40.82906122","longitude":"-73.92132775"}
+,{"tree_dbh":"4","spc_common":"northern red oak","status":"Alive","latitude":"40.82917423","longitude":"-73.92126771"}
+,{"tree_dbh":"18","spc_common":"northern red oak","status":"Alive","latitude":"40.83007766","longitude":"-73.92777638"}
+,{"tree_dbh":"16","spc_common":"northern red oak","status":"Alive","latitude":"40.8298188","longitude":"-73.92802963"}
+,{"tree_dbh":"4","spc_common":"northern red oak","status":"Alive","latitude":"40.82894847","longitude":"-73.92138766"}
+,{"tree_dbh":"4","spc_common":"northern red oak","status":"Alive","latitude":"40.82938319","longitude":"-73.92115668"}
+,{"tree_dbh":"4","spc_common":"northern red oak","status":"Alive","latitude":"40.83023026","longitude":"-73.92095079"}
+,{"tree_dbh":"10","spc_common":"northern red oak","status":"Alive","latitude":"40.82931956","longitude":"-73.92119049"}
+,{"tree_dbh":"7","spc_common":"purple-leaf plum","status":"Alive","latitude":"40.8275751","longitude":"-73.92222047"}
+,{"tree_dbh":"6","spc_common":"northern red oak","status":"Alive","latitude":"40.82795442","longitude":"-73.92224322"}
+,{"tree_dbh":"5","spc_common":"northern red oak","status":"Alive","latitude":"40.83036416","longitude":"-73.9208769"}
+,{"tree_dbh":"4","spc_common":"northern red oak","status":"Alive","latitude":"40.83016039","longitude":"-73.92098935"}
+,{"tree_dbh":"7","spc_common":"northern red oak","status":"Alive","latitude":"40.8298017","longitude":"-73.92118728"}
+,{"tree_dbh":"7","spc_common":"northern red oak","status":"Alive","latitude":"40.82803938","longitude":"-73.92219986"}
+,{"tree_dbh":"15","spc_common":"London planetree","status":"Alive","latitude":"40.82813955","longitude":"-73.92665775"}
+,{"tree_dbh":"9","spc_common":"London planetree","status":"Alive","latitude":"40.82815818","longitude":"-73.92671681"}
+,{"tree_dbh":"6","spc_common":"northern red oak","status":"Alive","latitude":"40.83002193","longitude":"-73.92106576"}
+,{"tree_dbh":"5","spc_common":"northern red oak","status":"Alive","latitude":"40.8278733","longitude":"-73.92228463"}
+,{"tree_dbh":"11","spc_common":"London planetree","status":"Alive","latitude":"40.82809922","longitude":"-73.92652995"}
+,{"tree_dbh":"9","spc_common":"London planetree","status":"Alive","latitude":"40.82807447","longitude":"-73.92645153"}
+,{"tree_dbh":"12","spc_common":"London planetree","status":"Alive","latitude":"40.82812049","longitude":"-73.92659735"}
+,{"tree_dbh":"6","spc_common":"honeylocust","status":"Alive","latitude":"40.82778468","longitude":"-73.92553322"}
+,{"tree_dbh":"9","spc_common":"honeylocust","status":"Alive","latitude":"40.82772862","longitude":"-73.92526612"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.82779181","longitude":"-73.92546633"}
+,{"tree_dbh":"4","spc_common":"honeylocust","status":"Alive","latitude":"40.82774982","longitude":"-73.92542277"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.82782424","longitude":"-73.9255691"}
+,{"tree_dbh":"10","spc_common":"honeylocust","status":"Alive","latitude":"40.82768896","longitude":"-73.9252299"}
+,{"tree_dbh":"8","spc_common":"honeylocust","status":"Alive","latitude":"40.8277196","longitude":"-73.925327"}
+,{"tree_dbh":"6","spc_common":"honeylocust","status":"Alive","latitude":"40.82784003","longitude":"-73.92561916"}
+,{"tree_dbh":"14","spc_common":"honeylocust","status":"Alive","latitude":"40.8277739","longitude":"-73.9254096"}
+,{"tree_dbh":"10","spc_common":"honeylocust","status":"Alive","latitude":"40.82767379","longitude":"-73.92518185"}
+,{"tree_dbh":"8","spc_common":"honeylocust","status":"Alive","latitude":"40.82775885","longitude":"-73.92536188"}
+,{"tree_dbh":"9","spc_common":"honeylocust","status":"Alive","latitude":"40.82770454","longitude":"-73.92527929"}
+,{"tree_dbh":"14","spc_common":"honeylocust","status":"Alive","latitude":"40.82805004","longitude":"-73.92637411"}
+,{"tree_dbh":"6","spc_common":"honeylocust","status":"Alive","latitude":"40.82780876","longitude":"-73.92552005"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.82780016","longitude":"-73.92558227"}
+,{"tree_dbh":"7","spc_common":"honeylocust","status":"Alive","latitude":"40.82773477","longitude":"-73.92537505"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.82776773","longitude":"-73.9254795"}
+,{"tree_dbh":"8","spc_common":"sawtooth oak","status":"Alive","latitude":"40.83009154","longitude":"-73.92102734"}
+,{"tree_dbh":"12","spc_common":"honeylocust","status":"Alive","latitude":"40.82769787","longitude":"-73.92516868"}
+,{"tree_dbh":"8","spc_common":"honeylocust","status":"Alive","latitude":"40.82771304","longitude":"-73.92521673"}
+,{"tree_dbh":"10","spc_common":"honeylocust","status":"Alive","latitude":"40.82774368","longitude":"-73.92531383"}
+,{"tree_dbh":"19","spc_common":"northern red oak","status":"Alive","latitude":"40.8296545","longitude":"-73.92821272"}
+,{"tree_dbh":"5","spc_common":"scarlet oak","status":"Alive","latitude":"40.82988954","longitude":"-73.92089967"}
+,{"tree_dbh":"8","spc_common":"sweetgum","status":"Alive","latitude":"40.82986828","longitude":"-73.92115055"}
+,{"tree_dbh":"6","spc_common":"sweetgum","status":"Alive","latitude":"40.82901082","longitude":"-73.92135453"}
+,{"tree_dbh":"5","spc_common":"sweetgum","status":"Alive","latitude":"40.829246","longitude":"-73.92122957"}
+,{"tree_dbh":"5","spc_common":"northern red oak","status":"Alive","latitude":"40.82993839","longitude":"-73.92111185"}
+,{"tree_dbh":"9","spc_common":"sweetgum","status":"Alive","latitude":"40.82911162","longitude":"-73.92130097"}
+,{"tree_dbh":"11","spc_common":"American elm","status":"Alive","latitude":"40.82820185","longitude":"-73.92676571"}
+,{"tree_dbh":"6","spc_common":"sawtooth oak","status":"Alive","latitude":"40.82750081","longitude":"-73.92225909"}
+,{"tree_dbh":"5","spc_common":"Siberian elm","status":"Alive","latitude":"40.83106467","longitude":"-73.93135706"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.8278533","longitude":"-73.9256612"}
+,{"tree_dbh":"7","spc_common":"Siberian elm","status":"Alive","latitude":"40.83112367","longitude":"-73.93132364"}
+,{"tree_dbh":"11","spc_common":"pitch pine","status":"Alive","latitude":"40.83090575","longitude":"-73.92402903"}
+,{"tree_dbh":"25","spc_common":"pin oak","status":"Alive","latitude":"40.83110506","longitude":"-73.92136473"}
+,{"tree_dbh":"7","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83313965","longitude":"-73.92266959"}
+,{"tree_dbh":"8","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83356473","longitude":"-73.92241451"}
+,{"tree_dbh":"6","status":"Dead","latitude":"40.83304092","longitude":"-73.921609"}
+,{"tree_dbh":"7","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.8333899","longitude":"-73.92251942"}
+,{"tree_dbh":"7","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83382647","longitude":"-73.92225745"}
+,{"tree_dbh":"0","status":"Stump","latitude":"40.83315524","longitude":"-73.92154191"}
+,{"tree_dbh":"7","spc_common":"honeylocust","status":"Alive","latitude":"40.83235602","longitude":"-73.92201091"}
+,{"tree_dbh":"24","spc_common":"pin oak","status":"Alive","latitude":"40.83328335","longitude":"-73.93110988"}
+,{"tree_dbh":"31","spc_common":"London planetree","status":"Alive","latitude":"40.83312058","longitude":"-73.93123912"}
+,{"tree_dbh":"26","spc_common":"pin oak","status":"Alive","latitude":"40.8335674","longitude":"-73.93094954"}
+,{"tree_dbh":"30","spc_common":"London planetree","status":"Alive","latitude":"40.83305045","longitude":"-73.9312787"}
+,{"tree_dbh":"30","spc_common":"London planetree","status":"Alive","latitude":"40.83291876","longitude":"-73.93135303"}
+,{"tree_dbh":"31","spc_common":"pin oak","status":"Alive","latitude":"40.83336458","longitude":"-73.93106403"}
+,{"tree_dbh":"7","spc_common":"honeylocust","status":"Alive","latitude":"40.83266639","longitude":"-73.92182879"}
+,{"tree_dbh":"11","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82580586","longitude":"-73.92507005"}
+,{"tree_dbh":"5","spc_common":"purple-leaf plum","status":"Alive","latitude":"40.83393369","longitude":"-73.93074279"}
+,{"tree_dbh":"7","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83395234","longitude":"-73.92218191"}
+,{"tree_dbh":"11","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82588577","longitude":"-73.92502207"}
+,{"tree_dbh":"5","spc_common":"northern red oak","status":"Alive","latitude":"40.83084444","longitude":"-73.92202005"}
+,{"tree_dbh":"3","status":"Dead","latitude":"40.83379091","longitude":"-73.93082338"}
+,{"tree_dbh":"7","spc_common":"northern red oak","status":"Alive","latitude":"40.83092129","longitude":"-73.92197544"}
+,{"tree_dbh":"6","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83325104","longitude":"-73.92260275"}
+,{"tree_dbh":"5","status":"Dead","latitude":"40.83322945","longitude":"-73.92149837"}
+,{"tree_dbh":"7","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83362067","longitude":"-73.92238094"}
+,{"tree_dbh":"6","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83305223","longitude":"-73.92272205"}
+,{"tree_dbh":"6","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.8331891","longitude":"-73.92263992"}
+,{"tree_dbh":"15","spc_common":"ginkgo","status":"Alive","latitude":"40.82587495","longitude":"-73.92582194"}
+,{"tree_dbh":"7","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83371358","longitude":"-73.92232519"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.83359145","longitude":"-73.92128593"}
+,{"tree_dbh":"10","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82572994","longitude":"-73.92511564"}
+,{"tree_dbh":"7","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83351378","longitude":"-73.92244509"}
+,{"tree_dbh":"7","spc_common":"ginkgo","status":"Alive","latitude":"40.82605108","longitude":"-73.92571908"}
+,{"tree_dbh":"9","spc_common":"ginkgo","status":"Alive","latitude":"40.82566018","longitude":"-73.92594735"}
+,{"tree_dbh":"11","spc_common":"honeylocust","status":"Alive","latitude":"40.83293212","longitude":"-73.92167285"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.83244477","longitude":"-73.92195884"}
+,{"tree_dbh":"11","spc_common":"pin oak","status":"Alive","latitude":"40.83345338","longitude":"-73.93101391"}
+,{"tree_dbh":"8","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.8339004","longitude":"-73.92221309"}
+,{"tree_dbh":"5","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83279023","longitude":"-73.92175611"}
+,{"tree_dbh":"29","spc_common":"London planetree","status":"Alive","latitude":"40.83285519","longitude":"-73.93138891"}
+,{"tree_dbh":"4","spc_common":"London planetree","status":"Alive","latitude":"40.83322533","longitude":"-73.93114263"}
+,{"tree_dbh":"6","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83330199","longitude":"-73.92257218"}
+,{"tree_dbh":"7","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83343935","longitude":"-73.92248975"}
+,{"tree_dbh":"7","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83377602","longitude":"-73.92228772"}
+,{"tree_dbh":"7","spc_common":"London planetree","status":"Alive","latitude":"40.83318515","longitude":"-73.93120266"}
+,{"tree_dbh":"6","spc_common":"pin oak","status":"Alive","latitude":"40.83052147","longitude":"-73.92220753"}
+,{"tree_dbh":"8","spc_common":"honeylocust","status":"Alive","latitude":"40.83337435","longitude":"-73.92141333"}
+,{"tree_dbh":"6","spc_common":"pin oak","status":"Alive","latitude":"40.83059129","longitude":"-73.922167"}
+,{"tree_dbh":"26","spc_common":"pin oak","status":"Alive","latitude":"40.83365418","longitude":"-73.93090056"}
+,{"tree_dbh":"7","spc_common":"pin oak","status":"Alive","latitude":"40.83071887","longitude":"-73.92209295"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.83366265","longitude":"-73.92124415"}
+,{"tree_dbh":"7","spc_common":"pin oak","status":"Alive","latitude":"40.83108504","longitude":"-73.92188039"}
+,{"tree_dbh":"4","status":"Dead","latitude":"40.8309881","longitude":"-73.92193666"}
+,{"tree_dbh":"8","spc_common":"ginkgo","status":"Alive","latitude":"40.82559645","longitude":"-73.92598457"}
+,{"tree_dbh":"12","spc_common":"ginkgo","status":"Alive","latitude":"40.82610677","longitude":"-73.92568656"}
+,{"tree_dbh":"11","spc_common":"ginkgo","status":"Alive","latitude":"40.82579918","longitude":"-73.92586618"}
+,{"tree_dbh":"7","spc_common":"ginkgo","status":"Alive","latitude":"40.82573445","longitude":"-73.92590398"}
+,{"tree_dbh":"2","spc_common":"cherry","status":"Alive","latitude":"40.83256561","longitude":"-73.92188793"}
+,{"tree_dbh":"6","spc_common":"green ash","status":"Alive","latitude":"40.83291404","longitude":"-73.92183205"}
+,{"tree_dbh":"6","spc_common":"green ash","status":"Alive","latitude":"40.83187479","longitude":"-73.92244417"}
+,{"tree_dbh":"5","spc_common":"littleleaf linden","status":"Alive","latitude":"40.82617724","longitude":"-73.92523034"}
+,{"tree_dbh":"5","spc_common":"green ash","status":"Alive","latitude":"40.8329867","longitude":"-73.92178926"}
+,{"tree_dbh":"5","spc_common":"green ash","status":"Alive","latitude":"40.83212734","longitude":"-73.92229542"}
+,{"tree_dbh":"6","spc_common":"green ash","status":"Alive","latitude":"40.83196098","longitude":"-73.92239341"}
+,{"tree_dbh":"6","spc_common":"pin oak","status":"Alive","latitude":"40.82564105","longitude":"-73.92516903"}
+,{"tree_dbh":"12","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82678152","longitude":"-73.9241905"}
+,{"tree_dbh":"4","spc_common":"American linden","status":"Alive","latitude":"40.82614338","longitude":"-73.92513075"}
+,{"tree_dbh":"8","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82581934","longitude":"-73.92440137"}
+,{"tree_dbh":"4","spc_common":"littleleaf linden","status":"Alive","latitude":"40.82620572","longitude":"-73.92531411"}
+,{"tree_dbh":"11","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82658296","longitude":"-73.92431221"}
+,{"tree_dbh":"9","spc_common":"Sophora","status":"Alive","latitude":"40.83264496","longitude":"-73.92199054"}
+,{"tree_dbh":"5","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.8256096","longitude":"-73.92378944"}
+,{"tree_dbh":"9","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82585953","longitude":"-73.92451862"}
+,{"tree_dbh":"5","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82574009","longitude":"-73.92417017"}
+,{"tree_dbh":"7","spc_common":"Sophora","status":"Alive","latitude":"40.83325477","longitude":"-73.92163135"}
+,{"tree_dbh":"7","spc_common":"Sophora","status":"Alive","latitude":"40.83308441","longitude":"-73.9217317"}
+,{"tree_dbh":"8","spc_common":"Sophora","status":"Alive","latitude":"40.83246908","longitude":"-73.92209414"}
+,{"tree_dbh":"9","spc_common":"honeylocust","status":"Alive","latitude":"40.83346122","longitude":"-73.92150975"}
+,{"tree_dbh":"2","spc_common":"Sophora","status":"Alive","latitude":"40.83240143","longitude":"-73.92213398"}
+,{"tree_dbh":"5","spc_common":"green ash","status":"Alive","latitude":"40.83204766","longitude":"-73.92234235"}
+,{"tree_dbh":"9","spc_common":"Sophora","status":"Alive","latitude":"40.83254424","longitude":"-73.92204987"}
+,{"tree_dbh":"9","spc_common":"honeylocust","status":"Alive","latitude":"40.83361455","longitude":"-73.92141944"}
+,{"tree_dbh":"9","spc_common":"honeylocust","status":"Alive","latitude":"40.83355142","longitude":"-73.92145662"}
+,{"tree_dbh":"11","spc_common":"honeylocust","status":"Alive","latitude":"40.83338756","longitude":"-73.92155314"}
+,{"tree_dbh":"9","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82564369","longitude":"-73.9238889"}
+,{"tree_dbh":"11","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82686811","longitude":"-73.92413742"}
+,{"tree_dbh":"5","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82570103","longitude":"-73.92405621"}
+,{"tree_dbh":"5","spc_common":"littleleaf linden","status":"Alive","latitude":"40.82611535","longitude":"-73.9250483"}
+,{"tree_dbh":"3","spc_common":"sweetgum","status":"Alive","latitude":"40.83315406","longitude":"-73.92169068"}
+,{"tree_dbh":"5","spc_common":"common hackberry","status":"Alive","latitude":"40.83038912","longitude":"-73.92228436"}
+,{"tree_dbh":"4","spc_common":"honeylocust","status":"Alive","latitude":"40.82689099","longitude":"-73.92369434"}
+,{"tree_dbh":"4","spc_common":"honeylocust","status":"Alive","latitude":"40.82691298","longitude":"-73.92375898"}
+,{"tree_dbh":"7","spc_common":"northern red oak","status":"Alive","latitude":"40.82551519","longitude":"-73.92524461"}
+,{"tree_dbh":"4","spc_common":"honeylocust","status":"Alive","latitude":"40.82670811","longitude":"-73.92315683"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.82677677","longitude":"-73.92335864"}
+,{"tree_dbh":"4","spc_common":"honeylocust","status":"Alive","latitude":"40.82684364","longitude":"-73.92355518"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.82673055","longitude":"-73.92322278"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.82668792","longitude":"-73.92309747"}
+,{"tree_dbh":"14","spc_common":"ginkgo","status":"Alive","latitude":"40.82641315","longitude":"-73.92549527"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.82693586","longitude":"-73.92382625"}
+,{"tree_dbh":"0","status":"Stump","latitude":"40.8260781","longitude":"-73.92519777"}
+,{"tree_dbh":"5","spc_common":"ginkgo","status":"Alive","latitude":"40.82656583","longitude":"-73.92540482"}
+,{"tree_dbh":"6","spc_common":"green ash","status":"Alive","latitude":"40.83021031","longitude":"-73.92238816"}
+,{"tree_dbh":"2","status":"Dead","latitude":"40.82715005","longitude":"-73.92453798"}
+,{"tree_dbh":"0","status":"Stump","latitude":"40.82999022","longitude":"-73.93167254"}
+,{"tree_dbh":"10","spc_common":"honeylocust","status":"Alive","latitude":"40.82614025","longitude":"-73.92538046"}
+,{"tree_dbh":"2","status":"Dead","latitude":"40.82719418","longitude":"-73.92468985"}
+,{"tree_dbh":"3","status":"Dead","latitude":"40.82712533","longitude":"-73.92445294"}
+,{"tree_dbh":"3","spc_common":"ginkgo","status":"Alive","latitude":"40.82667145","longitude":"-73.92534225"}
+,{"tree_dbh":"5","spc_common":"common hackberry","status":"Alive","latitude":"40.83028113","longitude":"-73.92234704"}
+,{"tree_dbh":"4","spc_common":"green ash","status":"Alive","latitude":"40.83284689","longitude":"-73.9218716"}
+,{"tree_dbh":"6","spc_common":"common hackberry","status":"Alive","latitude":"40.83045291","longitude":"-73.92224733"}
+,{"tree_dbh":"5","spc_common":"green ash","status":"Alive","latitude":"40.83174131","longitude":"-73.92237163"}
+,{"tree_dbh":"3","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82681662","longitude":"-73.92525625"}
+,{"tree_dbh":"2","status":"Dead","latitude":"40.82721929","longitude":"-73.92477624"}
+,{"tree_dbh":"4","spc_common":"London planetree","status":"Alive","latitude":"40.82602718","longitude":"-73.92504805"}
+,{"tree_dbh":"9","spc_common":"pin oak","status":"Alive","latitude":"40.83044163","longitude":"-73.92791133"}
+,{"tree_dbh":"9","spc_common":"pin oak","status":"Alive","latitude":"40.83035664","longitude":"-73.92818022"}
+,{"tree_dbh":"31","spc_common":"London planetree","status":"Alive","latitude":"40.83170431","longitude":"-73.92630831"}
+,{"tree_dbh":"6","spc_common":"London planetree","status":"Alive","latitude":"40.83089508","longitude":"-73.92706228"}
+,{"tree_dbh":"4","status":"Dead","latitude":"40.83110754","longitude":"-73.92797389"}
+,{"tree_dbh":"9","spc_common":"pin oak","status":"Alive","latitude":"40.83047327","longitude":"-73.92781124"}
+,{"tree_dbh":"21","spc_common":"pin oak","status":"Alive","latitude":"40.83286435","longitude":"-73.92665151"}
+,{"tree_dbh":"8","spc_common":"American elm","status":"Alive","latitude":"40.83148169","longitude":"-73.92651526"}
+,{"tree_dbh":"6","spc_common":"pin oak","status":"Alive","latitude":"40.83039418","longitude":"-73.92806145"}
+,{"tree_dbh":"13","spc_common":"pin oak","status":"Alive","latitude":"40.82930278","longitude":"-73.928837"}
+,{"tree_dbh":"4","status":"Dead","latitude":"40.83392785","longitude":"-73.92583171"}
+,{"tree_dbh":"20","spc_common":"London planetree","status":"Alive","latitude":"40.8313335","longitude":"-73.92665367"}
+,{"tree_dbh":"5","spc_common":"American elm","status":"Alive","latitude":"40.83155199","longitude":"-73.92644961"}
+,{"tree_dbh":"2","spc_common":"honeylocust","status":"Alive","latitude":"40.83017952","longitude":"-73.93174339"}
+,{"tree_dbh":"6","spc_common":"honeylocust","status":"Alive","latitude":"40.83192351","longitude":"-73.93167576"}
+,{"tree_dbh":"8","spc_common":"honeylocust","status":"Alive","latitude":"40.83331129","longitude":"-73.92630623"}
+,{"tree_dbh":"5","spc_common":"ginkgo","status":"Alive","latitude":"40.83154751","longitude":"-73.92766537"}
+,{"tree_dbh":"4","spc_common":"London planetree","status":"Alive","latitude":"40.83163155","longitude":"-73.92637562"}
+,{"tree_dbh":"22","spc_common":"London planetree","status":"Alive","latitude":"40.83117299","longitude":"-73.92680358"}
+,{"tree_dbh":"9","spc_common":"honeylocust","status":"Alive","latitude":"40.83219997","longitude":"-73.92716438"}
+,{"tree_dbh":"8","spc_common":"honeylocust","status":"Alive","latitude":"40.83080702","longitude":"-73.92814418"}
+,{"tree_dbh":"4","spc_common":"honeylocust","status":"Alive","latitude":"40.83372179","longitude":"-73.92599051"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.83169366","longitude":"-73.93174328"}
+,{"tree_dbh":"4","spc_common":"London planetree","status":"Alive","latitude":"40.83226272","longitude":"-73.9257882"}
+,{"tree_dbh":"10","spc_common":"honeylocust","status":"Alive","latitude":"40.82617012","longitude":"-73.9296006"}
+,{"tree_dbh":"16","spc_common":"honeylocust","status":"Alive","latitude":"40.82658527","longitude":"-73.92985976"}
+,{"tree_dbh":"13","spc_common":"honeylocust","status":"Alive","latitude":"40.82595486","longitude":"-73.92946622"}
+,{"tree_dbh":"12","spc_common":"honeylocust","status":"Alive","latitude":"40.82606447","longitude":"-73.92953464"}
+,{"tree_dbh":"23","spc_common":"London planetree","status":"Alive","latitude":"40.83194145","longitude":"-73.92608891"}
+,{"tree_dbh":"4","spc_common":"London planetree","status":"Alive","latitude":"40.83372155","longitude":"-73.92491296"}
+,{"tree_dbh":"6","spc_common":"honeylocust","status":"Alive","latitude":"40.83361361","longitude":"-73.92607336"}
+,{"tree_dbh":"4","spc_common":"honeylocust","status":"Alive","latitude":"40.82984347","longitude":"-73.93158273"}
+,{"tree_dbh":"24","spc_common":"London planetree","status":"Alive","latitude":"40.83312105","longitude":"-73.92523057"}
+,{"tree_dbh":"7","spc_common":"honeylocust","status":"Alive","latitude":"40.83344906","longitude":"-73.92619977"}
+,{"tree_dbh":"7","spc_common":"ginkgo","status":"Alive","latitude":"40.8314099","longitude":"-73.92777075"}
+,{"tree_dbh":"4","spc_common":"honeylocust","status":"Alive","latitude":"40.83150377","longitude":"-73.93179154"}
+,{"tree_dbh":"16","spc_common":"honeylocust","status":"Alive","latitude":"40.82561162","longitude":"-73.92925195"}
+,{"tree_dbh":"7","spc_common":"honeylocust","status":"Alive","latitude":"40.83338704","longitude":"-73.92624769"}
+,{"tree_dbh":"6","spc_common":"honeylocust","status":"Alive","latitude":"40.83203709","longitude":"-73.9316424"}
+,{"tree_dbh":"4","spc_common":"London planetree","status":"Alive","latitude":"40.83241204","longitude":"-73.92564813"}
+,{"tree_dbh":"24","spc_common":"London planetree","status":"Alive","latitude":"40.83289638","longitude":"-73.92534929"}
+,{"tree_dbh":"4","spc_common":"honeylocust","status":"Alive","latitude":"40.8303579","longitude":"-73.93179879"}
+,{"tree_dbh":"12","spc_common":"honeylocust","status":"Alive","latitude":"40.82611854","longitude":"-73.92956839"}
+,{"tree_dbh":"13","spc_common":"honeylocust","status":"Alive","latitude":"40.82578969","longitude":"-73.92936311"}
+,{"tree_dbh":"7","spc_common":"honeylocust","status":"Alive","latitude":"40.8258507","longitude":"-73.92940119"}
+,{"tree_dbh":"34","spc_common":"London planetree","status":"Alive","latitude":"40.83393253","longitude":"-73.92480369"}
+,{"tree_dbh":"28","spc_common":"London planetree","status":"Alive","latitude":"40.83398617","longitude":"-73.92477591"}
+,{"tree_dbh":"25","spc_common":"London planetree","status":"Alive","latitude":"40.83322598","longitude":"-73.92517501"}
+,{"tree_dbh":"0","status":"Stump","latitude":"40.8320906","longitude":"-73.92594967"}
+,{"tree_dbh":"5","spc_common":"London planetree","status":"Alive","latitude":"40.83268042","longitude":"-73.93131514"}
+,{"tree_dbh":"6","spc_common":"London planetree","status":"Alive","latitude":"40.83263015","longitude":"-73.93134417"}
+,{"tree_dbh":"25","spc_common":"London planetree","status":"Alive","latitude":"40.83363011","longitude":"-73.92496032"}
+,{"tree_dbh":"4","spc_common":"London planetree","status":"Alive","latitude":"40.83384502","longitude":"-73.92589578"}
+,{"tree_dbh":"6","spc_common":"honeylocust","status":"Alive","latitude":"40.8317601","longitude":"-73.93172376"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.83162616","longitude":"-73.93176311"}
+,{"tree_dbh":"11","spc_common":"honeylocust","status":"Alive","latitude":"40.82554813","longitude":"-73.92921232"}
+,{"tree_dbh":"7","spc_common":"London planetree","status":"Alive","latitude":"40.83073731","longitude":"-73.92722434"}
+,{"tree_dbh":"9","spc_common":"ginkgo","status":"Alive","latitude":"40.83020161","longitude":"-73.92802695"}
+,{"tree_dbh":"33","spc_common":"London planetree","status":"Alive","latitude":"40.8325448","longitude":"-73.92553492"}
+,{"tree_dbh":"25","spc_common":"London planetree","status":"Alive","latitude":"40.83301407","longitude":"-73.92528711"}
+,{"tree_dbh":"4","spc_common":"London planetree","status":"Alive","latitude":"40.83342594","longitude":"-73.92506838"}
+,{"tree_dbh":"27","spc_common":"London planetree","status":"Alive","latitude":"40.83332978","longitude":"-73.92511966"}
+,{"tree_dbh":"20","spc_common":"London planetree","status":"Alive","latitude":"40.83201997","longitude":"-73.92601593"}
+,{"tree_dbh":"13","spc_common":"honeylocust","status":"Alive","latitude":"40.82622121","longitude":"-73.92963249"}
+,{"tree_dbh":"3","spc_common":"London planetree","status":"Alive","latitude":"40.83378585","longitude":"-73.92594145"}
+,{"tree_dbh":"5","spc_common":"cherry","status":"Alive","latitude":"40.83233214","longitude":"-73.92706249"}
+,{"tree_dbh":"36","spc_common":"American elm","status":"Alive","latitude":"40.82997232","longitude":"-73.92894811"}
+,{"tree_dbh":"5","spc_common":"London planetree","status":"Alive","latitude":"40.83272441","longitude":"-73.93128974"}
+,{"tree_dbh":"2","spc_common":"cherry","status":"Alive","latitude":"40.83213591","longitude":"-73.92214008"}
+,{"tree_dbh":"4","spc_common":"Callery pear","status":"Alive","latitude":"40.83069055","longitude":"-73.92821018"}
+,{"tree_dbh":"7","spc_common":"Callery pear","status":"Alive","latitude":"40.83050726","longitude":"-73.92831404"}
+,{"tree_dbh":"8","spc_common":"honeylocust","status":"Alive","latitude":"40.8317847","longitude":"-73.92623393"}
+,{"tree_dbh":"4","spc_common":"London planetree","status":"Alive","latitude":"40.83282169","longitude":"-73.93123357"}
+,{"tree_dbh":"8","spc_common":"pin oak","status":"Alive","latitude":"40.830325","longitude":"-73.92828031"}
+,{"tree_dbh":"6","spc_common":"red maple","status":"Alive","latitude":"40.83221355","longitude":"-73.92583434"}
+,{"tree_dbh":"6","spc_common":"London planetree","status":"Alive","latitude":"40.8324273","longitude":"-73.93146129"}
+,{"tree_dbh":"13","spc_common":"London planetree","status":"Alive","latitude":"40.82670338","longitude":"-73.93011976"}
+,{"tree_dbh":"9","spc_common":"London planetree","status":"Alive","latitude":"40.82675567","longitude":"-73.93025176"}
+,{"tree_dbh":"15","spc_common":"London planetree","status":"Alive","latitude":"40.82680366","longitude":"-73.93029868"}
+,{"tree_dbh":"14","spc_common":"London planetree","status":"Alive","latitude":"40.82680808","longitude":"-73.93038408"}
+,{"tree_dbh":"15","spc_common":"London planetree","status":"Alive","latitude":"40.82675315","longitude":"-73.93017117"}
+,{"tree_dbh":"5","spc_common":"Callery pear","status":"Alive","latitude":"40.83042911","longitude":"-73.92835833"}
+,{"tree_dbh":"11","spc_common":"Chinese elm","status":"Alive","latitude":"40.82592621","longitude":"-73.92334016"}
+,{"tree_dbh":"8","spc_common":"silver linden","status":"Alive","latitude":"40.83008518","longitude":"-73.92842575"}
+,{"tree_dbh":"4","spc_common":"Callery pear","status":"Alive","latitude":"40.83058844","longitude":"-73.92826804"}
+,{"tree_dbh":"5","spc_common":"littleleaf linden","status":"Alive","latitude":"40.83190434","longitude":"-73.92739211"}
+,{"tree_dbh":"14","spc_common":"silver linden","status":"Alive","latitude":"40.83003442","longitude":"-73.9285933"}
+,{"tree_dbh":"7","spc_common":"pin oak","status":"Alive","latitude":"40.83164193","longitude":"-73.92759306"}
+,{"tree_dbh":"7","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82631639","longitude":"-73.92311157"}
+,{"tree_dbh":"13","spc_common":"silver linden","status":"Alive","latitude":"40.83000959","longitude":"-73.92868977"}
+,{"tree_dbh":"3","spc_common":"Callery pear","status":"Alive","latitude":"40.83017086","longitude":"-73.9281388"}
+,{"tree_dbh":"10","spc_common":"Callery pear","status":"Alive","latitude":"40.83011755","longitude":"-73.9283206"}
+,{"tree_dbh":"5","spc_common":"cherry","status":"Alive","latitude":"40.83220911","longitude":"-73.92209712"}
+,{"tree_dbh":"4","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82600946","longitude":"-73.92329139"}
+,{"tree_dbh":"18","spc_common":"pin oak","status":"Alive","latitude":"40.83277297","longitude":"-73.92672209"}
+,{"tree_dbh":"7","spc_common":"honeylocust","status":"Alive","latitude":"40.82579832","longitude":"-73.92341508"}
+,{"tree_dbh":"8","spc_common":"honeylocust","status":"Alive","latitude":"40.82572409","longitude":"-73.92345857"}
+,{"tree_dbh":"7","spc_common":"honeylocust","status":"Alive","latitude":"40.82620405","longitude":"-73.92317739"}
+,{"tree_dbh":"6","spc_common":"cherry","status":"Alive","latitude":"40.83228903","longitude":"-73.92709573"}
+,{"tree_dbh":"4","spc_common":"cherry","status":"Alive","latitude":"40.83226427","longitude":"-73.92206476"}
+,{"tree_dbh":"7","spc_common":"littleleaf linden","status":"Alive","latitude":"40.83207728","longitude":"-73.92725897"}
+,{"tree_dbh":"5","spc_common":"cherry","status":"Alive","latitude":"40.83207424","longitude":"-73.92217627"}
+,{"tree_dbh":"5","spc_common":"pin oak","status":"Alive","latitude":"40.83198728","longitude":"-73.92732835"}
+,{"tree_dbh":"16","spc_common":"littleleaf linden","status":"Alive","latitude":"40.82993809","longitude":"-73.92924931"}
+,{"tree_dbh":"7","spc_common":"Sophora","status":"Alive","latitude":"40.83115998","longitude":"-73.92794417"}
+,{"tree_dbh":"7","spc_common":"Sophora","status":"Alive","latitude":"40.82975556","longitude":"-73.9315103"}
+,{"tree_dbh":"30","spc_common":"honeylocust","status":"Alive","latitude":"40.82970651","longitude":"-73.93125302"}
+,{"tree_dbh":"9","spc_common":"ginkgo","status":"Alive","latitude":"40.82879751","longitude":"-73.92460112"}
+,{"tree_dbh":"13","spc_common":"honeylocust","status":"Alive","latitude":"40.82974309","longitude":"-73.93054557"}
+,{"tree_dbh":"10","spc_common":"littleleaf linden","status":"Alive","latitude":"40.82995888","longitude":"-73.92907681"}
+,{"tree_dbh":"6","spc_common":"honeylocust","status":"Alive","latitude":"40.82978889","longitude":"-73.93121998"}
+,{"tree_dbh":"9","spc_common":"ginkgo","status":"Alive","latitude":"40.82905245","longitude":"-73.92469699"}
+,{"tree_dbh":"13","spc_common":"honeylocust","status":"Alive","latitude":"40.82859799","longitude":"-73.9245261"}
+,{"tree_dbh":"9","spc_common":"ginkgo","status":"Alive","latitude":"40.82872942","longitude":"-73.92457552"}
+,{"tree_dbh":"19","spc_common":"honeylocust","status":"Alive","latitude":"40.82977577","longitude":"-73.93045143"}
+,{"tree_dbh":"15","spc_common":"honeylocust","status":"Alive","latitude":"40.82970514","longitude":"-73.93063933"}
+,{"tree_dbh":"10","spc_common":"ginkgo","status":"Alive","latitude":"40.82925303","longitude":"-73.92477242"}
+,{"tree_dbh":"4","spc_common":"honeylocust","status":"Alive","latitude":"40.82983062","longitude":"-73.92076922"}
+,{"tree_dbh":"4","spc_common":"northern red oak","status":"Alive","latitude":"40.82756331","longitude":"-73.92242138"}
+,{"tree_dbh":"4","spc_common":"northern red oak","status":"Alive","latitude":"40.82740518","longitude":"-73.92250984"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.83320051","longitude":"-73.92639183"}
+,{"tree_dbh":"5","spc_common":"London planetree","status":"Alive","latitude":"40.83353406","longitude":"-73.92501073"}
+,{"tree_dbh":"17","spc_common":"London planetree","status":"Alive","latitude":"40.82670264","longitude":"-73.93004366"}
+,{"tree_dbh":"12","spc_common":"honeylocust","status":"Alive","latitude":"40.82995595","longitude":"-73.92069926"}
+,{"tree_dbh":"15","spc_common":"honeylocust","status":"Alive","latitude":"40.8301384","longitude":"-73.92059741"}
+,{"tree_dbh":"14","spc_common":"honeylocust","status":"Alive","latitude":"40.8300353","longitude":"-73.92065496"}
+,{"tree_dbh":"5","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82952291","longitude":"-73.92070626"}
+,{"tree_dbh":"5","spc_common":"red maple","status":"Alive","latitude":"40.82888091","longitude":"-73.92463249"}
+,{"tree_dbh":"5","spc_common":"red maple","status":"Alive","latitude":"40.8286136","longitude":"-73.92449627"}
+,{"tree_dbh":"11","spc_common":"pin oak","status":"Alive","latitude":"40.83022321","longitude":"-73.93099288"}
+,{"tree_dbh":"6","spc_common":"littleleaf linden","status":"Alive","latitude":"40.83186495","longitude":"-73.92742227"}
+,{"tree_dbh":"4","spc_common":"honeylocust","status":"Alive","latitude":"40.82909558","longitude":"-73.92117827"}
+,{"tree_dbh":"4","spc_common":"red maple","status":"Alive","latitude":"40.82914008","longitude":"-73.92472994"}
+,{"tree_dbh":"10","spc_common":"honeylocust","status":"Alive","latitude":"40.82893524","longitude":"-73.92126731"}
+,{"tree_dbh":"8","spc_common":"red maple","status":"Alive","latitude":"40.82872539","longitude":"-73.92429627"}
+,{"tree_dbh":"4","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82949009","longitude":"-73.92060921"}
+,{"tree_dbh":"4","spc_common":"honeylocust","status":"Alive","latitude":"40.82930194","longitude":"-73.92106367"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.82941422","longitude":"-73.92100131"}
+,{"tree_dbh":"8","spc_common":"pin oak","status":"Alive","latitude":"40.83027484","longitude":"-73.93096345"}
+,{"tree_dbh":"17","spc_common":"London planetree","status":"Alive","latitude":"40.8298969","longitude":"-73.92360975"}
+,{"tree_dbh":"20","spc_common":"London planetree","status":"Alive","latitude":"40.82908898","longitude":"-73.9240832"}
+,{"tree_dbh":"16","spc_common":"London planetree","status":"Alive","latitude":"40.83018076","longitude":"-73.92344341"}
+,{"tree_dbh":"5","spc_common":"London planetree","status":"Alive","latitude":"40.82929259","longitude":"-73.92396389"}
+,{"tree_dbh":"18","spc_common":"London planetree","status":"Alive","latitude":"40.82897213","longitude":"-73.92415168"}
+,{"tree_dbh":"12","spc_common":"London planetree","status":"Alive","latitude":"40.82941095","longitude":"-73.92389453"}
+,{"tree_dbh":"15","spc_common":"London planetree","status":"Alive","latitude":"40.82954886","longitude":"-73.92381371"}
+,{"tree_dbh":"15","spc_common":"London planetree","status":"Alive","latitude":"40.8297956","longitude":"-73.92366912"}
+,{"tree_dbh":"5","spc_common":"London planetree","status":"Alive","latitude":"40.8296953","longitude":"-73.92372789"}
+,{"tree_dbh":"6","spc_common":"pin oak","status":"Alive","latitude":"40.82920382","longitude":"-73.92153256"}
+,{"tree_dbh":"0","status":"Stump","latitude":"40.83342376","longitude":"-73.93125463"}
+,{"tree_dbh":"13","spc_common":"London planetree","status":"Alive","latitude":"40.82883572","longitude":"-73.92423161"}
+,{"tree_dbh":"23","spc_common":"London planetree","status":"Alive","latitude":"40.82864665","longitude":"-73.9243424"}
+,{"tree_dbh":"5","spc_common":"northern red oak","status":"Alive","latitude":"40.82717025","longitude":"-73.92264126"}
+,{"tree_dbh":"3","status":"Dead","latitude":"40.82935298","longitude":"-73.92055123"}
+,{"tree_dbh":"4","status":"Dead","latitude":"40.82938389","longitude":"-73.92064308"}
+,{"tree_dbh":"5","spc_common":"northern red oak","status":"Alive","latitude":"40.82732586","longitude":"-73.92255422"}
+,{"tree_dbh":"17","spc_common":"London planetree","status":"Alive","latitude":"40.83007544","longitude":"-73.92350513"}
+,{"tree_dbh":"13","spc_common":"London planetree","status":"Alive","latitude":"40.82919079","longitude":"-73.92402354"}
+,{"tree_dbh":"6","spc_common":"northern red oak","status":"Alive","latitude":"40.82950613","longitude":"-73.92136321"}
+,{"tree_dbh":"5","spc_common":"northern red oak","status":"Alive","latitude":"40.8294291","longitude":"-73.92140636"}
+,{"tree_dbh":"5","spc_common":"northern red oak","status":"Alive","latitude":"40.82905153","longitude":"-73.92161787"}
+,{"tree_dbh":"5","spc_common":"northern red oak","status":"Alive","latitude":"40.82912805","longitude":"-73.921575"}
+,{"tree_dbh":"5","spc_common":"northern red oak","status":"Alive","latitude":"40.8293551","longitude":"-73.92144781"}
+,{"tree_dbh":"4","spc_common":"pin oak","status":"Alive","latitude":"40.82889974","longitude":"-73.9217029"}
+,{"tree_dbh":"3","spc_common":"cherry","status":"Alive","latitude":"40.82716966","longitude":"-73.92361768"}
+,{"tree_dbh":"8","spc_common":"pin oak","status":"Alive","latitude":"40.83010231","longitude":"-73.93106181"}
+,{"tree_dbh":"11","spc_common":"ginkgo","status":"Alive","latitude":"40.82896008","longitude":"-73.92466226"}
+,{"tree_dbh":"12","spc_common":"honeylocust","status":"Alive","latitude":"40.83025009","longitude":"-73.92053505"}
+,{"tree_dbh":"5","spc_common":"pin oak","status":"Alive","latitude":"40.8288467","longitude":"-73.92173261"}
+,{"tree_dbh":"3","spc_common":"cherry","status":"Alive","latitude":"40.82699132","longitude":"-73.92305005"}
+,{"tree_dbh":"3","spc_common":"cherry","status":"Alive","latitude":"40.82703013","longitude":"-73.92317359"}
+,{"tree_dbh":"10","spc_common":"littleleaf linden","status":"Alive","latitude":"40.82914767","longitude":"-73.92114934"}
+,{"tree_dbh":"3","spc_common":"cherry","status":"Alive","latitude":"40.82715599","longitude":"-73.92348436"}
+,{"tree_dbh":"3","spc_common":"cherry","status":"Alive","latitude":"40.8270123","longitude":"-73.92311683"}
+,{"tree_dbh":"8","spc_common":"Sophora","status":"Alive","latitude":"40.82934442","longitude":"-73.92104007"}
+,{"tree_dbh":"7","spc_common":"Sophora","status":"Alive","latitude":"40.82926148","longitude":"-73.92108614"}
+,{"tree_dbh":"6","spc_common":"sweetgum","status":"Alive","latitude":"40.82724805","longitude":"-73.92259774"}
+,{"tree_dbh":"3","spc_common":"cherry","status":"Alive","latitude":"40.82715182","longitude":"-73.92356092"}
+,{"tree_dbh":"5","spc_common":"northern red oak","status":"Alive","latitude":"40.82876992","longitude":"-73.92177562"}
+,{"tree_dbh":"6","spc_common":"Sophora","status":"Alive","latitude":"40.82976846","longitude":"-73.92080393"}
+,{"tree_dbh":"3","spc_common":"Norway maple","status":"Alive","latitude":"40.8335051","longitude":"-73.93123181"}
+,{"tree_dbh":"4","spc_common":"Norway maple","status":"Alive","latitude":"40.83364415","longitude":"-73.9311928"}
+,{"tree_dbh":"7","spc_common":"swamp white oak","status":"Alive","latitude":"40.83265744","longitude":"-73.92681132"}
+,{"tree_dbh":"4","spc_common":"Norway maple","status":"Alive","latitude":"40.8337118","longitude":"-73.93117382"}
+,{"tree_dbh":"8","spc_common":"white oak","status":"Alive","latitude":"40.83046197","longitude":"-73.93085675"}
+,{"tree_dbh":"4","spc_common":"Norway maple","status":"Alive","latitude":"40.83399366","longitude":"-73.93109475"}
+,{"tree_dbh":"9","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82610671","longitude":"-73.92460413"}
+,{"tree_dbh":"6","spc_common":"sawtooth oak","status":"Alive","latitude":"40.8289745","longitude":"-73.92166103"}
+,{"tree_dbh":"6","spc_common":"pin oak","status":"Alive","latitude":"40.82999705","longitude":"-73.92210387"}
+,{"tree_dbh":"6","spc_common":"pin oak","status":"Alive","latitude":"40.82996914","longitude":"-73.92202214"}
+,{"tree_dbh":"7","spc_common":"honeylocust","status":"Alive","latitude":"40.83039602","longitude":"-73.92103506"}
+,{"tree_dbh":"5","spc_common":"sawtooth oak","status":"Alive","latitude":"40.82748248","longitude":"-73.9224666"}
+,{"tree_dbh":"7","spc_common":"honeylocust","status":"Alive","latitude":"40.83070563","longitude":"-73.92086525"}
+,{"tree_dbh":"6","spc_common":"Callery pear","status":"Alive","latitude":"40.82987105","longitude":"-73.92132297"}
+,{"tree_dbh":"8","spc_common":"pin oak","status":"Alive","latitude":"40.82993402","longitude":"-73.92191932"}
+,{"tree_dbh":"11","spc_common":"honeylocust","status":"Alive","latitude":"40.83060277","longitude":"-73.92092167"}
+,{"tree_dbh":"6","spc_common":"honeylocust","status":"Alive","latitude":"40.83046038","longitude":"-73.92099976"}
+,{"tree_dbh":"6","spc_common":"honeylocust","status":"Alive","latitude":"40.83014772","longitude":"-73.92117123"}
+,{"tree_dbh":"12","spc_common":"honeylocust","status":"Alive","latitude":"40.82983924","longitude":"-73.92164183"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.82988156","longitude":"-73.92176574"}
+,{"tree_dbh":"15","spc_common":"Callery pear","status":"Alive","latitude":"40.82999013","longitude":"-73.92125766"}
+,{"tree_dbh":"5","spc_common":"pin oak","status":"Alive","latitude":"40.83003285","longitude":"-73.92220867"}
+,{"tree_dbh":"7","spc_common":"swamp white oak","status":"Alive","latitude":"40.83259826","longitude":"-73.92685703"}
+,{"tree_dbh":"5","spc_common":"Chinese elm","status":"Alive","latitude":"40.82768251","longitude":"-73.92634061"}
+,{"tree_dbh":"13","spc_common":"honeylocust","status":"Alive","latitude":"40.82753378","longitude":"-73.9253497"}
+,{"tree_dbh":"11","spc_common":"honeylocust","status":"Alive","latitude":"40.82749977","longitude":"-73.92523142"}
+,{"tree_dbh":"5","spc_common":"Chinese elm","status":"Alive","latitude":"40.82778428","longitude":"-73.92668862"}
+,{"tree_dbh":"5","spc_common":"Chinese elm","status":"Alive","latitude":"40.82775883","longitude":"-73.92660162"}
+,{"tree_dbh":"3","spc_common":"cherry","status":"Alive","latitude":"40.82688878","longitude":"-73.92310598"}
+,{"tree_dbh":"5","spc_common":"Chinese elm","status":"Alive","latitude":"40.82770243","longitude":"-73.92640873"}
+,{"tree_dbh":"15","spc_common":"honeylocust","status":"Alive","latitude":"40.82751687","longitude":"-73.9252909"}
+,{"tree_dbh":"14","spc_common":"honeylocust","status":"Alive","latitude":"40.82756313","longitude":"-73.92545175"}
+,{"tree_dbh":"4","spc_common":"Chinese elm","status":"Alive","latitude":"40.827733","longitude":"-73.92651327"}
+,{"tree_dbh":"10","spc_common":"Sophora","status":"Alive","latitude":"40.83079153","longitude":"-73.92081814"}
+,{"tree_dbh":"9","spc_common":"Sophora","status":"Alive","latitude":"40.83054449","longitude":"-73.92095363"}
+,{"tree_dbh":"9","spc_common":"Sophora","status":"Alive","latitude":"40.83010212","longitude":"-73.92119624"}
+,{"tree_dbh":"7","spc_common":"golden raintree","status":"Alive","latitude":"40.82866431","longitude":"-73.92180814"}
+,{"tree_dbh":"7","spc_common":"golden raintree","status":"Alive","latitude":"40.82851379","longitude":"-73.92163125"}
+,{"tree_dbh":"3","spc_common":"Sophora","status":"Alive","latitude":"40.83019333","longitude":"-73.92114622"}
+,{"tree_dbh":"3","spc_common":"cherry","status":"Alive","latitude":"40.8270751","longitude":"-73.92366277"}
+,{"tree_dbh":"3","spc_common":"cherry","status":"Alive","latitude":"40.8270332","longitude":"-73.92354059"}
+,{"tree_dbh":"5","spc_common":"eastern redbud","status":"Alive","latitude":"40.82980039","longitude":"-73.92186788"}
+,{"tree_dbh":"10","spc_common":"honeylocust","status":"Alive","latitude":"40.82769398","longitude":"-73.92525966"}
+,{"tree_dbh":"4","spc_common":"honeylocust","status":"Alive","latitude":"40.82731216","longitude":"-73.92358601"}
+,{"tree_dbh":"9","spc_common":"honeylocust","status":"Alive","latitude":"40.82766471","longitude":"-73.92516377"}
+,{"tree_dbh":"5","spc_common":"eastern redbud","status":"Alive","latitude":"40.82976763","longitude":"-73.92177396"}
+,{"tree_dbh":"10","spc_common":"honeylocust","status":"Alive","latitude":"40.827739","longitude":"-73.92540719"}
+,{"tree_dbh":"10","spc_common":"honeylocust","status":"Alive","latitude":"40.82772385","longitude":"-73.92535756"}
+,{"tree_dbh":"11","spc_common":"honeylocust","status":"Alive","latitude":"40.82757693","longitude":"-73.92549974"}
+,{"tree_dbh":"10","spc_common":"honeylocust","status":"Alive","latitude":"40.8278081","longitude":"-73.92630368"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.82777297","longitude":"-73.9255185"}
+,{"tree_dbh":"3","spc_common":"cherry","status":"Alive","latitude":"40.82692428","longitude":"-73.92322194"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.82775639","longitude":"-73.92546419"}
+,{"tree_dbh":"11","spc_common":"honeylocust","status":"Alive","latitude":"40.82767904","longitude":"-73.92521071"}
+,{"tree_dbh":"17","spc_common":"honeylocust","status":"Alive","latitude":"40.82786748","longitude":"-73.92651016"}
+,{"tree_dbh":"12","spc_common":"honeylocust","status":"Alive","latitude":"40.82790615","longitude":"-73.92664466"}
+,{"tree_dbh":"20","spc_common":"northern red oak","status":"Alive","latitude":"40.83096876","longitude":"-73.92539531"}
+,{"tree_dbh":"0","status":"Stump","latitude":"40.83092943","longitude":"-73.92527993"}
+,{"tree_dbh":"27","spc_common":"northern red oak","status":"Alive","latitude":"40.83073218","longitude":"-73.92470135"}
+,{"tree_dbh":"25","spc_common":"northern red oak","status":"Alive","latitude":"40.83104856","longitude":"-73.92562938"}
+,{"tree_dbh":"11","spc_common":"honeylocust","status":"Alive","latitude":"40.82760472","longitude":"-73.92559639"}
+,{"tree_dbh":"9","spc_common":"honeylocust","status":"Alive","latitude":"40.82782929","longitude":"-73.92637735"}
+,{"tree_dbh":"28","spc_common":"northern red oak","status":"Alive","latitude":"40.83120826","longitude":"-73.92609785"}
+,{"tree_dbh":"15","spc_common":"honeylocust","status":"Alive","latitude":"40.82759189","longitude":"-73.92555178"}
+,{"tree_dbh":"30","spc_common":"northern red oak","status":"Alive","latitude":"40.83108924","longitude":"-73.92574872"}
+,{"tree_dbh":"3","spc_common":"cherry","status":"Alive","latitude":"40.82705545","longitude":"-73.92360547"}
+,{"tree_dbh":"25","spc_common":"northern red oak","status":"Alive","latitude":"40.83088964","longitude":"-73.92516322"}
+,{"tree_dbh":"5","status":"Dead","latitude":"40.82778975","longitude":"-73.92557349"}
+,{"tree_dbh":"32","spc_common":"northern red oak","status":"Alive","latitude":"40.83112925","longitude":"-73.92586608"}
+,{"tree_dbh":"32","spc_common":"northern red oak","status":"Alive","latitude":"40.83100877","longitude":"-73.92551267"}
+,{"tree_dbh":"22","spc_common":"northern red oak","status":"Alive","latitude":"40.83077152","longitude":"-73.92481674"}
+,{"tree_dbh":"10","spc_common":"honeylocust","status":"Alive","latitude":"40.82784872","longitude":"-73.92644494"}
+,{"tree_dbh":"9","spc_common":"honeylocust","status":"Alive","latitude":"40.82759987","longitude":"-73.92547022"}
+,{"tree_dbh":"7","spc_common":"honeylocust","status":"Alive","latitude":"40.82788691","longitude":"-73.92657775"}
+,{"tree_dbh":"14","spc_common":"honeylocust","status":"Alive","latitude":"40.82762827","longitude":"-73.92556345"}
+,{"tree_dbh":"21","spc_common":"northern red oak","status":"Alive","latitude":"40.83125074","longitude":"-73.92622246"}
+,{"tree_dbh":"13","spc_common":"honeylocust","status":"Alive","latitude":"40.82758577","longitude":"-73.92542394"}
+,{"tree_dbh":"24","spc_common":"northern red oak","status":"Alive","latitude":"40.83084907","longitude":"-73.92504421"}
+,{"tree_dbh":"9","spc_common":"honeylocust","status":"Alive","latitude":"40.82753468","longitude":"-73.92525625"}
+,{"tree_dbh":"8","spc_common":"honeylocust","status":"Alive","latitude":"40.82761499","longitude":"-73.92551985"}
+,{"tree_dbh":"3","spc_common":"cherry","status":"Alive","latitude":"40.82690786","longitude":"-73.92316831"}
+,{"tree_dbh":"33","spc_common":"northern red oak","status":"Alive","latitude":"40.83116769","longitude":"-73.92597883"}
+,{"tree_dbh":"8","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82816703","longitude":"-73.92619354"}
+,{"tree_dbh":"4","spc_common":"cherry","status":"Alive","latitude":"40.83128322","longitude":"-73.92631774"}
+,{"tree_dbh":"4","spc_common":"London planetree","status":"Alive","latitude":"40.82996716","longitude":"-73.92768134"}
+,{"tree_dbh":"5","spc_common":"London planetree","status":"Alive","latitude":"40.83002363","longitude":"-73.92762515"}
+,{"tree_dbh":"4","spc_common":"cherry","status":"Alive","latitude":"40.83127266","longitude":"-73.92628675"}
+,{"tree_dbh":"4","status":"Dead","latitude":"40.82986546","longitude":"-73.92778166"}
+,{"tree_dbh":"25","spc_common":"pin oak","status":"Alive","latitude":"40.83078669","longitude":"-73.92486124"}
+,{"tree_dbh":"18","spc_common":"pin oak","status":"Alive","latitude":"40.82965283","longitude":"-73.92800617"}
+,{"tree_dbh":"23","spc_common":"pin oak","status":"Alive","latitude":"40.82939902","longitude":"-73.92830887"}
+,{"tree_dbh":"16","spc_common":"pin oak","status":"Alive","latitude":"40.82960132","longitude":"-73.92806364"}
+,{"tree_dbh":"17","spc_common":"pin oak","status":"Alive","latitude":"40.82970351","longitude":"-73.92794963"}
+,{"tree_dbh":"7","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82827982","longitude":"-73.92653797"}
+,{"tree_dbh":"5","spc_common":"Chinese elm","status":"Alive","latitude":"40.82782273","longitude":"-73.92682013"}
+,{"tree_dbh":"8","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82825972","longitude":"-73.92647658"}
+,{"tree_dbh":"8","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82818659","longitude":"-73.92625327"}
+,{"tree_dbh":"4","spc_common":"Chinese elm","status":"Alive","latitude":"40.82792928","longitude":"-73.92708112"}
+,{"tree_dbh":"5","spc_common":"London planetree","status":"Alive","latitude":"40.82991488","longitude":"-73.92773291"}
+,{"tree_dbh":"4","spc_common":"Chinese elm","status":"Alive","latitude":"40.82784265","longitude":"-73.92688825"}
+,{"tree_dbh":"8","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82832644","longitude":"-73.92668032"}
+,{"tree_dbh":"11","spc_common":"honeylocust","status":"Alive","latitude":"40.82794755","longitude":"-73.92678862"}
+,{"tree_dbh":"17","spc_common":"honeylocust","status":"Alive","latitude":"40.82751833","longitude":"-73.92520259"}
+,{"tree_dbh":"8","spc_common":"honeylocust","status":"Alive","latitude":"40.82796776","longitude":"-73.92685891"}
+,{"tree_dbh":"4","spc_common":"honeylocust","status":"Alive","latitude":"40.8271958","longitude":"-73.92322238"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.82728317","longitude":"-73.92349544"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.82718676","longitude":"-73.92281528"}
+,{"tree_dbh":"4","spc_common":"honeylocust","status":"Alive","latitude":"40.82714166","longitude":"-73.92305322"}
+,{"tree_dbh":"6","spc_common":"honeylocust","status":"Alive","latitude":"40.82716852","longitude":"-73.92313714"}
+,{"tree_dbh":"4","spc_common":"honeylocust","status":"Alive","latitude":"40.82722457","longitude":"-73.92331229"}
+,{"tree_dbh":"23","spc_common":"pin oak","status":"Alive","latitude":"40.82949735","longitude":"-73.92818549"}
+,{"tree_dbh":"7","spc_common":"golden raintree","status":"Alive","latitude":"40.82856603","longitude":"-73.92160573"}
+,{"tree_dbh":"28","spc_common":"pin oak","status":"Alive","latitude":"40.82981494","longitude":"-73.9278315"}
+,{"tree_dbh":"21","spc_common":"pin oak","status":"Alive","latitude":"40.82976088","longitude":"-73.92788563"}
+,{"tree_dbh":"8","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82830666","longitude":"-73.92661993"}
+,{"tree_dbh":"8","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.8282331","longitude":"-73.92639528"}
+,{"tree_dbh":"8","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.8283536","longitude":"-73.92676327"}
+,{"tree_dbh":"8","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82821386","longitude":"-73.92633655"}
+,{"tree_dbh":"7","spc_common":"golden raintree","status":"Alive","latitude":"40.82956025","longitude":"-73.92105324"}
+,{"tree_dbh":"8","spc_common":"golden raintree","status":"Alive","latitude":"40.82961112","longitude":"-73.92102607"}
+,{"tree_dbh":"7","spc_common":"golden raintree","status":"Alive","latitude":"40.82855076","longitude":"-73.92173867"}
+,{"tree_dbh":"10","spc_common":"honeylocust","status":"Alive","latitude":"40.83210418","longitude":"-73.9297545"}
+,{"tree_dbh":"6","spc_common":"golden raintree","status":"Alive","latitude":"40.82860244","longitude":"-73.92171323"}
+,{"tree_dbh":"5","spc_common":"ginkgo","status":"Alive","latitude":"40.83189681","longitude":"-73.9298715"}
+,{"tree_dbh":"11","spc_common":"honeylocust","status":"Alive","latitude":"40.83163707","longitude":"-73.92883354"}
+,{"tree_dbh":"10","spc_common":"pin oak","status":"Alive","latitude":"40.83337113","longitude":"-73.92640557"}
+,{"tree_dbh":"11","spc_common":"pin oak","status":"Alive","latitude":"40.82910262","longitude":"-73.92289157"}
+,{"tree_dbh":"4","spc_common":"red maple","status":"Alive","latitude":"40.83239899","longitude":"-73.92777126"}
+,{"tree_dbh":"5","spc_common":"cherry","status":"Alive","latitude":"40.83126367","longitude":"-73.92626037"}
+,{"tree_dbh":"4","spc_common":"London planetree","status":"Alive","latitude":"40.83023843","longitude":"-73.9274114"}
+,{"tree_dbh":"20","spc_common":"pin oak","status":"Alive","latitude":"40.83319462","longitude":"-73.92654219"}
+,{"tree_dbh":"5","spc_common":"London planetree","status":"Alive","latitude":"40.8303858","longitude":"-73.92726477"}
+,{"tree_dbh":"5","spc_common":"London planetree","status":"Alive","latitude":"40.83017975","longitude":"-73.9274698"}
+,{"tree_dbh":"5","spc_common":"London planetree","status":"Alive","latitude":"40.83012654","longitude":"-73.92752274"}
+,{"tree_dbh":"10","spc_common":"honeylocust","status":"Alive","latitude":"40.82770892","longitude":"-73.92530861"}
+,{"tree_dbh":"4","status":"Dead","latitude":"40.83054389","longitude":"-73.92710745"}
+,{"tree_dbh":"5","status":"Dead","latitude":"40.83217116","longitude":"-73.92957924"}
+,{"tree_dbh":"32","spc_common":"northern red oak","status":"Alive","latitude":"40.83067486","longitude":"-73.92453322"}
+,{"tree_dbh":"9","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82887983","longitude":"-73.92789508"}
+,{"tree_dbh":"8","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82895597","longitude":"-73.92801755"}
+,{"tree_dbh":"8","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82909453","longitude":"-73.92824041"}
+,{"tree_dbh":"5","spc_common":"London planetree","status":"Alive","latitude":"40.83049046","longitude":"-73.92716062"}
+,{"tree_dbh":"8","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82865645","longitude":"-73.92753576"}
+,{"tree_dbh":"26","spc_common":"London planetree","status":"Alive","latitude":"40.83073034","longitude":"-73.92693091"}
+,{"tree_dbh":"28","spc_common":"London planetree","status":"Alive","latitude":"40.83128516","longitude":"-73.92641612"}
+,{"tree_dbh":"17","spc_common":"London planetree","status":"Alive","latitude":"40.83066348","longitude":"-73.92699295"}
+,{"tree_dbh":"9","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82872981","longitude":"-73.92765376"}
+,{"tree_dbh":"0","status":"Stump","latitude":"40.82766238","longitude":"-73.92254998"}
+,{"tree_dbh":"4","spc_common":"cherry","status":"Alive","latitude":"40.83065823","longitude":"-73.92448443"}
+,{"tree_dbh":"9","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82883707","longitude":"-73.92782629"}
+,{"tree_dbh":"9","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82891217","longitude":"-73.92794709"}
+,{"tree_dbh":"12","spc_common":"Callery pear","status":"Alive","latitude":"40.83362997","longitude":"-73.92714741"}
+,{"tree_dbh":"5","spc_common":"black oak","status":"Alive","latitude":"40.83080951","longitude":"-73.92492817"}
+,{"tree_dbh":"21","spc_common":"northern red oak","status":"Alive","latitude":"40.83069824","longitude":"-73.92460179"}
+,{"tree_dbh":"6","spc_common":"Callery pear","status":"Alive","latitude":"40.8326848","longitude":"-73.92787999"}
+,{"tree_dbh":"6","spc_common":"Callery pear","status":"Alive","latitude":"40.83342916","longitude":"-73.92730306"}
+,{"tree_dbh":"12","spc_common":"honeylocust","status":"Alive","latitude":"40.82750418","longitude":"-73.92263823"}
+,{"tree_dbh":"8","spc_common":"honeylocust","status":"Alive","latitude":"40.8290943","longitude":"-73.92175125"}
+,{"tree_dbh":"16","spc_common":"honeylocust","status":"Alive","latitude":"40.82934147","longitude":"-73.92161337"}
+,{"tree_dbh":"10","spc_common":"honeylocust","status":"Alive","latitude":"40.83307744","longitude":"-73.92757567"}
+,{"tree_dbh":"8","spc_common":"honeylocust","status":"Alive","latitude":"40.83197174","longitude":"-73.92895581"}
+,{"tree_dbh":"12","spc_common":"honeylocust","status":"Alive","latitude":"40.82885169","longitude":"-73.92188658"}
+,{"tree_dbh":"14","spc_common":"honeylocust","status":"Alive","latitude":"40.82942284","longitude":"-73.92156798"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.82813042","longitude":"-73.92228891"}
+,{"tree_dbh":"10","spc_common":"honeylocust","status":"Alive","latitude":"40.8289265","longitude":"-73.92184485"}
+,{"tree_dbh":"8","spc_common":"honeylocust","status":"Alive","latitude":"40.83141666","longitude":"-73.92931013"}
+,{"tree_dbh":"9","spc_common":"honeylocust","status":"Alive","latitude":"40.82958509","longitude":"-73.92147747"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.8315124","longitude":"-73.92960523"}
+,{"tree_dbh":"4","status":"Dead","latitude":"40.83282719","longitude":"-73.92776963"}
+,{"tree_dbh":"9","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82868635","longitude":"-73.92758385"}
+,{"tree_dbh":"9","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82861368","longitude":"-73.92746697"}
+,{"tree_dbh":"11","spc_common":"honeylocust","status":"Alive","latitude":"40.82919741","longitude":"-73.92169373"}
+,{"tree_dbh":"14","spc_common":"honeylocust","status":"Alive","latitude":"40.82926059","longitude":"-73.92165849"}
+,{"tree_dbh":"15","spc_common":"honeylocust","status":"Alive","latitude":"40.83293032","longitude":"-73.9276897"}
+,{"tree_dbh":"16","spc_common":"pin oak","status":"Alive","latitude":"40.83059717","longitude":"-73.92445277"}
+,{"tree_dbh":"23","spc_common":"pin oak","status":"Alive","latitude":"40.8302958","longitude":"-73.92735432"}
+,{"tree_dbh":"10","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82876145","longitude":"-73.92770465"}
+,{"tree_dbh":"9","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.8290309","longitude":"-73.92813807"}
+,{"tree_dbh":"0","status":"Stump","latitude":"40.82778621","longitude":"-73.92248091"}
+,{"tree_dbh":"9","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82898692","longitude":"-73.92806733"}
+,{"tree_dbh":"6","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82880508","longitude":"-73.92777484"}
+,{"tree_dbh":"8","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.82906289","longitude":"-73.92818952"}
+,{"tree_dbh":"5","spc_common":"katsura tree","status":"Alive","latitude":"40.83312617","longitude":"-73.92753791"}
+,{"tree_dbh":"4","spc_common":"honeylocust","status":"Alive","latitude":"40.82759313","longitude":"-73.92258861"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.8295027","longitude":"-73.92152343"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.83137084","longitude":"-73.9291689"}
+,{"tree_dbh":"4","spc_common":"honeylocust","status":"Alive","latitude":"40.82819613","longitude":"-73.92225226"}
+,{"tree_dbh":"14","spc_common":"honeylocust","status":"Alive","latitude":"40.82915243","longitude":"-73.92171882"}
+,{"tree_dbh":"26","spc_common":"London planetree","status":"Alive","latitude":"40.83174746","longitude":"-73.92860186"}
+,{"tree_dbh":"22","spc_common":"London planetree","status":"Alive","latitude":"40.83170342","longitude":"-73.92863584"}
+,{"tree_dbh":"12","spc_common":"honeylocust","status":"Alive","latitude":"40.82868995","longitude":"-73.9219768"}
+,{"tree_dbh":"4","spc_common":"honeylocust","status":"Alive","latitude":"40.83147768","longitude":"-73.92949822"}
+,{"tree_dbh":"13","spc_common":"honeylocust","status":"Alive","latitude":"40.82792016","longitude":"-73.9224062"}
+,{"tree_dbh":"6","spc_common":"Sophora","status":"Alive","latitude":"40.82734445","longitude":"-73.92272732"}
+,{"tree_dbh":"13","spc_common":"honeylocust","status":"Alive","latitude":"40.83187487","longitude":"-73.92850357"}
+,{"tree_dbh":"5","spc_common":"honeylocust","status":"Alive","latitude":"40.83118727","longitude":"-73.9286032"}
+,{"tree_dbh":"5","spc_common":"littleleaf linden","status":"Alive","latitude":"40.8315607","longitude":"-73.9297541"}
+,{"tree_dbh":"7","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83388937","longitude":"-73.92676059"}
+,{"tree_dbh":"0","status":"Stump","latitude":"40.82805359","longitude":"-73.92233176"}
+,{"tree_dbh":"7","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83385991","longitude":"-73.92667106"}
+,{"tree_dbh":"8","spc_common":"Japanese zelkova","status":"Alive","latitude":"40.83383416","longitude":"-73.92659281"}
+,{"tree_dbh":"25","spc_common":"pin oak","status":"Alive","latitude":"40.83375123","longitude":"-73.9263408"}
+,{"tree_dbh":"19","spc_common":"pin oak","status":"Alive","latitude":"40.83377349","longitude":"-73.92640844"}
+,{"tree_dbh":"4","spc_common":"honeylocust","status":"Alive","latitude":"40.83122223","longitude":"-73.92871045"}
+,{"tree_dbh":"5","spc_common":"cherry","status":"Alive","latitude":"40.83335631","longitude":"-73.92735953"}
+,{"tree_dbh":"6","spc_common":"cherry","status":"Alive","latitude":"40.83346629","longitude":"-73.92727428"}
+,{"tree_dbh":"6","spc_common":"hedge maple","status":"Alive","latitude":"40.83194595","longitude":"-73.92887521"}
+,{"tree_dbh":"5","spc_common":"pin oak","status":"Alive","latitude":"40.83189632","longitude":"-73.92754609"}
+,{"tree_dbh":"18","spc_common":"pin oak","status":"Alive","latitude":"40.83243415","longitude":"-73.92713079"}
+,{"tree_dbh":"5","spc_common":"cherry","status":"Alive","latitude":"40.8326006","longitude":"-73.92794526"}
+,{"tree_dbh":"8","spc_common":"Sophora","status":"Alive","latitude":"40.83152426","longitude":"-73.928921"}
+,{"tree_dbh":"7","spc_common":"Sophora","status":"Alive","latitude":"40.83158007","longitude":"-73.92887773"}
+,{"tree_dbh":"5","spc_common":"cherry","status":"Alive","latitude":"40.83321155","longitude":"-73.92747172"}
+,{"tree_dbh":"9","spc_common":"Sophora","status":"Alive","latitude":"40.83178915","longitude":"-73.92871564"}
+,{"tree_dbh":"14","spc_common":"pin oak","status":"Alive","latitude":"40.83389199","longitude":"-73.92601005"}
+,{"tree_dbh":"7","spc_common":"Sophora","status":"Alive","latitude":"40.83143887","longitude":"-73.92898719"}
+,{"tree_dbh":"9","spc_common":"Sophora","status":"Alive","latitude":"40.82847059","longitude":"-73.92209916"}
+,{"tree_dbh":"14","spc_common":"pin oak","status":"Alive","latitude":"40.83202492","longitude":"-73.92744909"}
+,{"tree_dbh":"6","spc_common":"pin oak","status":"Alive","latitude":"40.83382381","longitude":"-73.92606271"}
+,{"tree_dbh":"2","spc_common":"cherry","status":"Alive","latitude":"40.83324467","longitude":"-73.92744606"}
+,{"tree_dbh":"10","spc_common":"cherry","status":"Alive","latitude":"40.83234443","longitude":"-73.92786237"}
+,{"tree_dbh":"5","spc_common":"littleleaf linden","status":"Alive","latitude":"40.83211747","longitude":"-73.92941139"}
+,{"tree_dbh":"4","spc_common":"katsura tree","status":"Alive","latitude":"40.83330096","longitude":"-73.92740243"}
+,{"tree_dbh":"4","spc_common":"honeylocust","status":"Alive","latitude":"40.83125439","longitude":"-73.92880908"}
+,{"tree_dbh":"6","spc_common":"Sophora","status":"Alive","latitude":"40.82798687","longitude":"-73.92236898"}
+,{"tree_dbh":"6","spc_common":"Sophora","status":"Alive","latitude":"40.83205941","longitude":"-73.92922989"}
+,{"tree_dbh":"5","spc_common":"cherry","status":"Alive","latitude":"40.8322219","longitude":"-73.92758665"}
+,{"tree_dbh":"6","spc_common":"honeylocust","status":"Alive","latitude":"40.831248","longitude":"-73.92803167"}
+,{"tree_dbh":"8","spc_common":"Callery pear","status":"Alive","latitude":"40.83219003","longitude":"-73.92751491"}
+,{"tree_dbh":"5","spc_common":"silver linden","status":"Alive","latitude":"40.83196062","longitude":"-73.92749759"}
+,{"tree_dbh":"8","spc_common":"cherry","status":"Alive","latitude":"40.83220119","longitude":"-73.92825183"}
+,{"tree_dbh":"13","spc_common":"pin oak","status":"Alive","latitude":"40.83162103","longitude":"-73.92775713"}
+,{"tree_dbh":"12","spc_common":"pin oak","status":"Alive","latitude":"40.83148219","longitude":"-73.92786544"}
+,{"tree_dbh":"11","spc_common":"honeylocust","status":"Alive","latitude":"40.83234944","longitude":"-73.92719636"}
+,{"tree_dbh":"10","spc_common":"pin oak","status":"Alive","latitude":"40.8313402","longitude":"-73.92797172"}
+,{"tree_dbh":"9","spc_common":"silver maple","status":"Alive","latitude":"40.83286431","longitude":"-73.92679785"}
+,{"tree_dbh":"4","spc_common":"hawthorn","status":"Alive","latitude":"40.83136099","longitude":"-73.92890001"}
+,{"tree_dbh":"16","spc_common":"pin oak","status":"Alive","latitude":"40.83181772","longitude":"-73.92760536"}]

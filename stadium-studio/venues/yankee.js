@@ -8,7 +8,8 @@ const {$,app,stage,canvas,loading,labelsEl,renderer,maxAniso,reduceMotion,deg,TA
 ===================================================================== */
 function buildYankee(){
   const V=newVenue('yankee',{name:'Yankee Stadium',eyebrow:'3D study · The Bronx, New York',spec:['Opened 2009','LF 318 ft','CF 408 ft','RF 314 ft'],
-    sheet:{title:'Yankee Stadium',addr:'1 East 161st Street · Bronx, NY',elev:'south',elevName:'Elevation',planName:'Plan at field level',rows:[['Architect','HOK Sport (now Populous)'],['Opened','April 16, 2009'],['Field','LF 318 · CF 408 · RF 314 ft'],['Drawn from','Hand-built study model']]},
+    sheet:{title:'Yankee Stadium',addr:'1 East 161st Street · Bronx, NY',elevDir:[.45,.22,1],elevName:'Home plate entrance elevation',planName:'Plan at field level',secName:'Stands cross section',sec:{h:[-128,-38],y:[-2,52]},
+      callouts:[{p:[0,0,0],t:'Home plate'},{p:[0,0,-18.4],t:'Pitcher\'s mound'},{p:[0,0,-112],t:'Center field'},{p:[-62,0,-100],t:'Left field'},{p:[62,0,-100],t:'Right field'},{p:[0,0,-128],t:'Monument Park'},{p:[45,8,22],t:'Main level'}],rows:[['Architect','HOK Sport (now Populous)'],['Builder','Turner Construction'],['Cost','$2.3 billion'],['Groundbreaking','August 16, 2006'],['Opened','April 16, 2009'],['Field','LF 318 · CF 408 · RF 314 ft'],['Drawn from','Hand-built study model']]},
     center:new THREE.Vector3(0,0,-40),scale:1,indoor:false,studio:{bg:'#24457e',seat:'#1f3c73',trim:'#c9a24a'},cut:{x:0,z:-40},section:{axis:'z',c:-40},
     dayK:{}});
   const C=[0,-53.8],r2=Math.SQRT1_2,dL=[-r2,-r2],dR=[r2,-r2],nL=[-r2,r2],nR=[r2,r2];
@@ -143,10 +144,49 @@ function buildYankee(){
   const iL=L.cross('z',-40,-1), iR=L.cross('z',-40,1);
   const row=(T,s)=>{const dO=(T.o1-T.o0)/T.steps,dH=(T.h1-T.h0)/(T.steps-1); return L.pos(iL,T.o0+(s+.5)*dO,T.h0+s*dH+1.2);};
   addSight(V,[row(T1,3),row(T1,13),row(T2,6),row(T3,4),row(T3,14)],L.pos(iL,-4,.3));
+  // blueprint cross section: the stands' real outlines where the cut line crosses the third-base side
+  V.sheet.profile=[SS.tierProfile(L,iL,T1),SS.tierProfile(L,iL,T2),SS.tierProfile(L,iL,T3),[L.pos(iL,-30,0),L.pos(iL,fo[iL]+12,0)],[L.pos(iL,fo[iL],0),L.pos(iL,fo[iL],fh[iL])]];
   V.labels.section=[{p:L.pos(iL,52,49.6),t:'Canopy & frieze'},{p:row(T3,10),t:'Grandstand · 400 level'},{p:row(T2,8),t:'Main & Terrace levels'},{p:row(T1,9),t:'Field level · 100s'},
     {p:L.pos(iL,-4,.3),t:'Sightline focal point'},{p:L.pos(iR,fo[iR],18),t:'Limestone facade'},{p:[30,-18,-40],t:'Foundations'}];
+  // ---------------------------------------------------------------- the real neighborhood (data/fetch_venue.py yankee), lined up by the real field
+  const D=(window.STADIUM_DATA||{}).yankee||null;
+  if(D){
+    const fld=(D.pitches||[]).find(p=>p.sport==='baseball');
+    let F=fld?fld.pts.slice():null; if(F&&F[0][0]===F[F.length-1][0]&&F[0][1]===F[F.length-1][1]) F.pop();
+    if(F&&F.length>3){
+      // home plate: the corner of the real field outline that sees the rest of the field in the narrowest wedge (about 90 degrees)
+      let hp=F[0],best=1e9;
+      F.forEach(v=>{const a=F.filter(q=>Math.hypot(q[0]-v[0],q[1]-v[1])>5).map(q=>Math.atan2(q[1]-v[1],q[0]-v[0])).sort((x,y)=>x-y); if(a.length<3) return;
+        let gap=a[0]+TAU-a[a.length-1]; for(let i=1;i<a.length;i++) gap=Math.max(gap,a[i]-a[i-1]); if(TAU-gap<best){best=TAU-gap; hp=v;}});
+      const c=SS.centroid(F), d=[c[0]-hp[0],c[1]-hp[1]], phi=Math.atan2(d[0],-d[1]), cp=Math.cos(phi), sp=Math.sin(phi);
+      // turn and slide the real world so its home plate and center field match the model's (home plate at 0,0, center field toward -z)
+      V.world=new THREE.Group(); V.world.rotation.y=phi; V.world.position.set(-(hp[0]*cp+hp[1]*sp),0,-(-hp[0]*sp+hp[1]*cp)); V.G.base.add(V.world);
+      V.city=new THREE.Group(); V.world.add(V.city); V.hidePlinthInCity=true;
+      const old=V.trees; SS.buildCity(V,D,V.city,{box:D.box}); if(old&&old!==V.trees) old.parent.remove(old);
+      // the 4 train on its elevated track over River Avenue, running to the real evening schedule
+      const el=SS.buildEl(V,D,V.city,{y:10});
+      const T=(D.transit||[])[0];
+      if(el&&el.station!=null&&T){
+        const moves=T.moves.filter(m=>m.line==='4'), tm=std({map:trainTex('#3a3f47','#00933c'),roughness:.4}), endM=std({color:lin('#9da3ab')});
+        tm.map.repeat.set(10,1); tm.userData.map=tm.map; V.trainMats=[tm];
+        const ease2=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2, s0=el.station;
+        const geo=new THREE.BoxGeometry(150,3.6,2.9); V.trains=[];
+        // one train per stop at 161 St; called again with live MTA data (N = uptown, S = downtown)
+        const makeTrains=list=>{V.trains.forEach(T=>V.city.remove(T.mesh)); V.trains=list.map(mv=>{const m=new THREE.Mesh(geo,[endM,endM,endM,endM,tm,tm]); m.visible=false; m.castShadow=true; V.city.add(m); return {mesh:m,mv,sg:(mv.dir==='1'||mv.dir==='S')?-1:1};});};
+        makeTrains(moves); V.resetTrains=()=>makeTrains(moves);
+        V.setLive=(arr,base)=>makeTrains((arr||[]).filter(a=>a.line==='4').map(a=>({min:(a.t-base)/60,dir:a.dir,line:'4'})));
+        V.trainAt=t=>{V.trains.forEach(T=>{let s=null; for(const sh of [0,60,-60]){const u=t+sh,m=T.mv.min; if(u<m-1.6||u>m+2.1) continue;
+            s=u<m?s0-T.sg*(1-ease2((u-(m-1.6))/1.6))*260:u<m+.5?s0:s0+T.sg*ease2((u-m-.5)/1.6)*260;}
+          const ok=s!==null&&s>8&&s<el.L-8; T.mesh.visible=ok; if(ok){const p=el.at(s); T.mesh.position.set(p.x+Math.cos(p.yaw)*T.sg*2.2,el.y+3.2,p.z-Math.sin(p.yaw)*T.sg*2.2); T.mesh.rotation.y=p.yaw-Math.PI/2;}});};
+        const h0=T.hours[0]; V.drawBoard=(t,live)=>{if(live) return live; const hh=h0+Math.floor(t/60),mm=Math.floor(t)%60; return `${hh>12?hh-12:hh}:${String(mm).padStart(2,'0')} ${hh>=12?'PM':'AM'}`;};
+        V.trainShown=()=>V.city.visible; V.trainLabel='4 train at 161 St–Yankee Stadium'; V.trainDate=T.date; V.liveStation='yankee';
+      }
+    }
+  }
   // cameras + lights
-  const iS=L.idxAtPhi(-36); V.camOv.iso={size:150,tgt:[0,6,0]}; V.camOv.bowl={abs:true,pos:L.pos(iS,13,2.5+(12/31)*8.5+1.3),tgt:[34,14,-46],fov:58};
+  const iS=L.idxAtPhi(-36); V.skipStyles=['cutaway']; V.camOv.iso={size:150,tgt:[0,6,0]}; V.camOv.bowl={abs:true,pos:L.pos(iS,13,2.5+(12/31)*8.5+1.3),tgt:[34,14,-46],fov:58};
+  V.camOv.bowlUp={abs:true,pos:[0,1.8,5],tgt:[0,9,-120],fov:68};   // from home plate, looking out to the bleachers
+  V.bowlOpts=[['seat','Seats'],['up','Home plate, look out']];
   V.pointPos.night=[[-75,75,-5],[75,75,-5],[-55,75,-95],[55,75,-95]];
   return V;
 }

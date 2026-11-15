@@ -41,12 +41,13 @@ const mats={
   glass:std({color:lin('#d6ecf5'),transparent:true,opacity:.22,depthWrite:false,side:THREE.DoubleSide,roughness:.1}),
   road:std({},false), square:std({},false), soilTop:std({},false), soilSide:std({},false), soilDeep:std({color:lin('#4d4034')},false),
   plinthTop:std({},false), plinthSide:std({},false), woodTop:std({},false), woodSide:std({},false),
-  trainEnd:std({color:lin('#9da3ab')},'under')
+  trainEnd:std({color:lin('#9da3ab')},'under'),
+  tank:std({color:lin('#6e5139'),roughness:.95}), tankRoof:std({color:lin('#3d3934')}), globe:std({color:lin('#4fbf74'),roughness:.4})
 };
 const K={seat:0,aisle:1,walk:2,riser:3,fascia:4,soffit:5,back:6,cap:7,canopy:8,roof:9,wall:10,wallTop:11,ground:12,mpark:13,inner:14,boards:15,cable:16,roofTop:17,slab:18,platform:19,track:20,
-  seat2:21,pier:22,ring:23,gap:24,ceil:25,ceil2:26,beam:27,unit:28,nbr:29,nbr2:30,nbrTop:31,podium:32,curtain:33};
+  seat2:21,pier:22,ring:23,gap:24,ceil:25,ceil2:26,beam:27,unit:28,nbr:29,nbr2:30,nbrTop:31,podium:32,curtain:33,nbr3:34,sidewalk:35,curb:36,steel:37};
 // newer kinds borrow an older kind's color in palettes that do not name them
-const KFALL={seat2:'seat',pier:'back',ring:'canopy',gap:'fascia',ceil:'inner',ceil2:'inner',beam:'cable',unit:'roofTop',nbr:'back',nbr2:'back',nbrTop:'roof',podium:'back',curtain:'fascia'};
+const KFALL={nbr3:'back',sidewalk:'aisle',curb:'riser',steel:'cable',seat2:'seat',pier:'back',ring:'canopy',gap:'fascia',ceil:'inner',ceil2:'inner',beam:'cable',unit:'roofTop',nbr:'back',nbr2:'back',nbrTop:'roof',podium:'back',curtain:'fascia'};
 
 class KB{
   constructor(){this.p=[];this.k=[];}
@@ -295,6 +296,143 @@ function addSight(V,eyes,focal){
   V.root.add(V.sight);
 }
 
+/* =====================================================================
+   City kit (shared by every venue): buildings with real facades, streets, sidewalks, census trees,
+   signals, subway entrances, and elevated train lines. Works in the data's own frame; a venue can
+   place the result anywhere by putting it in a moved or turned group.
+===================================================================== */
+// walls get a window texture, roofs are flat; b = {pts, h, minh, k (wall kind), kt (roof kind), hole, skipEdge}
+function blocks(V,list,group,mat){
+  const pos=[],uv=[],kinds=[],kbT=new KB(),up=[0,1,0];
+  list.forEach(b=>{
+    let pts=b.pts; const A=pts.reduce((s,p,i)=>{const q=pts[(i+1)%pts.length]; return s+p[0]*q[1]-q[0]*p[1];},0);
+    const sgn=A>0?1:-1, h=b.h, y0=b.minh||0; let acc=0;
+    pts.forEach((a,i)=>{const c=pts[(i+1)%pts.length],dx=c[0]-a[0],dz=c[1]-a[1],len=Math.hypot(dx,dz); if(len<.05) return;
+      if(b.skipEdge && b.skipEdge(a,c)){acc+=len; return;}
+      const n=[sgn*dz,0,-sgn*dx], A0=[a[0],y0,a[1]],B0=[c[0],y0,c[1]],B1=[c[0],h,c[1]],A1=[a[0],h,a[1]];
+      const u0=acc/32,u1=(acc+len)/32,v0=y0/28.8,v1=h/28.8; acc+=len;
+      const cr=(p,q,r)=>{const ux=q[0]-p[0],uy=q[1]-p[1],uz=q[2]-p[2],vx=r[0]-p[0],vy=r[1]-p[1],vz=r[2]-p[2]; return [uy*vz-uz*vy,uz*vx-ux*vz,ux*vy-uy*vx];};
+      const nn=cr(A0,B0,B1), ok=nn[0]*n[0]+nn[2]*n[2]>=0;
+      const T=ok?[[A0,u0,v0],[B0,u1,v0],[B1,u1,v1],[A0,u0,v0],[B1,u1,v1],[A1,u0,v1]]:[[A0,u0,v0],[B1,u1,v1],[B0,u1,v0],[A0,u0,v0],[A1,u0,v1],[B1,u1,v1]];
+      T.forEach(([p,u,v])=>{pos.push(...p); uv.push(u,v); kinds.push(b.k);});});
+    const holes=b.hole?[b.hole.map(p=>new THREE.Vector2(p[0],p[1]))]:[], all=pts.concat(b.hole||[]);
+    THREE.ShapeUtils.triangulateShape(pts.map(p=>new THREE.Vector2(p[0],p[1])),holes).forEach(f=>kbT.triF([all[f[0]][0],h,all[f[0]][1]],[all[f[1]][0],h,all[f[1]][1]],[all[f[2]][0],h,all[f[2]][1]],b.kt,up));
+  });
+  if(pos.length){const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3)); g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));
+    g.setAttribute('color',new THREE.Float32BufferAttribute(new Float32Array(kinds.length*3),3)); g.computeVertexNormals();
+    const m=new THREE.Mesh(g,mat); m.userData.kinds=Uint8Array.from(kinds); m.castShadow=m.receiveShadow=true; V.kindMeshes.push(m); V.edgeTargets.push(m); group.add(m);}
+  if(kbT.p.length) kbT.mesh(V,group);
+}
+const pip=(p,poly)=>{let inside=false; for(let i=0,j=poly.length-1;i<poly.length;j=i++){const a=poly[i],b=poly[j]; if(((a[1]>p[1])!==(b[1]>p[1]))&&(p[0]<(b[0]-a[0])*(p[1]-a[1])/(b[1]-a[1])+a[0])) inside=!inside;} return inside;};
+const centroid=pts=>[pts.reduce((s,q)=>s+q[0],0)/pts.length,pts.reduce((s,q)=>s+q[1],0)/pts.length];
+const polyArea=pts=>Math.abs(pts.reduce((s,p,i)=>{const q=pts[(i+1)%pts.length]; return s+p[0]*q[1]-q[0]*p[1];},0))/2;
+
+// facade textures: one tile = 8 bays (4 m) by 8 floors (3.6 m). White walls, so each building's color tints them.
+const FACADE=(()=>{
+  const T=draw=>{const c=mk(256,256),x=c.getContext('2d'); x.fillStyle='#ffffff'; x.fillRect(0,0,256,256); draw(x); return tex(c,true,true);};
+  let sd=9; const rnd=()=>((sd=(sd*16807)%2147483647)/2147483647);
+  return {
+    // prewar brick: tall paired windows, pale lintels, faint brick courses
+    brick:T(x=>{for(let y=0;y<256;y+=3){x.fillStyle=`rgba(0,0,0,${.03+rnd()*.03})`; x.fillRect(0,y,256,1);}
+      for(let i=0;i<8;i++) for(let j=0;j<8;j++){x.fillStyle='#e9e4da'; x.fillRect(i*32+7,j*32+5,18,3); x.fillStyle='#3d434c'; x.fillRect(i*32+8,j*32+8,16,19); x.fillStyle='rgba(255,255,255,.18)'; x.fillRect(i*32+8,j*32+8,16,3); x.fillStyle='#2b3037'; x.fillRect(i*32+15,j*32+8,2,19);}}),
+    // prewar limestone: deep-set windows, a line at every floor
+    stone:T(x=>{for(let j=0;j<8;j++){x.fillStyle='rgba(0,0,0,.08)'; x.fillRect(0,j*32+30,256,2);}
+      for(let i=0;i<8;i++) for(let j=0;j<8;j++){x.fillStyle='#4a5059'; x.fillRect(i*32+9,j*32+7,14,19); x.fillStyle='rgba(0,0,0,.25)'; x.fillRect(i*32+9,j*32+7,14,3);}}),
+    // postwar: long ribbon windows between solid bands
+    // lit offices at night (same layout, so it lines up with every facade)
+    night:(()=>{const c=mk(256,256),x=c.getContext('2d'); x.fillStyle='#000'; x.fillRect(0,0,256,256); let s=7; const r=()=>((s=(s*16807)%2147483647)/2147483647);
+      for(let i=0;i<8;i++) for(let j=0;j<8;j++) if(r()<.42){const t=r(); x.fillStyle=`rgba(255,${200+t*40|0},${130+t*60|0},${.55+t*.45})`; x.fillRect(i*32+5,j*32+7,22,17);} return tex(c,true,true);})(),
+    band:T(x=>{for(let j=0;j<8;j++){x.fillStyle='#5a636e'; x.fillRect(0,j*32+9,256,14); x.fillStyle='rgba(255,255,255,.15)'; x.fillRect(0,j*32+9,256,3); x.fillStyle='rgba(0,0,0,.3)'; for(let i=0;i<256;i+=16) x.fillRect(i,j*32+9,2,14);}}),
+  };
+})();
+
+// the neighborhood: buildings (style from the tax lots), rooftops, ground, sidewalks, trees, signals, subway entrances
+function buildCity(V,D,parent,o){
+  o=o||{};
+  const box=o.box||D.box, lots=(D.city&&D.city.lots)||[], skip=new Set(o.skipBins||[]);
+  V.mats.win=V.mats.win||std({vertexColors:true,map:FACADE.brick,roughness:.85});
+  V.mats.glassWall=V.mats.glassWall||std({vertexColors:true,map:V.tex.win||FACADE.band,roughness:.16,metalness:.55});
+  V.mats.brick=std({vertexColors:true,map:FACADE.brick,roughness:.9}); V.mats.stone=std({vertexColors:true,map:FACADE.stone,roughness:.85}); V.mats.band=std({vertexColors:true,map:FACADE.band,roughness:.8});
+  V.facadeMats=[V.mats.brick,V.mats.stone,V.mats.band];
+  const groups={brick:[],stone:[],band:[],glass:[]}, tanks=[], bulk=new KB();
+  (D.buildings||[]).filter(b=>!skip.has(b.bin)&&!(o.skipNear&&o.skipNear(b))).forEach(b=>{
+    const c=centroid(b.pts), lot=lots.find(l=>pip(l,b.pts))||null;
+    const yr=lot?lot[2]:parseInt(b.yr||'0',10)||0, floors=lot&&lot[3]?lot[3]:Math.round(b.h/3.4), seed=(parseInt(String(b.bin).replace(/\D/g,'')||'7',10)%97)/97;
+    let kind=b.h>80||(yr>=1985&&b.h>35)?'glass':yr&&yr<1946?(seed<.62?'brick':'stone'):'band';
+    const k=kind==='glass'?K.curtain:kind==='brick'?K.nbr:kind==='stone'?K.nbr2:K.nbr3;
+    groups[kind].push({pts:b.pts,h:b.h,k,kt:K.nbrTop});
+    const area=polyArea(b.pts);
+    // rooftops: a stair and elevator bulkhead on most buildings, a wooden water tank on prewar mid-rises (a New York signature)
+    if(kind!=='glass'&&b.h>14&&area>220&&pip(c,b.pts)) boxKB(bulk,[c[0],b.h+1.6,c[1]],[5.5,3.2,4.5],0,K.unit,K.nbrTop);
+    if((kind==='brick'||kind==='stone')&&floors>=6&&floors<=26&&area>260){const tp=[c[0]+3.5,c[1]-2.5]; if(pip(tp,b.pts)) tanks.push([tp[0],b.h,tp[1]]);}
+  });
+  blocks(V,groups.brick,parent,V.mats.brick); blocks(V,groups.stone,parent,V.mats.stone); blocks(V,groups.band,parent,V.mats.band); blocks(V,groups.glass,parent,V.mats.glassWall);
+  if(bulk.p.length) bulk.mesh(V,parent);
+  if(tanks.length){
+    const body=new THREE.InstancedMesh(new THREE.CylinderGeometry(2.3,2.3,4.4,12),mats.tank,tanks.length), roof=new THREE.InstancedMesh(new THREE.ConeGeometry(2.55,1.7,12),mats.tankRoof,tanks.length),
+      legs=new THREE.InstancedMesh(new THREE.BoxGeometry(3.8,2.6,3.8),mats.tankRoof,tanks.length), M=new THREE.Matrix4();
+    tanks.forEach(([x,y,z],i)=>{M.makeTranslation(x,y+1.3,z); legs.setMatrixAt(i,M); M.makeTranslation(x,y+4.8,z); body.setMatrixAt(i,M); M.makeTranslation(x,y+7.85,z); roof.setMatrixAt(i,M);});
+    [body,roof,legs].forEach(m=>{m.castShadow=true; parent.add(m);});
+  }
+  // ground: streets, crosswalks and lane lines painted; sidewalks raised as real curbs
+  const [x0,x1,z0,z1]=box, W=x1-x0, H=z1-z0, sc=2048/Math.max(W,H), c=mk(Math.round(W*sc),Math.round(H*sc)), x=c.getContext('2d');
+  x.setTransform(sc,0,0,sc,-x0*sc,-z0*sc); x.lineCap='round'; x.lineJoin='round';
+  x.fillStyle='#bab5ab'; x.fillRect(x0,z0,W,H);
+  const line=pts=>{x.beginPath(); pts.forEach((p,i)=>i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]));};
+  (D.streets||[]).forEach(s=>{line(s.pts); x.strokeStyle='#3c3e43'; x.lineWidth=s.w+3; x.stroke();});
+  (D.streets||[]).forEach(s=>{line(s.pts); x.setLineDash(s.w>14?[3,6]:[2.5,7]); x.strokeStyle='rgba(240,240,236,.75)'; x.lineWidth=.18; x.stroke(); x.setLineDash([]);});
+  (D.paths||[]).filter(p=>p.kind==='crossing').forEach(p=>{line(p.pts); x.setLineDash([.6,.6]); x.strokeStyle='#efefea'; x.lineWidth=3.2; x.lineCap='butt'; x.stroke(); x.setLineDash([]); x.lineCap='round';});
+  for(let i=0;i<900;i++){x.fillStyle=`rgba(0,0,0,${Math.random()*.05})`; x.fillRect(x0+Math.random()*W,z0+Math.random()*H,.6+Math.random()*1.5,.4);}   // asphalt wear
+  V.tex.streets=tex(c); V.mats.streets=std({map:V.tex.streets,roughness:1});
+  const gp=new THREE.Mesh(new THREE.PlaneGeometry(W,H).rotateX(-Math.PI/2),V.mats.streets); gp.position.set((x0+x1)/2,.03,(z0+z1)/2); gp.receiveShadow=true; parent.add(gp);
+  const walks=((D.city&&D.city.sidewalks)||[]).map(pts=>({pts,h:.18,k:K.curb,kt:K.sidewalk}));
+  if(walks.length){V.mats.walk=std({vertexColors:true,roughness:.95}); blocks(V,walks,parent,V.mats.walk);}
+  // street trees from the city's tree census, sized by real trunk width (falls back to OpenStreetMap trees)
+  const ct=(D.city&&D.city.trees)||[], spots=ct.length?ct.map(t=>[t[0],t[1],t[2]||6]):(D.trees||[]).map(t=>[t[0],t[1],8]);
+  V.trees=new THREE.Group(); parent.add(V.trees);
+  if(spots.length){
+    const trunk=new THREE.InstancedMesh(new THREE.CylinderGeometry(.18,.26,1,6),mats.trunk,spots.length), crown=new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1,1),mats.crown,spots.length);
+    const M=new THREE.Matrix4(),Q=new THREE.Quaternion(),S=new THREE.Vector3(),P=new THREE.Vector3(),col=new THREE.Color();
+    spots.forEach(([tx,tz,dbh],i)=>{const r=Math.min(5.5,Math.max(1.6,1.3+dbh*.11)), th=2.2+dbh*.1;
+      P.set(tx,th/2,tz); S.set(1+dbh*.02,th,1+dbh*.02); M.compose(P,Q,S); trunk.setMatrixAt(i,M);
+      P.set(tx,th+r*.75,tz); S.set(r,r*.85,r); M.compose(P,Q,S); crown.setMatrixAt(i,M); col.setHSL(.28+((i*37)%10)/120,.35,.78+((i*13)%10)/60); crown.setColorAt(i,col);});
+    trunk.castShadow=crown.castShadow=true; crown.receiveShadow=true; V.trees.add(trunk,crown);
+  }
+  // traffic signals (a pole on the near corner) and subway entrances (green railings and globe lamps)
+  const F=D.furniture||[], sig=F.filter(f=>f.kind==='traffic_signals'), ent=F.filter(f=>f.kind==='subway_entrance');
+  if(sig.length){const pole=new THREE.InstancedMesh(new THREE.CylinderGeometry(.13,.16,6.2,6),mats.dark,sig.length), head=new THREE.InstancedMesh(new THREE.BoxGeometry(.5,1.3,.5),mats.dark,sig.length), M=new THREE.Matrix4();
+    sig.forEach((f,i)=>{M.makeTranslation(f.p[0]+6,3.1,f.p[1]+6); pole.setMatrixAt(i,M); M.makeTranslation(f.p[0]+6,5.6,f.p[1]+5.2); head.setMatrixAt(i,M);}); parent.add(pole,head);}
+  if(ent.length){const rail=new THREE.InstancedMesh(new THREE.BoxGeometry(3,1,4.6),mats.globe,ent.length), post=new THREE.InstancedMesh(new THREE.SphereGeometry(.32,10,8),mats.globe,ent.length*2), M=new THREE.Matrix4();
+    ent.forEach((f,i)=>{M.makeTranslation(f.p[0],.5,f.p[1]); rail.setMatrixAt(i,M); [-1,1].forEach((s,k)=>{M.makeTranslation(f.p[0]+s*1.5,2.4,f.p[1]+2.3); post.setMatrixAt(i*2+k,M);});}); parent.add(rail,post);}
+  return {box};
+}
+
+// elevated train line (like the 4 train over River Avenue): one centerline through all the el track pieces
+function buildEl(V,D,parent,o){
+  o=o||{}; const els=(D.els||[]).filter(e=>e.subway||o.rail); if(!els.length) return null;
+  const P=els.flatMap(e=>e.pts), cx=P.reduce((s,p)=>s+p[0],0)/P.length, cz=P.reduce((s,p)=>s+p[1],0)/P.length;
+  let sxx=0,sxz=0,szz=0; P.forEach(p=>{const a=p[0]-cx,b=p[1]-cz; sxx+=a*a; sxz+=a*b; szz+=b*b;});
+  const ang=.5*Math.atan2(2*sxz,sxx-szz), ax=[Math.cos(ang),Math.sin(ang)], nx=[-ax[1],ax[0]];
+  const pr=P.map(p=>[(p[0]-cx)*ax[0]+(p[1]-cz)*ax[1],(p[0]-cx)*nx[0]+(p[1]-cz)*nx[1]]).sort((a,b)=>a[0]-b[0]);
+  const path=[]; for(let t=pr[0][0];t<=pr[pr.length-1][0];t+=12){const near=pr.filter(q=>Math.abs(q[0]-t)<14); const off=near.length?near.reduce((s,q)=>s+q[1],0)/near.length:0; path.push([cx+ax[0]*t+nx[0]*off,cz+ax[1]*t+nx[1]*off]);}
+  if(path.length<2) return null;
+  const Y=o.y||9.5, kb=new KB(), seg=[]; let L=0; const cum=[0];
+  for(let i=1;i<path.length;i++){L+=Math.hypot(path[i][0]-path[i-1][0],path[i][1]-path[i-1][1]); cum.push(L);}
+  const at=s=>{s=Math.max(0,Math.min(L,s)); let i=1; while(i<cum.length-1&&cum[i]<s) i++; const a=path[i-1],b=path[i],t=(s-cum[i-1])/((cum[i]-cum[i-1])||1); return {x:a[0]+(b[0]-a[0])*t,z:a[1]+(b[1]-a[1])*t,yaw:Math.atan2(b[0]-a[0],b[1]-a[1])};};
+  for(let s=0;s<L;s+=6){const p=at(s+3); boxKB(kb,[p.x,Y,p.z],[10,1.3,6.4],p.yaw,K.steel,K.steel); [-4.6,4.6].forEach(lx=>boxKB(kb,[p.x+Math.cos(p.yaw)*lx,Y+1.1,p.z-Math.sin(p.yaw)*lx],[.4,1,6.4],p.yaw,K.steel,K.steel));}
+  for(let s=4;s<L;s+=16){const p=at(s); [-4.2,4.2].forEach(lx=>boxKB(kb,[p.x+Math.cos(p.yaw)*lx,Y/2,p.z-Math.sin(p.yaw)*lx],[.7,Y,.7],p.yaw,K.steel,K.steel)); boxKB(kb,[p.x,Y-1.2,p.z],[10,1,.8],p.yaw,K.steel,K.steel);}
+  let st=null; const stn=(D.furniture||[]).find(f=>f.kind==='station');
+  if(stn){let best=0,bd=1e9; for(let s=0;s<=L;s+=2){const p=at(s),d=Math.hypot(p.x-stn.p[0],p.z-stn.p[1]); if(d<bd){bd=d;best=s;}} if(bd<60){st=best;
+    for(let s=st-70;s<st+70;s+=6){const p=at(s+3); boxKB(kb,[p.x,Y+1.4,p.z],[16,.6,6.2],p.yaw,K.platform,K.steel); boxKB(kb,[p.x,Y+6,p.z],[15,.5,6.4],p.yaw,K.roof,K.steel);}}}
+  V.elMesh=kb.mesh(V,parent);
+  return {L,at,station:st,y:Y};
+}
+
 Object.assign(SS,{$,app,stage,canvas,loading,labelsEl,renderer,maxAniso,reduceMotion,deg,TAU,lin,scene,mk,tex,CLIP_ABOVE,CLIP_UNDER,std,stadMat,underMat,mats,K,KFALL,KB,boxKB,resample,makeLoop,range,band,quadAt,tier,genStrip,genRing,orient,closedIdx,lettersTex,ribbonTex,friezeTex,roadTex,woodTex,strataTex,trainTex,SH,VENUES,newVenue,rrect,boundsOf,extrudeOutline,addGrounds,addTrees,addField,addSight});
+// a seating tier's stepped outline at one spot around the bowl, for blueprint cross sections
+function tierProfile(L,i,T){const f=v=>typeof v==='function'?v(i):v, o0=f(T.o0),o1=f(T.o1),S=T.steps,dO=(o1-o0)/S,dH=(T.h1-T.h0)/(S-1),fb=T.soffit?T.h0-T.fascia:0,pts=[L.pos(i,o0,fb)];
+  for(let s=0;s<S;s++){const y=T.h0+s*dH; pts.push(L.pos(i,o0+s*dO,y),L.pos(i,o0+(s+1)*dO,y));}
+  pts.push(L.pos(i,o1,T.soffit?T.sb:0)); if(T.soffit) pts.push(L.pos(i,o0,fb)); return pts;}
+Object.assign(SS,{blocks,pip,centroid,polyArea,FACADE,buildCity,buildEl,tierProfile});
 SS.ok=true;
 })();

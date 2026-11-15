@@ -4,7 +4,7 @@ Paste the short credit line into every video caption that shows this model.
 
 ## Short credit line (for captions)
 
-Map data © OpenStreetMap contributors. Building data: NYC Open Data. Train times: MTA LIRR. Shot data: NHL.
+Map data © OpenStreetMap contributors. Building and tree data: NYC Open Data. Train times: MTA.
 
 ## What came from where
 
@@ -16,7 +16,9 @@ Map data © OpenStreetMap contributors. Building data: NYC Open Data. Train time
 | Streets, sidewalks, crosswalks, street trees | OpenStreetMap | Measured positions |
 | Penn Station tracks 1 to 21, platforms 1 to 11, subway lines | OpenStreetMap | Measured positions, depth approximate |
 | LIRR trains, 5 to 6 pm | MTA LIRR GTFS schedule, Wednesday Nov 18, 2026 | Real times. Which track each train uses is made up for the picture. |
-| Rangers shot map | NHL play-by-play, 41 home games, 2025-26 | Real shot locations |
+| Live trains (when data/live_trains.py runs) | MTA GTFS-realtime | Real arrivals; tracks still illustrative |
+| Neighbor facades, water tanks, street trees | NYC PLUTO (year built, floors), 2015 street tree census | Facade style chosen from the building's age and type |
+| Rangers shot map (removed for now, data kept) | NHL play-by-play, 41 home games, 2025-26 | Real shot locations |
 | Opening date, capacity | Wikidata (Q186125) | Fact |
 
 ## What is artistic, not measured

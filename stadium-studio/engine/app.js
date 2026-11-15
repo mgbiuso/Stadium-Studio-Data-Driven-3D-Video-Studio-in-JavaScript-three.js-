@@ -13,6 +13,38 @@ sun.castShadow=true; sun.shadow.mapSize.set(4096,4096);
 const envMap=THREE.RoomEnvironment?new THREE.PMREMGenerator(renderer).fromScene(new THREE.RoomEnvironment(),.04).texture:null;
 const HAZE={day:['#d9e0e8',420,1700],night:['#0b1220',380,1500],afternoon:['#e6e3dc',420,1700]};
 let realKey='';
+/* Stage 1b, realistic views only: soft shading where surfaces meet (SAO), glow around bright lights (bloom),
+   then film-style color and screen color in one final step. Needs an opaque sky, so the style's backdrop is painted into the scene. */
+const POST={on:false};
+if(THREE.EffectComposer&&THREE.SAOPass&&THREE.UnrealBloomPass&&THREE.ShaderPass){
+  const rt=new THREE.WebGLRenderTarget(2,2,{type:THREE.HalfFloatType});
+  POST.comp=new THREE.EffectComposer(renderer,rt);
+  POST.render=new THREE.RenderPass(scene,null);
+  POST.sao=new THREE.SAOPass(scene,new THREE.PerspectiveCamera(),false,true);
+  Object.assign(POST.sao.params,{saoBias:.6,saoIntensity:.006,saoScale:2,saoKernelRadius:14,saoMinResolution:0,saoBlur:true,saoBlurRadius:4,saoBlurStdDev:2.5,saoBlurDepthCutoff:.004});
+  POST.bloom=new THREE.UnrealBloomPass(new THREE.Vector2(256,256),.7,.45,.9);
+  POST.final=new THREE.ShaderPass({uniforms:{tDiffuse:{value:null},exposure:{value:1},tone:{value:1}},
+    vertexShader:'varying vec2 vUv; void main(){vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+    fragmentShader:`uniform sampler2D tDiffuse; uniform float exposure; uniform float tone; varying vec2 vUv;
+      vec3 fit(vec3 v){vec3 a=v*(v+0.0245786)-0.000090537; vec3 b=v*(0.983729*v+0.4329510)+0.238081; return a/b;}
+      vec3 aces(vec3 c){const mat3 I=mat3(vec3(0.59719,0.07600,0.02840),vec3(0.35458,0.90834,0.13383),vec3(0.04823,0.01566,0.83777));
+        const mat3 O=mat3(vec3(1.60475,-0.10208,-0.00327),vec3(-0.53108,1.10813,-0.07276),vec3(-0.07367,-0.00605,1.07602));
+        c*=exposure/0.6; c=I*c; c=fit(c); c=O*c; return clamp(c,0.,1.);}
+      vec3 srgb(vec3 c){return mix(pow(c,vec3(0.41666))*1.055-0.055,c*12.92,vec3(lessThanEqual(c,vec3(0.0031308))));}
+      void main(){vec4 t=texture2D(tDiffuse,vUv); vec3 c=tone>.5?aces(max(t.rgb,0.)):t.rgb; gl_FragColor=vec4(srgb(c),1.);}`});
+  [POST.render,POST.sao,POST.bloom,POST.final].forEach(p=>POST.comp.addPass(p));
+}
+// the style backdrops as scene skies (same colors as the CSS backdrops in studio.css)
+const SKY={};
+function skyTex(bg){
+  if(SKY[bg]) return SKY[bg];
+  const c=mk(512,512),x=c.getContext('2d'), rad=(stops,cy)=>{const g=x.createRadialGradient(256,cy,0,256,cy,420); stops.forEach(([o,col])=>g.addColorStop(o,col)); x.fillStyle=g; x.fillRect(0,0,512,512);};
+  if(bg==='night'){rad([[0,'#1c2a46'],[.55,'#0c1322'],[1,'#04060b']],190); let s=5; const r=()=>((s=(s*16807)%2147483647)/2147483647); for(let i=0;i<140;i++){x.fillStyle=`rgba(255,255,255,${.3+r()*.5})`; x.fillRect(r()*512,r()*300,1.2,1.2);}}
+  else if(bg==='drawing'){const g=x.createLinearGradient(0,0,0,512); g.addColorStop(0,'#b9bcc0'); g.addColorStop(1,'#a3a7ac'); x.fillStyle=g; x.fillRect(0,0,512,512);}
+  else if(bg==='white') rad([[0,'#ffffff'],[.7,'#f4f3f0'],[1,'#e9e7e2']],205);
+  else rad([[0,'#f5f7f9'],[.55,'#dfe5ec'],[1,'#c6ced8']],165);
+  const t=tex(c); return SKY[bg]=t;
+}
 Object.assign(sun.shadow.camera,{left:-220,right:220,top:220,bottom:-220,near:10,far:1000});
 sun.shadow.bias=-.0004; sun.shadow.normalBias=.4; scene.add(sun,sun.target);
 const pointLights=[0,1,2,3].map(()=>{const l=new THREE.PointLight(0xfff1d6,0,460,1); scene.add(l); return l;});
@@ -23,7 +55,7 @@ const clouds=new THREE.Group(); scene.add(clouds);
   const g=new THREE.Group(); [[0,0,0,9],[9,-1,2,7],[-9,-2,-1,6.5],[3,4,-2,6],[-4,3,3,5.5]].forEach(([x,y,z,r])=>{const m=new THREE.Mesh(new THREE.IcosahedronGeometry(r,1),mats.cloud); m.position.set(x,y,z); g.add(m);});
   g.position.set(cx,cy,cz); g.scale.setScalar(s); clouds.add(g);});
 
-const persp=new THREE.PerspectiveCamera(34,1,1,5000);
+const persp=new THREE.PerspectiveCamera(34,1,6,2400);   // a tight depth range keeps the corner shading clean
 const ortho=new THREE.OrthographicCamera(-1,1,1,-1,-2000,6000);
 let cam=persp, orthoSize=150, Wd=1, Ht=1, tw=null, mode='showcase';
 const target=new THREE.Vector3();
@@ -34,7 +66,7 @@ if(controls){controls.enableDamping=true; controls.dampingFactor=.08; controls.e
    Styles
 ===================================================================== */
 const PAL={
-  day:{k:{seat2:'#22406f',pier:'#d8c4a2',ring:'#f4f2ec',gap:'#2c2723',ceil:'#dcc59e',ceil2:'#ceb48b',beam:'#8e7657',unit:'#d9d6cf',nbr:'#b9a48e',nbr2:'#d2cabb',nbrTop:'#8f8b85',podium:'#e3ded3',curtain:'#46525f',
+  day:{k:{seat2:'#22406f',pier:'#d8c4a2',ring:'#f4f2ec',gap:'#2c2723',ceil:'#dcc59e',ceil2:'#ceb48b',beam:'#8e7657',unit:'#d9d6cf',nbr:'#9a5b44',nbr2:'#cdc2ad',nbr3:'#bab6ad',sidewalk:'#c9c4b9',curb:'#a29d93',steel:'#56645b',nbrTop:'#8f8b85',podium:'#e3ded3',curtain:'#46525f',
     seat:'#22406f',aisle:'#a39f96',walk:'#b3aea4',riser:'#7e7c77',fascia:'#1a2947',soffit:'#6f6c66',back:'#bdb5a5',cap:'#b3ab9b',canopy:'#efeeea',roof:'#a9a397',wall:'#1a2947',wallTop:'#22345a',ground:'#8d877c',mpark:'#4d7b3d',inner:'#cfc4ad',boards:'#f3f3f0',cable:'#5d6470',roofTop:'#c3c6cb',slab:'#9b978f',platform:'#cfcac0',track:'#4a4743'},
     plinth:'#c9c2b4',field:'#ffffff',fieldMap:true,facade:'#ffffff',facadeMap:true,letters:true,ribbon:'#ffffff',ribbonMap:true,board:'#ffffff',boardMap:true,frieze:'#f4f3ef',dark:'#1f2622',accent:'#1a2947',monument:'#e3dfd6',lights:'#dcdcd8',red:'#c8102e',trunk:'#6b5641',crown:'#5a8549',trees:true,trainMap:true,soilTop:'#b9b2a5'},
   wire:{k:{seat:'#a2a6ac',aisle:'#b3b6bb',walk:'#b3b6bb',riser:'#979ba1',fascia:'#a9adb3',soffit:'#8f9399',back:'#aeb2b7',cap:'#a7abb1',canopy:'#c3c6ca',roof:'#aaaeb3',wall:'#9da1a7',wallTop:'#a5a9ae',ground:'#9a9ea4',mpark:'#9a9ea4',inner:'#b0b3b8',boards:'#b5b8bd',cable:'#8a8e94',roofTop:'#b9bcc1',slab:'#a0a4aa',platform:'#b0b3b8',track:'#8a8e94'},
@@ -66,12 +98,10 @@ PAL.pixel=isoPal({roof:'#8e8778',roofTop:'#867b6b',unit:'#e6e1d6',pier:'#e9d7b8'
   {facade:'#f2d9b8',lotTop:'#b8b2a6',lotSide:'#6a645b',lotEdge:'#d6d1c6',crown:'#3f9a3c',trunk:'#6b4e33'});
 PAL.ink=isoPal({roof:'#7d7466',roofTop:'#756a5b',unit:'#d8d0c0',pier:'#e6cfa8',ring:'#f1ece0',gap:'#2e2620',podium:'#d9d0bf',curtain:'#4c6b80',nbrTop:'#a89f8f'},
   {facade:'#e7c79f',lotTop:'#c9bfa9',lotSide:'#7f735f',lotEdge:'#ddd3bd',crown:'#3d7d38',trunk:'#5b4330'});
-PAL.atlas=isoPal({roof:'#a8977a',roofTop:'#9d8c70',unit:'#f2e8d4',pier:'#f4e9d2',ring:'#fbf6ea',gap:'#9a8466',podium:'#f2e8d4',curtain:'#9ab6c4',nbrTop:'#e2d5b9',fascia:'#7d97b0'},
-  {facade:'#d9b98c',facadeMap:false,winMap:false,podMap:false,letters:false,lotTop:'#eee0bf',lotSide:'#cdb68c',lotEdge:'#e4d2ab',crown:'#93b77c',trunk:'#8a6c4c'});
 const LIGHTS={
   day:{hs:'#e3ecf7',hg:'#7f7666',hi:.8,sc:'#fff1dc',si:1.7,sp:[150,240,110],pl:0,cat:.18,glow:'screens'},
-  night:{hs:'#3a4a6e',hg:'#07090d',hi:.3,sc:'#9fb4dd',si:.26,sp:[-120,220,-40],pl:1.4,cat:0,glow:'night'},
-  arena:{hs:'#fff1de',hg:'#1a1b20',hi:.32,sc:'#ffffff',si:.15,sp:[60,240,40],pl:.9,cat:0,glow:'arena'},
+  night:{hs:'#3a4a6e',hg:'#07090d',hi:.3,sc:'#9fb4dd',si:.26,sp:[-120,220,-40],pl:.75,cat:0,glow:'night'},
+  arena:{hs:'#fff1de',hg:'#3a3328',hi:.75,sc:'#ffffff',si:.15,sp:[60,240,40],pl:1.5,cat:0,glow:'arena'},
   afternoon:{hs:'#e6eef8',hg:'#7a705f',hi:.72,sc:'#ffe0b8',si:1.9,sp:[-170,125,125],pl:0,cat:.22,glow:'screens'},
   sheet:{hs:'#ffffff',hg:'#ffffff',hi:1,sc:'#ffffff',si:0,sp:[0,300,0],pl:0,cat:0,glow:'none'},
   dusk:{hs:'#ffe9cf',hg:'#6f6a5c',hi:.62,sc:'#ffc98a',si:1.65,sp:[-230,125,150],pl:0,cat:.3,glow:'dusk'},
@@ -85,9 +115,9 @@ const LIGHTS={
 const STYLES={
   aerial:{name:'Daylight aerial',refs:'Refs 1 · 2 · 4 · 19 · 21',desc:'The hero shot. Full color and sun shadows, with the real neighborhood where city data exists.',pal:'day',light:'day',bg:'day',real:true,haze:'day'},
   corner:{name:'Street corner',refs:'New ref · corner view',desc:'A low corner view across the intersection in warm afternoon light, with the real streets and neighboring buildings where city data exists.',pal:'day',light:'afternoon',bg:'day',real:true,haze:'afternoon'},
-  night:{name:'Night game',refs:'Ref 6',desc:'Lights on. Windows, screens and signage glow against a night sky.',pal:'day',light:'night',bg:'night',real:true,env:false,haze:'night',exposure:1.25},
-  bowl:{name:'Inside the bowl',refs:'Refs 5 · 8 · 13 · 14 · arena photos',desc:'From the seats, looking across the playing surface toward the upper decks, the ceiling and the banners.',pal:'day',light:V=>V.indoor?'arena':'day',bg:V=>V.indoor?'night':'day',flyIn:true,real:true,exposure:1.3,
-    opts:[['seat','200 level'],['up','Lower bowl, look up']],optsWhen:V=>V.indoor,optFx:{up:{cam:'bowlUp'}}},
+  night:{name:'Night game',refs:'Ref 6',desc:'Lights on. Windows, screens and signage glow against a night sky.',pal:'day',light:'night',bg:'night',real:true,env:false,haze:'night',exposure:1.25,glow:true},
+  bowl:{name:'Inside the bowl',refs:'Refs 5 · 8 · 13 · 14 · arena photos',desc:'From the seats, looking across the playing surface toward the upper decks, the ceiling and the banners.',pal:'day',light:V=>V.indoor?'arena':'day',bg:V=>V.indoor?'night':'day',flyIn:true,real:true,exposure:1.55,glow:true,
+    opts:[['seat','Seats'],['up','Second view']],optsWhen:V=>!!V.camOv.bowlUp,optFx:{up:{cam:'bowlUp'}}},
   overhead:{name:'Overhead',refs:'Ref 3',desc:'Straight down from above, like a drone shot. In Explore, scroll to zoom straight through the roof into the bowl.',pal:'day',light:'day',bg:'day',flyIn:true,real:true,haze:'day'},
   exploded:{name:'Exploded',refs:'Refs 9 · 10 · 22',desc:'Just the arena, its levels lifted apart and labeled: station, event level and 100s, 200s, bridges and scoreboard, ceiling, roof.',pal:'day',light:'day',bg:'drawing',explode:true,edges:'ink',station:true,real:true,
     shell:false,annex:false,plinth:false,clipUnder:'box',labels:'exploded'},
@@ -98,18 +128,14 @@ const STYLES={
     opts:[['lot','On a lot'],['float','Floating']]},
   isoInk:{name:'Iso · ink',refs:'Iso ref 5',desc:'The venue as a map icon with bold ink outlines and painted color, like an illustrated poster.',pal:'ink',light:'afternoon',bg:'ink',edges:'inkbold',iso:true,
     opts:[['lot','On a lot'],['float','Floating']]},
-  isoAtlas:{name:'Iso · atlas',refs:'Iso ref 3',desc:'The venue as a map icon in pen and watercolor on old paper, like a hand-drawn atlas.',pal:'atlas',light:'atlas',bg:'parchment',edges:'sepia',iso:true,
-    opts:[['lot','On a lot'],['float','Floating']]},
-  road:{name:'Road diorama',refs:'Ref 15',desc:'A bright toy-like diorama with real streets, lane markings and crosswalks.',pal:'road',light:'day',bg:'road',road:true,trees:false},
   studio:{name:'Color studio',refs:'Ref 16',desc:'A white model on one bold floor color, with only the team colors picked out.',pal:'studio',light:'studio',bg:'studio',plinth:false,trees:false},
-  pastel:{name:'Pastel blocks',refs:'Ref 18',desc:'Chunky peach and orange isometric look on a plain gray base.',pal:'pastel',light:'toy',bg:'pastel',square:true,plinth:false,trees:false},
-  cutaway:{name:'Cutaway',refs:'Refs 20 · 23',desc:'The real building sliced open to show every layer, from the roof down to the trains. Switch between a quarter cut and a half slice with sightlines.',pal:'day',light:'day',bg:'white',station:true,edges:'soft',plinth:false,real:true,
-    opts:[['quad','Quarter cut'],['half','Half slice']],optFx:{quad:{clip:'quad',soil:'cut'},half:{clip:'half',soil:'half',sight:true,labels:'section',cam:'section'}}},
+  cutaway:{name:'Cutaway',refs:'Refs 20 · 23',desc:'The real building sliced in half to show every layer, from the roof down to the trains, with sightlines from the seats.',pal:'day',light:'day',bg:'white',station:true,edges:'soft',plinth:false,real:true,
+    clip:'half',soil:'half',sight:true,labels:'section',cam:'section'},
   blueprint:{name:'Blueprint sheet',refs:'New ref · blueprint',desc:'A flat drawing sheet: an elevation on top and the floor plan below, drawn as white lines from the real outline and heights. A still drawing, so Explore is off.',pal:'bpsheet',light:'sheet',bg:'bpsheet',edges:'chalk',plinth:false,trees:false,city:false,sheet:true}
 };
-const ORDER=['aerial','corner','night','bowl','overhead','exploded','wire','isoCel','isoPixel','isoInk','isoAtlas','road','studio','pastel','cutaway','blueprint'];
+const ORDER=['aerial','corner','night','bowl','overhead','exploded','wire','isoCel','isoPixel','isoInk','studio','cutaway','blueprint'];
 // views that show the real neighborhood around the venue
-const CITY=new Set(['aerial','corner','night','overhead','wire','road']);
+const CITY=new Set(['aerial','corner','night','overhead','wire']);
 const CAMS={
   aerial:{off:[-200,169,257],tgt:[0,-4,-2],fov:34},
   corner:{off:[-235,62,250],tgt:[0,8,0],fov:40},
@@ -181,6 +207,7 @@ function applyStyle(key,instant){
   setMat(V.mats.ad,pal.board,pal.boardMap?V.tex.ad:null);
   setMat(V.mats.ring,kc.ring); (V.finMats||[]).forEach(m=>setMat(m,kc.pier));
   setMat(V.mats.win,'#ffffff',pal.winMap?V.tex.win:null); setMat(V.mats.glassWall,'#ffffff',pal.winMap?V.tex.win:null); setMat(V.mats.pod,'#ffffff',pal.podMap?V.tex.pod:null);
+  (V.facadeMats||[]).forEach(m=>setMat(m,'#ffffff',pal.winMap?m.userData.map||(m.userData.map=m.map):null)); setMat(V.mats.walk,'#ffffff');
   setMat(V.mats.lotTop,pal.lotTop||pal.plinth); setMat(V.mats.lotSide,pal.lotSide||pal.plinth); setMat(V.mats.lotEdge,pal.lotEdge||pal.plinth);
   (V.bannerMats||[]).forEach(m=>setMat(m,pal.boardMap?'#ffffff':pal.board,pal.boardMap?m.userData.map:null));
   setMat(mats.frieze,pal.frieze);
@@ -190,11 +217,12 @@ function applyStyle(key,instant){
   setMat(mats.woodTop,'#7f9f58'); setMat(mats.woodSide,'#ffffff');
   setMat(mats.square,pal.plinth); setMat(mats.road,'#ffffff');
   setMat(mats.soilTop,pal.soilTop||PAL.day.soilTop); setMat(mats.soilSide,'#ffffff');
+  setMat(V.mats.streets,lightKey==='night'?'#565b64':'#ffffff');
   (V.trainMats||[]).filter(m=>!m.userData.plain).forEach(m=>setMat(m,pal.trainMap===false?'#c9cdd2':'#ffffff',pal.trainMap===false?null:m.userData.map));
 
   // what is visible
   const city=CITY.has(key)&&S.city!==false, lotOn=!!S.iso&&optOf(key)==='lot';
-  V.plinth.visible=S.plinth!==false && !S.wood && !S.square && !(S.iso&&(V.lot||!lotOn));
+  V.plinth.visible=S.plinth!==false && !S.wood && !S.square && !(S.iso&&(V.lot||!lotOn)) && !(city&&V.hidePlinthInCity);
   if(V.lot) V.lot.visible=lotOn;
   if(V.shell) V.shell.visible=S.shell!==false; if(V.annex) V.annex.visible=S.annex!==false;
   V.wood.visible=!!S.wood; V.square.visible=!!S.square;
@@ -211,7 +239,7 @@ function applyStyle(key,instant){
   $('tilt-top').hidden=$('tilt-bot').hidden=$('vignette').hidden=!S.tilt;
   setEdges(S.edges||null); setClip(S.clip||null,S.clipUnder||null);
   // map-icon looks: pixel art is drawn small and scaled up without smoothing
-  const pr=S.pixel||Math.min(window.devicePixelRatio||1,2); if(renderer.getPixelRatio()!==pr){renderer.setPixelRatio(pr); renderer.setSize(Wd,Ht,false);}
+  const pr=S.pixel||Math.min(window.devicePixelRatio||1,2); if(renderer.getPixelRatio()!==pr){renderer.setPixelRatio(pr); renderer.setSize(Wd,Ht,false); if(POST.comp){POST.comp.setPixelRatio(pr); POST.comp.setSize(Wd,Ht);}}
   canvas.style.imageRendering=S.pixel?'pixelated':'';
   // fly-in: only some views let Explore pass through the roof; the rest stop outside the walls
   if(controls){controls.minDistance=(S.flyIn||shotsOn||!V.indoor)?12:(V.flyGuard||12); controls.zoomSpeed=S.flyIn?1.6:1;}
@@ -220,17 +248,21 @@ function applyStyle(key,instant){
   // realism switches: only recompile materials when they actually change
   const rk=S.real?('real|'+(S.haze||'')+'|'+(S.exposure||.95)+'|'+(S.env!==false)):'flat';
   if(rk!==realKey){realKey=rk;
-    renderer.toneMapping=S.real?THREE.ACESFilmicToneMapping:THREE.NoToneMapping; renderer.toneMappingExposure=S.exposure||.95;
+    POST.on=!!(S.real&&POST.comp);
+    renderer.toneMapping=S.real&&!POST.on?THREE.ACESFilmicToneMapping:THREE.NoToneMapping; renderer.toneMappingExposure=S.exposure||.95;
+
     scene.environment=S.real&&S.env!==false?envMap:null;
     const hz=S.haze&&HAZE[S.haze]; scene.fog=hz?new THREE.Fog(lin(hz[0]),hz[1],hz[2]):null;
     scene.traverse(o=>{if(o.material) (Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{m.needsUpdate=true; if('envMapIntensity' in m) m.envMapIntensity=m.metalness>.3?1:.28;});});}
   if(V.mats.glassWall){V.mats.glassWall.metalness=S.real?.55:0; V.mats.glassWall.roughness=S.real?.16:.8;}
   if(V.mats.field){V.mats.field.roughness=S.real?.28:1;}
+  if(POST.on){POST.final.uniforms.exposure.value=S.exposure||.95; POST.bloom.enabled=!!S.glow;}
+  scene.background=POST.on?skyTex(resolve(S.bg)):null;
   setLights(lightKey); clouds.position.copy(V.center);
   const g=Lt.glow, M=V.mats, fin=V.finMats||[];
-  [M.facade,M.field,M.ribbon,M.board,M.letters,M.marquee,M.ad,M.ring,M.win,M.glassWall,mats.lights,...fin,...(V.bannerMats||[])].forEach(m=>glow(m));
+  [M.facade,M.field,M.ribbon,M.board,M.letters,M.marquee,M.ad,M.ring,M.win,M.glassWall,mats.lights,mats.globe,...(V.facadeMats||[]),...fin,...(V.bannerMats||[])].forEach(m=>glow(m));
   if(g==='night'){glow(M.facade,'#ffffff',V.tex.facadeNight,1); glow(M.field,'#ffffff',V.tex.field,V.indoor?.2:.55); glow(M.ribbon,'#ffffff',V.tex.ribbon,1.25); glow(M.board,'#ffffff',V.tex.board,1.35); glow(mats.lights,'#fff4d6',null,2.6); glow(M.letters,'#ffffff',V.tex.letters,.9); glow(M.marquee,'#ffffff',V.tex.marquee,1.5); glow(M.ad,'#ffffff',V.tex.ad,1.4);
-    glow(M.ring,'#3f6dff',null,1.25); fin.forEach((m,k)=>glow(m,['#ff2a3c','#ffffff','#2f5bff'][k],V.tex.finGlow,.95)); glow(M.win,'#ffd9a6',V.tex.winNight,1); glow(M.glassWall,'#ffd9a6',V.tex.winNight,.8);}
+    glow(M.ring,'#3f6dff',null,1.25); fin.forEach((m,k)=>glow(m,['#ff2a3c','#ffffff','#2f5bff'][k],V.tex.finGlow,.95)); glow(M.win,'#ffd9a6',V.tex.winNight,1); glow(M.glassWall,'#ffd9a6',SS.FACADE.night,.8); (V.facadeMats||[]).forEach(m=>glow(m,'#ffd9a6',SS.FACADE.night,.9)); glow(mats.globe,'#5fe08a',null,1.6);}
   else if(g==='arena'){glow(M.field,'#ffffff',V.tex.field,.3); glow(M.ribbon,'#ffffff',V.tex.ribbon,1.3); glow(M.board,'#ffffff',V.tex.board,1.5); glow(M.marquee,'#ffffff',V.tex.marquee,1.2); glow(mats.lights,'#fff4d6',null,2); (V.bannerMats||[]).forEach(m=>glow(m,'#ffffff',m.userData.map,.12));}
   else if(g==='dusk'){glow(M.facade,'#ffffff',V.tex.facadeNight,.5); glow(M.ribbon,'#ffffff',V.tex.ribbon,.8); glow(M.board,'#ffffff',V.tex.board,1); glow(mats.lights,'#fff1cf',null,1.8); glow(M.letters,'#ffffff',V.tex.letters,.35); glow(M.marquee,'#ffffff',V.tex.marquee,1.1); glow(M.ad,'#ffffff',V.tex.ad,1.1); glow(M.win,'#ffd9a6',V.tex.winNight,.45); glow(M.ring,'#ffffff',null,.15);}
   else if(g==='screens'){if(pal.ribbonMap) glow(M.ribbon,'#ffffff',V.tex.ribbon,.35); if(pal.boardMap){glow(M.board,'#ffffff',V.tex.board,.45); glow(M.marquee,'#ffffff',V.tex.marquee,.45); glow(M.ad,'#ffffff',V.tex.ad,.45);}}
@@ -254,60 +286,98 @@ function optOf(key){const S=STYLES[key]; if(!S.opts||(S.optsWhen&&!S.optsWhen(V)
 function curStyle(){const S=STYLES[current], o=optOf(current); return o&&S.optFx&&S.optFx[o]?Object.assign({},S,S.optFx[o]):S;}
 function renderOpts(key){
   const box=$('opts'), S=STYLES[key], cur=optOf(key); box.textContent=''; box.hidden=!cur; if(!cur) return;
-  S.opts.forEach(([k,l])=>{const b=document.createElement('button'); b.type='button'; b.textContent=l; b.setAttribute('aria-pressed',String(k===cur));
+  ((key==='bowl'&&V.bowlOpts)||S.opts).forEach(([k,l])=>{const b=document.createElement('button'); b.type='button'; b.textContent=l; b.setAttribute('aria-pressed',String(k===cur));
     b.addEventListener('click',()=>{if(OPT[key]===k) return; OPT[key]=k; applyStyle(key);}); box.appendChild(b);});
 }
+/* live trains: if data/live_trains.py is running on this Mac, swap the timetable for real MTA arrivals */
+function pollLive(){
+  fetch('http://127.0.0.1:8790/live.json',{cache:'no-store'}).then(r=>r.json()).then(d=>{
+    if(!d.updated) return; const base=d.updated-600;   // a little in the past, so trains already pulling in still show
+    Object.values(VENUES).forEach(v=>{const L=d.venues&&d.venues[v.key]; if(v.setLive&&L){v.setLive(L.arrivals,base); v.liveTrains=true; v.liveBase=base;}});
+    simMin=-1;
+  }).catch(()=>{Object.values(VENUES).forEach(v=>{if(v.liveTrains&&v.resetTrains) v.resetTrains(); v.liveTrains=false;});});
+}
+setTimeout(pollLive,1500); setInterval(pollLive,20000);
 /* the extra line under the style notes: train clock and shot-map legend */
 let lastClock='';
 function updateDataNote(clock){
   const S=STYLES[current], parts=[];
-  if(V.station && V.G.under.visible && V.trains) parts.push(`LIRR at Penn Station · ${clock||lastClock||'5:00 PM'} · real schedule for ${new Date((V.trainDate||'2026-01-01')+'T12:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})}, 1 minute per second`);
+  if(V.trainAt && (V.trainShown?V.trainShown():V.G.under.visible)) parts.push(`${V.trainLabel||'LIRR at Penn Station'} · ${clock||lastClock||''} · ${V.liveTrains?'live from the MTA':'real schedule for '+new Date((V.trainDate||'2026-01-01')+'T12:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})+', 1 minute per second'}`);
   if(shotsOn && V.shots && !S.sheet){const sh=V.shots; parts.push(`Shot map · ${sh.games} home games, ${sh.season.slice(0,4)}-${sh.season.slice(6)} · ${sh.team}: ${sh.team_shots.length.toLocaleString('en-US')} shots, ${sh.goals.team} goals (red) · Opponents: ${sh.opp.length.toLocaleString('en-US')} shots, ${sh.goals.opp} goals (gold)`);}
   const el=$('n-data'); el.hidden=!parts.length; el.textContent=parts.join('  ·  ');
 }
 
 /* blueprint sheet: two flat views drawn into one frame */
-const sheetCamE=new THREE.OrthographicCamera(-1,1,1,-1,1,4000), sheetCamP=new THREE.OrthographicCamera(-1,1,1,-1,1,4000);
+/* blueprint poster: a three-quarter elevation on top, the plan with callouts and a cut through the stands below,
+   and a tall title strip on the right. Every line is the building's own outline, drawn white on navy. */
+const sheetCam={E:new THREE.OrthographicCamera(-1,1,1,-1,-4000,4000),P:new THREE.OrthographicCamera(-1,1,1,-1,-4000,4000),S:new THREE.OrthographicCamera(-1,1,1,-1,-4000,4000)};
 const planCut=[new THREE.Plane(new THREE.Vector3(0,-1,0),31.5)];
 let layoutCache=null;
 function fillSheet(){
-  const sh=V.sheet||{title:V.name,rows:[]};
-  $('sh-title').innerHTML='';
-  const h=document.createElement('p'); h.className='sh-name'; h.textContent=sh.title; $('sh-title').appendChild(h);
-  const a=document.createElement('p'); a.className='sh-addr'; a.textContent=sh.addr||''; $('sh-title').appendChild(a);
-  const dl=document.createElement('dl'); sh.rows.forEach(([k,v])=>{const dt=document.createElement('dt'); dt.textContent=k; const dd=document.createElement('dd'); dd.textContent=v; dl.append(dt,dd);}); $('sh-title').appendChild(dl);
-  $('sh-elev').textContent=sh.elevName||'Elevation'; $('sh-plan').textContent=sh.planName||'Plan';
+  const sh=V.sheet||{title:V.name,rows:[]}, t=$('sh-title'); t.innerHTML='';
+  const n=document.createElement('p'); n.className='sh-name'; n.textContent=sh.title; t.appendChild(n);
+  const a=document.createElement('p'); a.className='sh-addr'; a.textContent=sh.addr||''; t.appendChild(a);
+  const dl=document.createElement('dl'); sh.rows.forEach(([k,v])=>{const dt=document.createElement('dt'); dt.textContent=k; const dd=document.createElement('dd'); dd.textContent=v; dl.append(dt,dd);}); t.appendChild(dl);
+  $('sh-elev').textContent=sh.elevName||'Elevation'; $('sh-plan').textContent=sh.planName||'Plan'; $('sh-sec').textContent=sh.secName||'Stands cross section';
   V.sheetBox=null;
 }
 function sheetLayout(){
   if(layoutCache) return layoutCache;
   const ar=app.getBoundingClientRect(), tb=[...document.querySelectorAll('.topbar > *')].reduce((m,e)=>Math.max(m,e.getBoundingClientRect().bottom),0)-ar.top;
   const bt=document.querySelector('.bottom').getBoundingClientRect().top-ar.top;
-  const wide=Wd>=900, tw=wide?280:0, x0=16, x1=Wd-16-(wide?tw+16:0), y0=tb+14, y1=bt-14, lab=24, gap=12;
-  const hE=Math.max(60,(y1-y0-2*lab-gap)*.36), hP=Math.max(80,y1-y0-2*lab-gap-hE);
-  layoutCache={E:{x:x0,y:y0,w:x1-x0,h:hE},P:{x:x0,y:y0+hE+lab+gap,w:x1-x0,h:hP},title:wide?{x:Wd-16-tw,y:y0,w:tw}:null};
+  const wide=Wd>=900, tw=wide?Math.min(230,Wd*.18):0, f={x:16,y:tb+10,w:Wd-32,h:Math.max(200,bt-tb-20)};
+  const pad=26, x0=f.x+pad, x1=f.x+f.w-pad-(wide?tw+12:0), y0=f.y+pad+14, y1=f.y+f.h-pad, gap=34;
+  const hE=(y1-y0-gap)*.46, yL=y0+hE+gap, wP=wide?(x1-x0-gap)*.56:(x1-x0);
+  layoutCache={F:f,E:{x:x0,y:y0,w:x1-x0,h:hE},P:{x:x0,y:yL,w:wP,h:y1-yL},S:wide?{x:x0+wP+gap,y:yL,w:x1-x0-wP-gap,h:y1-yL}:null,
+    T:wide?{x:f.x+f.w-tw-14,y:f.y+14,w:tw,h:f.h-28}:null};
   return layoutCache;
 }
-function fitOrtho(c,rect,hw,hh){const asp=rect.w/rect.h; let w=hw,h=hh; if(w/h>asp) h=w/asp; else w=h*asp; c.left=-w*1.08; c.right=w*1.08; c.top=h*1.08; c.bottom=-h*1.08; c.updateProjectionMatrix(); return rect.w/(2*w*1.08);}
+// fit an ortho camera to a set of world points, keeping the viewport's shape
+function fitCam(c,rect,pts,pad){
+  c.updateMatrixWorld(); const inv=c.matrixWorldInverse, v=new THREE.Vector3(); let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;
+  pts.forEach(p=>{v.copy(p).applyMatrix4(inv); x0=Math.min(x0,v.x); x1=Math.max(x1,v.x); y0=Math.min(y0,v.y); y1=Math.max(y1,v.y);});
+  let w=(x1-x0)/2*pad,h=(y1-y0)/2*pad; const cx=(x0+x1)/2,cy=(y0+y1)/2,asp=rect.w/rect.h; if(w/h>asp) h=w/asp; else w=h*asp;
+  c.left=cx-w; c.right=cx+w; c.top=cy+h; c.bottom=cy-h; c.updateProjectionMatrix(); return rect.w/(2*w);
+}
+const corners=b=>[0,1,2,3,4,5,6,7].map(i=>new THREE.Vector3(i&1?b.max.x:b.min.x,i&2?b.max.y:b.min.y,i&4?b.max.z:b.min.z));
 function renderSheet(){
-  const Ly=sheetLayout();
+  const Ly=sheetLayout(), sh=V.sheet||{};
   if(!V.sheetBox){const b=new THREE.Box3(); ['lower','middle','facade','upper'].forEach(k=>b.expandByObject(V.G[k])); b.min.y=Math.max(b.min.y,0); V.sheetBox=b;}
-  const b=V.sheetBox, cx=(b.min.x+b.max.x)/2, cy=(b.min.y+b.max.y)/2, cz=(b.min.z+b.max.z)/2, sh=V.sheet||{elev:'south'};
-  if(sh.elev==='west'){sheetCamE.position.set(b.min.x-600,cy,cz); fitOrtho(sheetCamE,Ly.E,(b.max.z-b.min.z)/2,(b.max.y-b.min.y)/2);}
-  else{sheetCamE.position.set(cx,cy,b.max.z+600); fitOrtho(sheetCamE,Ly.E,(b.max.x-b.min.x)/2,(b.max.y-b.min.y)/2);}
-  sheetCamE.up.set(0,1,0); sheetCamE.lookAt(cx,cy,cz);
-  sheetCamP.position.set(cx,600,cz); sheetCamP.up.set(0,0,-1); sheetCamP.lookAt(cx,0,cz);
-  const ppm=fitOrtho(sheetCamP,Ly.P,(b.max.x-b.min.x)/2,(b.max.z-b.min.z)/2);
-  const pass=(c,r,plan)=>{const y=Ht-r.y-r.h; renderer.setViewport(r.x,y,r.w,r.h); renderer.setScissor(r.x,y,r.w,r.h);
-    renderer.clippingPlanes=plan?planCut:[]; const hv=V.hang?V.hang.visible:false; if(plan&&V.hang) V.hang.visible=false; renderer.render(scene,c); if(V.hang) V.hang.visible=hv;};
-  renderer.setScissorTest(false); renderer.setViewport(0,0,Wd,Ht); renderer.clear();
+  const b=V.sheetBox, ctr=b.getCenter(new THREE.Vector3());
+  // elevation: a three-quarter view from the building's main side
+  const ed=new THREE.Vector3(...(sh.elevDir||[.55,.2,1])).normalize(), E=sheetCam.E;
+  E.position.copy(ctr).addScaledVector(ed,900); E.up.set(0,1,0); E.lookAt(ctr); fitCam(E,Ly.E,corners(b),1.04);
+  // plan from straight above, north up
+  const P=sheetCam.P; P.position.set(ctr.x,900,ctr.z); P.up.set(0,0,-1); P.lookAt(ctr.x,0,ctr.z); const ppm=fitCam(P,Ly.P,corners(b),1.06);
+  // stands cross section: a thin slice through the stands, seen straight on
+  const sec=V.section, ax=sec.axis, cut=sec.c, S=sheetCam.S, sb=sh.sec||{h:[-70,-12],y:[-2,48]};
+  const nrm=ax==='x'?new THREE.Vector3(-1,0,0):new THREE.Vector3(0,0,-1), secPlanes=[new THREE.Plane(nrm.clone(),cut),new THREE.Plane(nrm.clone().negate(),-(cut-7))];
+  const sp=ax==='x'?[new THREE.Vector3(cut,sb.y[0],sb.h[0]),new THREE.Vector3(cut,sb.y[1],sb.h[1])]:[new THREE.Vector3(sb.h[0],sb.y[0],cut),new THREE.Vector3(sb.h[1],sb.y[1],cut)];
+  if(Ly.S&&!V.secScene&&sh.profile){V.secScene=new THREE.Scene(); const lm=new THREE.LineBasicMaterial({color:lin('#eef3ff')});
+    sh.profile.forEach(pl=>V.secScene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pl.map(p=>new THREE.Vector3(...p))),lm)));}
+  if(Ly.S){S.position.set(ax==='x'?cut+600:(sb.h[0]+sb.h[1])/2,(sb.y[0]+sb.y[1])/2,ax==='x'?(sb.h[0]+sb.h[1])/2:cut+600); S.up.set(0,1,0); S.lookAt(ax==='x'?cut:S.position.x,S.position.y,ax==='x'?S.position.z:cut); fitCam(S,Ly.S,sp,1.08);}
+  const pass=(c,r,planes,hideHang)=>{const y=Ht-r.y-r.h; renderer.setViewport(r.x,y,r.w,r.h); renderer.setScissor(r.x,y,r.w,r.h);
+    renderer.clippingPlanes=planes; const hv=V.hang?V.hang.visible:false; if(hideHang&&V.hang) V.hang.visible=false; renderer.render(scene,c); if(V.hang) V.hang.visible=hv;};
+  renderer.setClearColor(0x000000,0); renderer.setScissorTest(false); renderer.setViewport(0,0,Wd,Ht); renderer.clear();
   renderer.autoClear=false; renderer.setScissorTest(true);
-  pass(sheetCamE,Ly.E,false); pass(sheetCamP,Ly.P,true);
+  pass(E,Ly.E,[],false); pass(P,Ly.P,planCut,true);
+  if(Ly.S){const y=Ht-Ly.S.y-Ly.S.h; renderer.setViewport(Ly.S.x,y,Ly.S.w,Ly.S.h); renderer.setScissor(Ly.S.x,y,Ly.S.w,Ly.S.h); renderer.clippingPlanes=[]; if(V.secScene) renderer.render(V.secScene,S); else renderer.render(scene,S);}
   renderer.setScissorTest(false); renderer.setViewport(0,0,Wd,Ht); renderer.autoClear=true; renderer.clippingPlanes=[];
-  const pos=(id,x,y,w)=>{const e=$(id); e.style.transform=`translate(${x}px,${y}px)`; if(w!==undefined) e.style.width=w+'px';};
-  pos('sh-elev',Ly.E.x,Ly.E.y+Ly.E.h+4); pos('sh-plan',Ly.P.x,Ly.P.y+Ly.P.h+4);
-  const bar=$('sh-scale'), m=50, px=m*ppm; bar.style.width=px+'px'; pos('sh-scale',Ly.P.x+Ly.P.w-px,Ly.P.y+Ly.P.h+8);
-  $('sh-title').hidden=!Ly.title; if(Ly.title) pos('sh-title',Ly.title.x,Ly.title.y,Ly.title.w);
+  // overlay: frame, view titles, callouts with leader lines, scale bar, title strip
+  const pos=(id,x,y,w,h)=>{const e=$(id); e.style.transform=`translate(${x}px,${y}px)`; if(w!==undefined) e.style.width=w+'px'; if(h!==undefined) e.style.height=h+'px';};
+  pos('sh-frame',Ly.F.x,Ly.F.y,Ly.F.w,Ly.F.h);
+  pos('sh-elev',Ly.E.x,Ly.E.y-22); pos('sh-plan',Ly.P.x,Ly.P.y-22); $('sh-sec').hidden=!Ly.S; if(Ly.S) pos('sh-sec',Ly.S.x,Ly.S.y-22);
+  const bar=$('sh-scale'), px=50*ppm; bar.style.width=px+'px'; pos('sh-scale',Ly.P.x+Ly.P.w-px,Ly.P.y+Ly.P.h-14);
+  $('sh-title').hidden=!Ly.T; if(Ly.T) pos('sh-title',Ly.T.x,Ly.T.y,Ly.T.w,Ly.T.h);
+  const svg=$('sh-lines'); let html='';
+  const callout=(cam,r,p,t,side)=>{const v=new THREE.Vector3(...p).project(cam); if(Math.abs(v.x)>1||Math.abs(v.y)>1) return '';
+    const x=r.x+(v.x+1)/2*r.w, y=r.y+(1-v.y)/2*r.h, lx=side<0?r.x+6:r.x+r.w-6, ty=y;
+    return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.6"/><polyline points="${x.toFixed(1)},${y.toFixed(1)} ${(x+(lx-x)*.35).toFixed(1)},${ty.toFixed(1)} ${lx},${ty.toFixed(1)}"/>`+
+      `<text x="${side<0?lx:lx}" y="${(ty-4).toFixed(1)}" text-anchor="${side<0?'start':'end'}">${t}</text>`;};
+  (sh.callouts||[]).forEach((c,k)=>{html+=callout(P,Ly.P,c.p,c.t,c.side||(k%2?1:-1));});
+  if(Ly.S) (V.labels.section||[]).forEach(l=>{const inside=ax==='x'?(l.p[2]>=Math.min(...sb.h)&&l.p[2]<=Math.max(...sb.h)&&Math.abs(l.p[0]-cut)<40):(l.p[0]>=Math.min(...sb.h)&&l.p[0]<=Math.max(...sb.h)&&Math.abs(l.p[2]-cut)<40);
+    if(inside) html+=callout(S,Ly.S,[ax==='x'?cut:l.p[0],l.p[1],ax==='x'?l.p[2]:cut],l.t,1);});
+  svg.setAttribute('viewBox',`0 0 ${Wd} ${Ht}`); svg.innerHTML=html;
 }
 
 /* cameras */
@@ -379,6 +449,8 @@ bReset.addEventListener('click',()=>goTo(preset(viewKey())));
 function setVenue(key){
   if(V) V.root.visible=false;
   V=VENUES[key]; V.root.visible=true; if(!V.shots) shotsOn=false;
+  document.querySelectorAll('.style-btn').forEach(b=>b.hidden=(V.skipStyles||[]).includes(b.dataset.key));
+  if((V.skipStyles||[]).includes(current)) current='aerial';
   $('v-eyebrow').textContent=V.eyebrow; $('v-name').textContent=V.name;
   const sp=$('v-spec'); sp.textContent=''; V.spec.forEach(t=>{const s=document.createElement('span'); s.textContent=t; sp.appendChild(s);});
   canvas.setAttribute('aria-label','3D model of '+V.name);
@@ -400,6 +472,7 @@ Object.values(VENUES).forEach(v=>v.verts=vertCount(v));
 function resize(){
   Wd=Math.max(1,app.clientWidth); Ht=Math.max(1,app.clientHeight);
   renderer.setSize(Wd,Ht,false); persp.aspect=Wd/Ht; persp.updateProjectionMatrix(); updateOrtho(); layoutCache=null;
+  if(POST.comp){POST.comp.setPixelRatio(renderer.getPixelRatio()); POST.comp.setSize(Wd,Ht);}
   if(V && mode==='showcase' && !tw) goTo(preset(viewKey()),true);
 }
 new ResizeObserver(resize).observe(app); resize();
@@ -420,11 +493,16 @@ function frame(){
   else cam.lookAt(target);
   if(clouds.visible) clouds.children.forEach((c,k)=>{c.position.x+=Math.sin(clock.elapsedTime*.2+k)*.02;});
   // trains under MSG: one real-schedule minute per second, looping 5 to 6 pm
-  if(V.trains && V.G.under.visible){simT=(simT+(reduceMotion?0:dt))%60; V.trainAt(simT); const mm=Math.floor(simT); if(mm!==simMin){simMin=mm; lastClock=V.drawBoard(simT); updateDataNote(lastClock);}}
+  if(V.trainAt && (V.trainShown?V.trainShown():V.G.under.visible)){
+    let tm; if(V.liveTrains){tm=(Date.now()/1000-V.liveBase)/60;} else {simT=(simT+(reduceMotion?0:dt))%60; tm=simT;}
+    V.trainAt(tm); const mm=Math.floor(tm*(V.liveTrains?4:1));
+    if(mm!==simMin){simMin=mm; lastClock=V.drawBoard(tm,V.liveTrains?new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}):null); updateDataNote(lastClock);}}
   // Explore: once the camera passes under the roof, switch to the arena's own lighting
   if(V.indoor && mode==='explore' && !tw){const r=Math.hypot(cam.position.x-V.center.x,cam.position.z-V.center.z), inside=r<V.Ri && cam.position.y>0 && cam.position.y<V.yC(r);
     if(inside!==!!V.inside){V.inside=inside; setLights(inside?'arena':resolve(STYLES[current].light)); stage.dataset.bg=inside?'night':resolve(STYLES[current].bg);}}
-  if(STYLES[current].sheet) renderSheet(); else renderer.render(scene,cam);
+  if(STYLES[current].sheet) renderSheet();
+  else if(POST.on){POST.render.camera=cam; POST.sao.enabled=cam===persp; if(POST.sao.enabled) POST.sao.camera=persp; POST.comp.render(dt);}
+  else {renderer.setClearColor(0x000000,0); renderer.render(scene,cam);}
   updateLabels();
   fT+=dt; fN++; if(fT>.5){const fps=Math.round(fN/fT); fT=0; fN=0;
     if(STYLES[current].stats) $('stats').textContent=`[Perspective] [Edged faces]  Tris ${fmt(renderer.info.render.triangles)}  ·  Verts ${fmt(V.verts)}  ·  ${fps} fps`;}

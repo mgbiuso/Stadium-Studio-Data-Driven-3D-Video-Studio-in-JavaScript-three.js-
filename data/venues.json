@@ -2,32 +2,116 @@
   "msg": {
     "name": "Madison Square Garden",
     "status": "data-driven model, used by stadium-studio/venues/msg.js",
-    "center": [40.75051, -73.99343],
-    "download_bbox": [40.7476, -73.9975, 40.7534, -73.9893],
-    "model_box": [-170.0, 265.0, -160.0, 160.0],
+    "center": [
+      40.75051,
+      -73.99343
+    ],
+    "download_bbox": [
+      40.7476,
+      -73.9975,
+      40.7534,
+      -73.9893
+    ],
+    "model_box": [
+      -170.0,
+      265.0,
+      -160.0,
+      160.0
+    ],
     "shape": "round",
     "city_pack": "nyc",
     "wikidata": "Q186125",
     "grid": {
-      "angle_streets": ["West 30th Street", "West 31st Street", "West 33rd Street", "West 34th Street"],
-      "x_lo": "8th Avenue", "x_hi": "7th Avenue", "z_lo": "West 33rd Street", "z_hi": "West 31st Street"
+      "angle_streets": [
+        "West 30th Street",
+        "West 31st Street",
+        "West 33rd Street",
+        "West 34th Street"
+      ],
+      "x_lo": "8th Avenue",
+      "x_hi": "7th Avenue",
+      "z_lo": "West 33rd Street",
+      "z_hi": "West 31st Street"
     },
     "transit": [
-      {"name": "lirr", "label": "LIRR", "url": "https://rrgtfsfeeds.s3.amazonaws.com/gtfslirr.zip", "stop_match": "penn", "hours": [17, 18]}
+      {
+        "name": "lirr",
+        "label": "LIRR",
+        "url": "https://rrgtfsfeeds.s3.amazonaws.com/gtfslirr.zip",
+        "stop_match": "penn",
+        "hours": [
+          17,
+          18
+        ]
+      },
+      {
+        "name": "subway",
+        "label": "Subway",
+        "url": "http://web.mta.info/developers/data/nyct/subway/google_transit.zip",
+        "stop_match": "34 st-penn station",
+        "hours": [
+          17,
+          18
+        ],
+        "through": true
+      }
     ],
-    "sport": {"league": "nhl", "team": "NYR", "team_id": 3, "season": "20252026"}
+    "sport": {
+      "league": "nhl",
+      "team": "NYR",
+      "team_id": 3,
+      "season": "20252026"
+    }
   },
   "yankee": {
     "name": "Yankee Stadium",
-    "status": "planned: the yankee.js recipe is still hand-built; fill in and run this when we convert it",
-    "center": [40.8296, -73.9262],
-    "download_bbox": [40.8262, -73.9310, 40.8330, -73.9214],
-    "model_box": [-260.0, 260.0, -220.0, 220.0],
+    "status": "data-driven placement, used by stadium-studio/venues/yankee.js",
+    "center": [
+      40.8296,
+      -73.9262
+    ],
+    "download_bbox": [
+      40.8255,
+      -73.9318,
+      40.834,
+      -73.9205
+    ],
+    "model_box": [
+      -260.0,
+      260.0,
+      -220.0,
+      220.0
+    ],
     "shape": "footprint",
     "city_pack": "nyc",
-    "wikidata": null,
-    "grid": {},
-    "transit": [],
-    "sport": {"league": "mlb", "team": "NYY"}
+    "wikidata": "Q753529",
+    "grid": {
+      "angle_streets": [
+        "East 161st Street",
+        "East 162nd Street",
+        "East 164th Street"
+      ],
+      "x_lo": "Jerome Avenue",
+      "x_hi": "River Avenue",
+      "z_lo": "East 164th Street",
+      "z_hi": "East 161st Street"
+    },
+    "transit": [
+      {
+        "name": "subway",
+        "label": "Subway",
+        "url": "http://web.mta.info/developers/data/nyct/subway/google_transit.zip",
+        "stop_match": "161 st-yankee stadium",
+        "hours": [
+          18,
+          19
+        ],
+        "through": true
+      }
+    ],
+    "sport": {
+      "league": "mlb",
+      "team": "NYY"
+    }
   }
 }

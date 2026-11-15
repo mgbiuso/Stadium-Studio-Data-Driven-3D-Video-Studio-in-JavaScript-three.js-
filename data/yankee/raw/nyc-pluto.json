@@ -1,0 +1,417 @@
+[{"bbl":"2024590034.00000000","address":"888 GRAND CONCOURSE","bldgclass":"D7","yearbuilt":"1937","numfloors":"6.0000000","landuse":"4","latitude":"40.8263132","longitude":"-73.9221334"}
+,{"bbl":"2024610001.00000000","address":"910 GRAND CONCOURSE","bldgclass":"D7","yearbuilt":"1938","numfloors":"8.0000000","landuse":"4","latitude":"40.8278060","longitude":"-73.9215860"}
+,{"bbl":"2024610022.00000000","address":"917 SHERIDAN AVENUE","bldgclass":"D7","yearbuilt":"1940","numfloors":"6.0000000","landuse":"4","latitude":"40.8279344","longitude":"-73.9206428"}
+,{"bbl":"2024610045.00000000","address":"940 GRAND CONCOURSE","bldgclass":"D4","yearbuilt":"1927","numfloors":"6.0000000","landuse":"3","latitude":"40.8287415","longitude":"-73.9209634"}
+,{"bbl":"2024710032.00000000","address":"1027 GRAND CONCOURSE","bldgclass":"S2","yearbuilt":"1922","numfloors":"4.0000000","landuse":"4","latitude":"40.8305752","longitude":"-73.9211961"}
+,{"bbl":"2024710034.00000000","address":"1025 GRAND CONCOURSE","bldgclass":"O7","yearbuilt":"1922","numfloors":"2.0000000","landuse":"5","latitude":"40.8305093","longitude":"-73.9212215"}
+,{"bbl":"2024760022.00000000","address":"975 WALTON AVENUE","bldgclass":"D7","yearbuilt":"1930","numfloors":"6.0000000","landuse":"4","latitude":"40.8297585","longitude":"-73.9231014"}
+,{"bbl":"2024760047.00000000","address":"923 WALTON AVENUE","bldgclass":"D1","yearbuilt":"1925","numfloors":"6.0000000","landuse":"3","latitude":"40.8287323","longitude":"-73.9235976"}
+,{"bbl":"2024760050.00000000","address":"911 WALTON AVENUE","bldgclass":"D7","yearbuilt":"1926","numfloors":"6.0000000","landuse":"4","latitude":"40.8283400","longitude":"-73.9238293"}
+,{"bbl":"2024760057.00000000","address":"101 EAST 161 STREET","bldgclass":"K2","yearbuilt":"1928","numfloors":"2.0000000","landuse":"5","latitude":"40.8277145","longitude":"-73.9242962"}
+,{"bbl":"2024830015.00000000","address":"825 GERARD AVENUE","bldgclass":"D1","yearbuilt":"1928","numfloors":"6.0000000","landuse":"3","latitude":"40.8261375","longitude":"-73.9261191"}
+,{"bbl":"2024830059.00000000","address":"831 GERARD AVENUE","bldgclass":"D3","yearbuilt":"1937","numfloors":"8.0000000","landuse":"3","latitude":"40.8266121","longitude":"-73.9258186"}
+,{"bbl":"2025040006.00000000","address":"936 WOODYCREST AVENUE","bldgclass":"N2","yearbuilt":"1902","numfloors":"4.0000000","landuse":"8","latitude":"40.8305995","longitude":"-73.9291170"}
+,{"bbl":"2025110086.00000000","address":"994 OGDEN AVENUE","bldgclass":"QG","yearbuilt":"0","landuse":"9","latitude":"40.8326115","longitude":"-73.9292521"}
+,{"bbl":"2025390180.00000000","address":"MAJ WM DEEGAN BLVD","bldgclass":"U1","yearbuilt":"0","landuse":"7","latitude":"40.8285397","longitude":"-73.9314787"}
+,{"bbl":"2025390178.00000000","address":"MAJ WM DEEGAN BLVD","bldgclass":"U1","yearbuilt":"0","landuse":"7","latitude":"40.8280127","longitude":"-73.9315985"}
+,{"bbl":"2024930027.00000000","address":"RIVER AVENUE","bldgclass":"U7","yearbuilt":"0","landuse":"7","latitude":"40.8302758","longitude":"-73.9249979"}
+,{"bbl":"2024680001.00000000","address":"851 GRAND CONCOURSE","bldgclass":"Z1","yearbuilt":"1933","numfloors":"9.0000000","landuse":"8","latitude":"40.8262897","longitude":"-73.9237992"}
+,{"bbl":"2025390177.00000000","address":"MAJ WM DEEGAN BLVD","bldgclass":"Q1","yearbuilt":"0","landuse":"9","latitude":"40.8279634","longitude":"-73.9316492"}
+,{"bbl":"2024430094.00000000","address":"198 EAST 161 STREET","bldgclass":"O3","yearbuilt":"1994","numfloors":"10.0000000","landuse":"5","latitude":"40.8258652","longitude":"-73.9210969"}
+,{"bbl":"2025120014.00000000","address":"1032 OGDEN AVENUE","bldgclass":"C2","yearbuilt":"1921","numfloors":"3.0000000","landuse":"2","latitude":"40.8337089","longitude":"-73.9285138"}
+,{"bbl":"2024850001.00000000","address":"950 RIVER AVENUE","bldgclass":"G1","yearbuilt":"1975","numfloors":"3.0000000","landuse":"10","latitude":"40.8296934","longitude":"-73.9242000"}
+,{"bbl":"2024860001.00000000","address":"1000 RIVER AVENUE","bldgclass":"G6","yearbuilt":"0","landuse":"10","latitude":"40.8311805","longitude":"-73.9234431"}
+,{"bbl":"2025230162.00000000","address":"991 SUMMIT AVENUE","bldgclass":"C1","yearbuilt":"1905","numfloors":"4.0000000","landuse":"2","latitude":"40.8330240","longitude":"-73.9305851"}
+,{"bbl":"2024990001.00000000","address":"30 EAST 161 STREET","bldgclass":"G1","yearbuilt":"2008","numfloors":"3.0000000","landuse":"10","latitude":"40.8279647","longitude":"-73.9293113"}
+,{"bbl":"2024930001.00000000","address":"1 EAST 161 STREET","bldgclass":"Q6","yearbuilt":"2006","numfloors":"6.0000000","landuse":"9","latitude":"40.8295741","longitude":"-73.9264477"}
+,{"bbl":"2024930009.00000000","address":"951 RIVER AVENUE","bldgclass":"G1","yearbuilt":"2008","numfloors":"4.0000000","landuse":"10","latitude":"40.8308305","longitude":"-73.9255068"}
+,{"bbl":"2025390050.00000000","address":"MAJ WM DEEGAN BLVD","bldgclass":"Z7","yearbuilt":"0","latitude":"40.8260552","longitude":"-73.9306683"}
+,{"bbl":"2025390071.00000000","address":"MAJ WM DEEGAN BLVD","bldgclass":"U6","yearbuilt":"0","landuse":"7","latitude":"40.8256597","longitude":"-73.9301773"}
+,{"bbl":"2025390017.00000000","address":"MAJ WM DEEGAN BLVD","bldgclass":"V1","yearbuilt":"0","landuse":"11","latitude":"40.8258553","longitude":"-73.9315176"}
+,{"bbl":"2025040001.00000000","address":"JEROME AVENUE","bldgclass":"Q1","yearbuilt":"0","landuse":"9","latitude":"40.8302593","longitude":"-73.9293016"}
+,{"bbl":"2025110001.00000000","address":"OGDEN AVENUE","bldgclass":"Q1","yearbuilt":"0","landuse":"9","latitude":"40.8302160","longitude":"-73.9304291"}
+,{"bbl":"2025040112.00000000","address":"JEROME AVENUE","bldgclass":"Q1","yearbuilt":"0","landuse":"9","latitude":"40.8324968","longitude":"-73.9259133"}
+,{"bbl":"2025230001.00000000","address":"MAJ WM DEEGAN BLVD","bldgclass":"Q1","yearbuilt":"0","landuse":"9","latitude":"40.8302634","longitude":"-73.9315167"}
+,{"bbl":"2025390181.00000000","address":"MAJ WM DEEGAN BLVD","bldgclass":"Q1","yearbuilt":"0","landuse":"9","latitude":"40.8286713","longitude":"-73.9312293"}
+,{"bbl":"2025110088.00000000","address":"998 OGDEN AVENUE","bldgclass":"QG","yearbuilt":"0","landuse":"9","latitude":"40.8327377","longitude":"-73.9291797"}
+,{"bbl":"2025120052.00000000","address":"1016 NELSON AVENUE","bldgclass":"C0","yearbuilt":"1901","numfloors":"3.0000000","landuse":"2","latitude":"40.8331653","longitude":"-73.9282144"}
+,{"bbl":"2024990108.00000000","address":"20 EAST 161 STREET","bldgclass":"G1","yearbuilt":"2009","numfloors":"4.0000000","landuse":"10","latitude":"40.8292059","longitude":"-73.9301989"}
+,{"bbl":"2025110090.00000000","address":"90 WEST 164 STREET","bldgclass":"QG","yearbuilt":"0","landuse":"9","latitude":"40.8325289","longitude":"-73.9288728"}
+,{"bbl":"2025040082.00000000","address":"1020 ANDERSON AVENUE","bldgclass":"W1","yearbuilt":"1926","numfloors":"5.0000000","landuse":"8","latitude":"40.8326124","longitude":"-73.9263974"}
+,{"bbl":"2025110030.00000000","address":"94 WEST 162 STREET","bldgclass":"QG","yearbuilt":"0","landuse":"9","latitude":"40.8312694","longitude":"-73.9293981"}
+,{"bbl":"2025110085.00000000","address":"992 OGDEN AVENUE","bldgclass":"QG","yearbuilt":"0","landuse":"9","latitude":"40.8325484","longitude":"-73.9292847"}
+,{"bbl":"2025110065.00000000","address":"96 WEST 163 STREET","bldgclass":"QG","yearbuilt":"0","landuse":"9","latitude":"40.8319088","longitude":"-73.9292637"}
+,{"bbl":"2025050028.00000000","address":"1093 JEROME AVENUE","bldgclass":"C7","yearbuilt":"1925","numfloors":"2.0000000","landuse":"4","latitude":"40.8339427","longitude":"-73.9250516"}
+,{"bbl":"2024760045.00000000","address":"WALTON AVENUE","bldgclass":"V0","yearbuilt":"0","landuse":"11","latitude":"40.8289078","longitude":"-73.9233951"}
+,{"bbl":"2024760046.00000000","address":"WALTON AVENUE","bldgclass":"V0","yearbuilt":"0","landuse":"11","latitude":"40.8289326","longitude":"-73.9234818"}
+,{"bbl":"2025250013.00000000","address":"1028 SUMMIT AVENUE","bldgclass":"G0","yearbuilt":"0","landuse":"10","latitude":"40.8339263","longitude":"-73.9295109"}
+,{"bbl":"2025080107.00000000","address":"1012 WOODYCREST AVENUE","bldgclass":"G7","yearbuilt":"0","landuse":"10","latitude":"40.8328245","longitude":"-73.9275174"}
+,{"bbl":"2025230126.00000000","address":"1010 UNIVERSITY AVENUE","bldgclass":"V0","yearbuilt":"0","landuse":"11","latitude":"40.8337458","longitude":"-73.9305230"}
+,{"bbl":"2024830045.00000000","address":"62 EAST 161 STREET","bldgclass":"K1","yearbuilt":"1937","numfloors":"1.0000000","landuse":"5","latitude":"40.8272322","longitude":"-73.9254494"}
+,{"bbl":"2024830040.00000000","address":"48 EAST 161 STREET","bldgclass":"K1","yearbuilt":"1937","numfloors":"1.0000000","landuse":"5","latitude":"40.8273697","longitude":"-73.9258792"}
+,{"bbl":"2024830032.00000000","address":"830 RIVER AVENUE","bldgclass":"K2","yearbuilt":"1966","numfloors":"2.0000000","landuse":"5","latitude":"40.8267881","longitude":"-73.9263424"}
+,{"bbl":"2024830068.00000000","address":"87 EAST 158 STREET","bldgclass":"G1","yearbuilt":"1927","numfloors":"2.0000000","landuse":"10","latitude":"40.8267194","longitude":"-73.9261546"}
+,{"bbl":"2024740054.00000000","address":"843 WALTON AVENUE","bldgclass":"M1","yearbuilt":"1949","numfloors":"2.0000000","landuse":"8","latitude":"40.8264880","longitude":"-73.9248793"}
+,{"bbl":"2024740010.00000000","address":"828 GERARD AVENUE","bldgclass":"D4","yearbuilt":"1924","numfloors":"6.0000000","landuse":"3","latitude":"40.8260163","longitude":"-73.9255302"}
+,{"bbl":"2024830001.00000000","address":"802 RIVER AVENUE","bldgclass":"G6","yearbuilt":"0","landuse":"10","latitude":"40.8258250","longitude":"-73.9267590"}
+,{"bbl":"2024830034.00000000","address":"850 RIVER AVENUE","bldgclass":"K4","yearbuilt":"1937","numfloors":"3.0000000","landuse":"4","latitude":"40.8271035","longitude":"-73.9259590"}
+,{"bbl":"2025040015.00000000","address":"WOODYCREST AVENUE","bldgclass":"V0","yearbuilt":"0","landuse":"11","latitude":"40.8309617","longitude":"-73.9289287"}
+,{"bbl":"2025250007.00000000","address":"1018 SUMMIT AVENUE","bldgclass":"C7","yearbuilt":"1926","numfloors":"5.0000000","landuse":"4","latitude":"40.8336464","longitude":"-73.9296124"}
+,{"bbl":"2025250001.00000000","address":"169 WEST 164 STREET","bldgclass":"C7","yearbuilt":"1906","numfloors":"6.0000000","landuse":"4","latitude":"40.8332020","longitude":"-73.9299345"}
+,{"bbl":"2025230125.00000000","address":"1008 UNIVERSITY AVENUE","bldgclass":"A1","yearbuilt":"1930","numfloors":"2.0000000","landuse":"1","latitude":"40.8336800","longitude":"-73.9305628"}
+,{"bbl":"2025250011.00000000","address":"1022 SUMMIT AVENUE","bldgclass":"Z9","yearbuilt":"1992","numfloors":"1.0000000","latitude":"40.8338166","longitude":"-73.9295906"}
+,{"bbl":"2025240114.00000000","address":"160 WEST 162 STREET","bldgclass":"C0","yearbuilt":"2005","numfloors":"3.0000000","landuse":"2","latitude":"40.8316736","longitude":"-73.9306624"}
+,{"bbl":"2025240105.00000000","address":"169 WEST 161 STREET","bldgclass":"C3","yearbuilt":"2003","numfloors":"4.0000000","landuse":"2","latitude":"40.8308724","longitude":"-73.9310608"}
+,{"bbl":"2025110150.00000000","address":"91 WEST 163 STREET","bldgclass":"B2","yearbuilt":"2000","numfloors":"2.0000000","landuse":"1","latitude":"40.8322407","longitude":"-73.9289237"}
+,{"bbl":"2025230059.00000000","address":"UNIVERSITY AVENUE","bldgclass":"G7","yearbuilt":"0","landuse":"10","latitude":"40.8319431","longitude":"-73.9315114"}
+,{"bbl":"2025110152.00000000","address":"95 WEST 163 STREET","bldgclass":"B2","yearbuilt":"2000","numfloors":"2.0000000","landuse":"1","latitude":"40.8322820","longitude":"-73.9290537"}
+,{"bbl":"2025120053.00000000","address":"1018 NELSON AVENUE","bldgclass":"C0","yearbuilt":"1920","numfloors":"3.0000000","landuse":"2","latitude":"40.8332284","longitude":"-73.9281674"}
+,{"bbl":"2025230043.00000000","address":"903 SUMMIT AVENUE","bldgclass":"C1","yearbuilt":"1925","numfloors":"5.0000000","landuse":"2","latitude":"40.8311308","longitude":"-73.9316495"}
+,{"bbl":"2025080009.00000000","address":"1016 WOODYCREST AVENUE","bldgclass":"C0","yearbuilt":"1910","numfloors":"3.0000000","landuse":"2","latitude":"40.8329452","longitude":"-73.9274233"}
+,{"bbl":"2025040073.00000000","address":"976 ANDERSON AVENUE","bldgclass":"C1","yearbuilt":"1909","numfloors":"5.0000000","landuse":"2","latitude":"40.8318114","longitude":"-73.9270885"}
+,{"bbl":"2025080012.00000000","address":"1022 WOODYCREST AVENUE","bldgclass":"B3","yearbuilt":"1901","numfloors":"3.0000000","landuse":"1","latitude":"40.8330988","longitude":"-73.9273039"}
+,{"bbl":"2025230174.00000000","address":"973 SUMMIT AVENUE","bldgclass":"G7","yearbuilt":"0","landuse":"10","latitude":"40.8323627","longitude":"-73.9309653"}
+,{"bbl":"2025040126.00000000","address":"1000 ANDERSON AVENUE","bldgclass":"D1","yearbuilt":"1931","numfloors":"8.0000000","landuse":"3","latitude":"40.8317892","longitude":"-73.9266476"}
+,{"bbl":"2025110100.00000000","address":"975 WOODYCREST AVENUE","bldgclass":"V0","yearbuilt":"0","landuse":"11","latitude":"40.8322049","longitude":"-73.9286889"}
+,{"bbl":"2025120005.00000000","address":"1012 OGDEN AVENUE","bldgclass":"C7","yearbuilt":"2023","numfloors":"5.0000000","landuse":"4","latitude":"40.8332206","longitude":"-73.9289479"}
+,{"bbl":"2025040061.00000000","address":"958 ANDERSON AVENUE","bldgclass":"C1","yearbuilt":"1908","numfloors":"4.0000000","landuse":"2","latitude":"40.8312161","longitude":"-73.9275914"}
+,{"bbl":"2025080008.00000000","address":"1014 WOODYCREST AVENUE","bldgclass":"C0","yearbuilt":"1910","numfloors":"3.0000000","landuse":"2","latitude":"40.8328848","longitude":"-73.9274703"}
+,{"bbl":"2025120007.00000000","address":"1016 OGDEN AVENUE","bldgclass":"S3","yearbuilt":"1929","numfloors":"3.0000000","landuse":"4","latitude":"40.8333139","longitude":"-73.9288936"}
+,{"bbl":"2025120008.00000000","address":"1018 OGDEN AVENUE","bldgclass":"S3","yearbuilt":"1931","numfloors":"3.0000000","landuse":"4","latitude":"40.8333770","longitude":"-73.9288611"}
+,{"bbl":"2025120039.00000000","address":"1015 NELSON AVENUE","bldgclass":"B9","yearbuilt":"1910","numfloors":"3.0000000","landuse":"1","latitude":"40.8331875","longitude":"-73.9287023"}
+,{"bbl":"2025120076.00000000","address":"1023 WOODYCREST AVENUE","bldgclass":"C0","yearbuilt":"1899","numfloors":"3.0000000","landuse":"2","latitude":"40.8333735","longitude":"-73.9277119"}
+,{"bbl":"2025120009.00000000","address":"1020 OGDEN AVENUE","bldgclass":"C0","yearbuilt":"1931","numfloors":"3.0000000","landuse":"2","latitude":"40.8334401","longitude":"-73.9288248"}
+,{"bbl":"2025120010.00000000","address":"1022 OGDEN AVENUE","bldgclass":"C0","yearbuilt":"1938","numfloors":"3.0000000","landuse":"2","latitude":"40.8335060","longitude":"-73.9287886"}
+,{"bbl":"2025040062.00000000","address":"960 ANDERSON AVENUE","bldgclass":"C1","yearbuilt":"1908","numfloors":"4.0000000","landuse":"2","latitude":"40.8312792","longitude":"-73.9275407"}
+,{"bbl":"2025240004.00000000","address":"906 SUMMIT AVENUE","bldgclass":"C1","yearbuilt":"1906","numfloors":"5.0000000","landuse":"2","latitude":"40.8310838","longitude":"-73.9311653"}
+,{"bbl":"2025240006.00000000","address":"908 SUMMIT AVENUE","bldgclass":"C0","yearbuilt":"2007","numfloors":"3.0000000","landuse":"2","latitude":"40.8311524","longitude":"-73.9310822"}
+,{"bbl":"2025230051.00000000","address":"917 SUMMIT AVENUE","bldgclass":"B2","yearbuilt":"1905","numfloors":"2.7500000","landuse":"1","latitude":"40.8315095","longitude":"-73.9315082"}
+,{"bbl":"2025230066.00000000","address":"939 SUMMIT AVENUE","bldgclass":"C1","yearbuilt":"2014","numfloors":"4.0000000","landuse":"2","latitude":"40.8320170","longitude":"-73.9311644"}
+,{"bbl":"2025240206.00000000","address":"910 SUMMIT AVENUE","bldgclass":"C0","yearbuilt":"2007","numfloors":"3.0000000","landuse":"2","latitude":"40.8311990","longitude":"-73.9310532"}
+,{"bbl":"2025230050.00000000","address":"911 SUMMIT AVENUE","bldgclass":"B1","yearbuilt":"1905","numfloors":"3.0000000","landuse":"1","latitude":"40.8314436","longitude":"-73.9315336"}
+,{"bbl":"2025080024.00000000","address":"64 WEST 165 STREET","bldgclass":"C7","yearbuilt":"1925","numfloors":"5.0000000","landuse":"4","latitude":"40.8335896","longitude":"-73.9264975"}
+,{"bbl":"2025080022.00000000","address":"74 WEST 165 STREET","bldgclass":"C7","yearbuilt":"1909","numfloors":"4.0000000","landuse":"4","latitude":"40.8336996","longitude":"-73.9268370"}
+,{"bbl":"2025120069.00000000","address":"1035 WOODYCREST AVENUE","bldgclass":"D7","yearbuilt":"1929","numfloors":"6.0000000","landuse":"4","latitude":"40.8336918","longitude":"-73.9274767"}
+,{"bbl":"2025080020.00000000","address":"1042 WOODYCREST AVENUE","bldgclass":"C0","yearbuilt":"1899","numfloors":"3.0000000","landuse":"2","latitude":"40.8335213","longitude":"-73.9269673"}
+,{"bbl":"2025080021.00000000","address":"1044 WOODYCREST AVENUE","bldgclass":"C0","yearbuilt":"1899","numfloors":"3.0000000","landuse":"2","latitude":"40.8336063","longitude":"-73.9269094"}
+,{"bbl":"2025230128.00000000","address":"1012 UNIVERSITY AVENUE","bldgclass":"V0","yearbuilt":"0","landuse":"11","latitude":"40.8338391","longitude":"-73.9304687"}
+,{"bbl":"2025230176.00000000","address":"969 SUMMIT AVENUE","bldgclass":"G7","yearbuilt":"0","landuse":"10","latitude":"40.8322173","longitude":"-73.9310485"}
+,{"bbl":"2025230164.00000000","address":"987 SUMMIT AVENUE","bldgclass":"C1","yearbuilt":"1925","numfloors":"4.0000000","landuse":"2","latitude":"40.8328703","longitude":"-73.9306757"}
+,{"bbl":"2025230163.00000000","address":"989 SUMMIT AVENUE","bldgclass":"C1","yearbuilt":"1925","numfloors":"4.0000000","landuse":"2","latitude":"40.8329499","longitude":"-73.9306286"}
+,{"bbl":"2025230068.00000000","address":"933 SUMMIT AVENUE","bldgclass":"C1","yearbuilt":"2014","numfloors":"4.0000000","landuse":"2","latitude":"40.8318881","longitude":"-73.9312259"}
+,{"bbl":"2025230048.00000000","address":"907 SUMMIT AVENUE","bldgclass":"B1","yearbuilt":"1905","numfloors":"3.0000000","landuse":"1","latitude":"40.8313119","longitude":"-73.9315843"}
+,{"bbl":"2025230070.00000000","address":"929 SUMMIT AVENUE","bldgclass":"B2","yearbuilt":"1910","numfloors":"2.7500000","landuse":"1","latitude":"40.8317536","longitude":"-73.9312911"}
+,{"bbl":"2025230149.00000000","address":"1021 SUMMIT AVENUE","bldgclass":"A1","yearbuilt":"1899","numfloors":"2.0000000","landuse":"1","latitude":"40.8338965","longitude":"-73.9300819"}
+,{"bbl":"2025230150.00000000","address":"1015 SUMMIT AVENUE","bldgclass":"D4","yearbuilt":"1928","numfloors":"6.0000000","landuse":"3","latitude":"40.8337758","longitude":"-73.9301579"}
+,{"bbl":"2025230155.00000000","address":"1005 SUMMIT AVENUE","bldgclass":"B2","yearbuilt":"1901","numfloors":"2.0000000","landuse":"1","latitude":"40.8335234","longitude":"-73.9303028"}
+,{"bbl":"2025230156.00000000","address":"1003 SUMMIT AVENUE","bldgclass":"C0","yearbuilt":"1901","numfloors":"2.0000000","landuse":"2","latitude":"40.8334630","longitude":"-73.9303390"}
+,{"bbl":"2025240008.00000000","address":"914 SUMMIT AVENUE","bldgclass":"B1","yearbuilt":"1901","numfloors":"2.0000000","landuse":"1","latitude":"40.8312951","longitude":"-73.9309881"}
+,{"bbl":"2025240018.00000000","address":"935 OGDEN AVENUE","bldgclass":"D1","yearbuilt":"1928","numfloors":"6.0000000","landuse":"3","latitude":"40.8314787","longitude":"-73.9305217"}
+,{"bbl":"2025120079.00000000","address":"1017 WOODYCREST AVENUE","bldgclass":"C0","yearbuilt":"1899","numfloors":"3.0000000","landuse":"2","latitude":"40.8331952","longitude":"-73.9278458"}
+,{"bbl":"2025230175.00000000","address":"971 SUMMIT AVENUE","bldgclass":"G7","yearbuilt":"0","landuse":"10","latitude":"40.8322914","longitude":"-73.9310087"}
+,{"bbl":"2025120133.00000000","address":"NELSON AVENUE","bldgclass":"V0","yearbuilt":"0","landuse":"11","latitude":"40.8335305","longitude":"-73.9284887"}
+,{"bbl":"2025040071.00000000","address":"972 ANDERSON AVENUE","bldgclass":"C1","yearbuilt":"1908","numfloors":"5.0000000","landuse":"2","latitude":"40.8316660","longitude":"-73.9272079"}
+,{"bbl":"2024610040.00000000","address":"185 EAST 162 STREET","bldgclass":"D1","yearbuilt":"1939","numfloors":"6.0000000","landuse":"3","latitude":"40.8276767","longitude":"-73.9211923"}
+,{"bbl":"2024610016.00000000","address":"180 EAST 163 STREET","bldgclass":"D1","yearbuilt":"1941","numfloors":"6.0000000","landuse":"3","latitude":"40.8280526","longitude":"-73.9210112"}
+,{"bbl":"2024610058.00000000","address":"960 GRAND CONCOURSE","bldgclass":"D7","yearbuilt":"1927","numfloors":"6.0000000","landuse":"4","latitude":"40.8291860","longitude":"-73.9207136"}
+,{"bbl":"2024610083.00000000","address":"185 EAST 163 STREET","bldgclass":"D4","yearbuilt":"1927","numfloors":"6.0000000","landuse":"3","latitude":"40.8284613","longitude":"-73.9205699"}
+,{"bbl":"2024610035.00000000","address":"909 SHERIDAN AVENUE","bldgclass":"D7","yearbuilt":"1938","numfloors":"7.0000000","landuse":"4","latitude":"40.8275585","longitude":"-73.9208275"}
+,{"bbl":"2024610007.00000000","address":"930 GRAND CONCOURSE","bldgclass":"D7","yearbuilt":"1948","numfloors":"11.0000000","landuse":"4","latitude":"40.8281737","longitude":"-73.9213905"}
+,{"bbl":"2024600001.00000000","address":"900 GRAND CONCOURSE","bldgclass":"D7","yearbuilt":"1923","numfloors":"10.0000000","landuse":"4","latitude":"40.8271749","longitude":"-73.9218975"}
+,{"bbl":"2024600024.00000000","address":"901 SHERIDAN AVENUE","bldgclass":"O5","yearbuilt":"1931","numfloors":"3.0000000","landuse":"5","latitude":"40.8269576","longitude":"-73.9211462"}
+,{"bbl":"2024600030.00000000","address":"181 EAST 161 STREET","bldgclass":"D7","yearbuilt":"1949","numfloors":"6.0000000","landuse":"4","latitude":"40.8268893","longitude":"-73.9215799"}
+,{"bbl":"2024600018.00000000","address":"903 SHERIDAN AVENUE","bldgclass":"O5","yearbuilt":"1931","numfloors":"2.0000000","landuse":"5","latitude":"40.8271057","longitude":"-73.9210629"}
+,{"bbl":"2024600025.00000000","address":"891 SHERIDAN AVENUE","bldgclass":"G1","yearbuilt":"1924","numfloors":"2.0000000","landuse":"10","latitude":"40.8267792","longitude":"-73.9212440"}
+,{"bbl":"2024600010.00000000","address":"180 EAST 162 STREET","bldgclass":"D7","yearbuilt":"1950","numfloors":"7.0000000","landuse":"4","latitude":"40.8271856","longitude":"-73.9214133"}
+,{"bbl":"2025110101.00000000","address":"971 WOODYCREST AVENUE","bldgclass":"B2","yearbuilt":"1901","numfloors":"2.7500000","landuse":"1","latitude":"40.8321116","longitude":"-73.9287540"}
+,{"bbl":"2025110153.00000000","address":"97 WEST 163 STREET","bldgclass":"B2","yearbuilt":"2000","numfloors":"2.0000000","landuse":"1","latitude":"40.8323067","longitude":"-73.9291224"}
+,{"bbl":"2025110083.00000000","address":"988 OGDEN AVENUE","bldgclass":"C0","yearbuilt":"1902","numfloors":"3.0000000","landuse":"2","latitude":"40.8324194","longitude":"-73.9293608"}
+,{"bbl":"2024740037.00000000","address":"850 GERARD AVENUE","bldgclass":"S2","yearbuilt":"1931","numfloors":"3.0000000","landuse":"4","latitude":"40.8268915","longitude":"-73.9250090"}
+,{"bbl":"2024740040.00000000","address":"76 EAST 161 STREET","bldgclass":"K1","yearbuilt":"1927","numfloors":"1.0000000","landuse":"5","latitude":"40.8270644","longitude":"-73.9249040"}
+,{"bbl":"2025040093.00000000","address":"ANDERSON AVENUE","bldgclass":"V0","yearbuilt":"0","landuse":"11","latitude":"40.8330405","longitude":"-73.9261873"}
+,{"bbl":"2024760104.00000000","address":"948 GERARD AVENUE","bldgclass":"A5","yearbuilt":"1945","numfloors":"2.0000000","landuse":"1","latitude":"40.8292429","longitude":"-73.9237018"}
+,{"bbl":"2025240026.00000000","address":"911 OGDEN AVENUE","bldgclass":"V0","yearbuilt":"0","landuse":"11","latitude":"40.8309793","longitude":"-73.9308438"}
+,{"bbl":"2025040030.00000000","address":"901 ANDERSON AVENUE","bldgclass":"D9","yearbuilt":"1931","numfloors":"6.0000000","landuse":"3","latitude":"40.8305828","longitude":"-73.9286545"}
+,{"bbl":"2025110058.00000000","address":"954 OGDEN AVENUE","bldgclass":"C0","yearbuilt":"1901","numfloors":"3.0000000","landuse":"2","latitude":"40.8317911","longitude":"-73.9297156"}
+,{"bbl":"2025110154.00000000","address":"99 WEST 163 STREET","bldgclass":"B2","yearbuilt":"2000","numfloors":"2.0000000","landuse":"1","latitude":"40.8323287","longitude":"-73.9291910"}
+,{"bbl":"2025120001.00000000","address":"1000 OGDEN AVENUE","bldgclass":"G1","yearbuilt":"1990","numfloors":"1.0000000","landuse":"10","latitude":"40.8329105","longitude":"-73.9290133"}
+,{"bbl":"2025120011.00000000","address":"1024 OGDEN AVENUE","bldgclass":"B1","yearbuilt":"1910","numfloors":"3.0000000","landuse":"1","latitude":"40.8335196","longitude":"-73.9286332"}
+,{"bbl":"2025120013.00000000","address":"1030 OGDEN AVENUE","bldgclass":"C0","yearbuilt":"1910","numfloors":"3.0000000","landuse":"2","latitude":"40.8336595","longitude":"-73.9285464"}
+,{"bbl":"2025120015.00000000","address":"1041 NELSON AVENUE","bldgclass":"D7","yearbuilt":"1940","numfloors":"6.0000000","landuse":"4","latitude":"40.8338571","longitude":"-73.9284233"}
+,{"bbl":"2025120045.00000000","address":"1001 WOODYCREST AVENUE","bldgclass":"D1","yearbuilt":"1939","numfloors":"6.0000000","landuse":"3","latitude":"40.8328003","longitude":"-73.9283016"}
+,{"bbl":"2025230124.00000000","address":"1006 UNIVERSITY AVENUE","bldgclass":"C0","yearbuilt":"1899","numfloors":"3.0000000","landuse":"2","latitude":"40.8336196","longitude":"-73.9305954"}
+,{"bbl":"2025230153.00000000","address":"1009 SUMMIT AVENUE","bldgclass":"B2","yearbuilt":"1901","numfloors":"2.0000000","landuse":"1","latitude":"40.8336496","longitude":"-73.9302304"}
+,{"bbl":"2025240016.00000000","address":"949 OGDEN AVENUE","bldgclass":"C7","yearbuilt":"1910","numfloors":"5.0000000","landuse":"4","latitude":"40.8316049","longitude":"-73.9304529"}
+,{"bbl":"2025240020.00000000","address":"919 OGDEN AVENUE","bldgclass":"C6","yearbuilt":"1905","numfloors":"5.0000000","landuse":"2","latitude":"40.8313799","longitude":"-73.9305616"}
+,{"bbl":"2025240021.00000000","address":"917 OGDEN AVENUE","bldgclass":"D7","yearbuilt":"1929","numfloors":"6.0000000","landuse":"4","latitude":"40.8312235","longitude":"-73.9306521"}
+,{"bbl":"2025240033.00000000","address":"950 SUMMIT AVENUE","bldgclass":"D1","yearbuilt":"2015","numfloors":"6.0000000","landuse":"3","latitude":"40.8321100","longitude":"-73.9305500"}
+,{"bbl":"2025240050.00000000","address":"158 WEST 164 STREET","bldgclass":"D7","yearbuilt":"1931","numfloors":"3.0000000","landuse":"4","latitude":"40.8329275","longitude":"-73.9298372"}
+,{"bbl":"2025240104.00000000","address":"167 WEST 161 STREET","bldgclass":"C3","yearbuilt":"2003","numfloors":"4.0000000","landuse":"2","latitude":"40.8308944","longitude":"-73.9311294"}
+,{"bbl":"2025240109.00000000","address":"177 WEST 161 STREET","bldgclass":"C3","yearbuilt":"2003","numfloors":"4.0000000","landuse":"2","latitude":"40.8307789","longitude":"-73.9307754"}
+,{"bbl":"2025250012.00000000","address":"1026 SUMMIT AVENUE","bldgclass":"B2","yearbuilt":"1901","numfloors":"2.0000000","landuse":"1","latitude":"40.8338632","longitude":"-73.9295435"}
+,{"bbl":"2025250032.00000000","address":"1023 OGDEN AVENUE","bldgclass":"K1","yearbuilt":"1998","numfloors":"1.0000000","landuse":"5","latitude":"40.8336627","longitude":"-73.9292583"}
+,{"bbl":"2025250042.00000000","address":"1001 OGDEN AVENUE","bldgclass":"K1","yearbuilt":"1922","numfloors":"1.0000000","landuse":"5","latitude":"40.8331606","longitude":"-73.9295768"}
+,{"bbl":"2025240059.00000000","address":"985 OGDEN AVENUE","bldgclass":"C0","yearbuilt":"1901","numfloors":"3.0000000","landuse":"2","latitude":"40.8325103","longitude":"-73.9299244"}
+,{"bbl":"2025110077.00000000","address":"95 WEST 162 STREET","bldgclass":"C1","yearbuilt":"1917","numfloors":"5.0000000","landuse":"2","latitude":"40.8316592","longitude":"-73.9294555"}
+,{"bbl":"2025230159.00000000","address":"997 SUMMIT AVENUE","bldgclass":"C1","yearbuilt":"1905","numfloors":"4.0000000","landuse":"2","latitude":"40.8332435","longitude":"-73.9304621"}
+,{"bbl":"2025230154.00000000","address":"1007 SUMMIT AVENUE","bldgclass":"B2","yearbuilt":"1901","numfloors":"2.0000000","landuse":"1","latitude":"40.8335865","longitude":"-73.9302666"}
+,{"bbl":"2025230165.00000000","address":"985 SUMMIT AVENUE","bldgclass":"C1","yearbuilt":"2014","numfloors":"6.0000000","landuse":"2","latitude":"40.8327908","longitude":"-73.9307191"}
+,{"bbl":"2025120051.00000000","address":"1014 NELSON AVENUE","bldgclass":"B9","yearbuilt":"1901","numfloors":"3.0000000","landuse":"1","latitude":"40.8331049","longitude":"-73.9282579"}
+,{"bbl":"2025070034.00000000","address":"953 ANDERSON AVENUE","bldgclass":"D1","yearbuilt":"1917","numfloors":"5.0000000","landuse":"3","latitude":"40.8312852","longitude":"-73.9282707"}
+,{"bbl":"2025120041.00000000","address":"1011 NELSON AVENUE","bldgclass":"B9","yearbuilt":"1910","numfloors":"3.0000000","landuse":"1","latitude":"40.8331080","longitude":"-73.9287529"}
+,{"bbl":"2025250030.00000000","address":"1029 OGDEN AVENUE","bldgclass":"S2","yearbuilt":"1901","numfloors":"3.0000000","landuse":"4","latitude":"40.8339206","longitude":"-73.9291351"}
+,{"bbl":"2025120035.00000000","address":"1023 NELSON AVENUE","bldgclass":"C0","yearbuilt":"1910","numfloors":"3.0000000","landuse":"2","latitude":"40.8334290","longitude":"-73.9285502"}
+,{"bbl":"2025240060.00000000","address":"983 OGDEN AVENUE","bldgclass":"C0","yearbuilt":"1901","numfloors":"3.0000000","landuse":"2","latitude":"40.8324472","longitude":"-73.9299570"}
+,{"bbl":"2025240057.00000000","address":"987 OGDEN AVENUE","bldgclass":"C1","yearbuilt":"2016","numfloors":"4.0000000","landuse":"2","latitude":"40.8325899","longitude":"-73.9298773"}
+,{"bbl":"2025230169.00000000","address":"979 SUMMIT AVENUE","bldgclass":"D9","yearbuilt":"2016","numfloors":"7.0000000","landuse":"3","latitude":"40.8325713","longitude":"-73.9308386"}
+,{"bbl":"2025230161.00000000","address":"993 SUMMIT AVENUE","bldgclass":"C1","yearbuilt":"1905","numfloors":"4.0000000","landuse":"2","latitude":"40.8330953","longitude":"-73.9305453"}
+,{"bbl":"2025230258.00000000","address":"999 SUMMIT AVENUE","bldgclass":"B2","yearbuilt":"2003","numfloors":"2.0000000","landuse":"1","latitude":"40.8333532","longitude":"-73.9303897"}
+,{"bbl":"2025240040.00000000","address":"978 SUMMIT AVENUE","bldgclass":"D9","yearbuilt":"2024","numfloors":"8.0000000","landuse":"3","latitude":"40.8323815","longitude":"-73.9302100"}
+,{"bbl":"2025110087.00000000","address":"996 OGDEN AVENUE","bldgclass":"QG","yearbuilt":"0","landuse":"9","latitude":"40.8326746","longitude":"-73.9292159"}
+,{"bbl":"2025230160.00000000","address":"995 SUMMIT AVENUE","bldgclass":"QG","yearbuilt":"0","landuse":"9","latitude":"40.8331694","longitude":"-73.9305055"}
+,{"bbl":"2025110074.00000000","address":"951 WOODYCREST AVENUE","bldgclass":"C1","yearbuilt":"1929","numfloors":"6.0000000","landuse":"2","latitude":"40.8315026","longitude":"-73.9291991"}
+,{"bbl":"2025110155.00000000","address":"984 OGDEN AVENUE","bldgclass":"B2","yearbuilt":"2000","numfloors":"2.0000000","landuse":"1","latitude":"40.8322850","longitude":"-73.9294368"}
+,{"bbl":"2025120002.00000000","address":"1004 OGDEN AVENUE","bldgclass":"S3","yearbuilt":"1931","numfloors":"3.0000000","landuse":"4","latitude":"40.8329709","longitude":"-73.9289771"}
+,{"bbl":"2025120036.00000000","address":"1021 NELSON AVENUE","bldgclass":"C0","yearbuilt":"1910","numfloors":"3.0000000","landuse":"2","latitude":"40.8333659","longitude":"-73.9285900"}
+,{"bbl":"2025120050.00000000","address":"1012 NELSON AVENUE","bldgclass":"B9","yearbuilt":"1901","numfloors":"3.0000000","landuse":"1","latitude":"40.8330171","longitude":"-73.9283338"}
+,{"bbl":"2025230148.00000000","address":"1023 SUMMIT AVENUE","bldgclass":"C1","yearbuilt":"2022","numfloors":"4.0000000","landuse":"2","latitude":"40.8339569","longitude":"-73.9300457"}
+,{"bbl":"2025240064.00000000","address":"155 WEST 162 STREET","bldgclass":"D7","yearbuilt":"1926","numfloors":"6.0000000","landuse":"4","latitude":"40.8320027","longitude":"-73.9302212"}
+,{"bbl":"2025250002.00000000","address":"1004 SUMMIT AVENUE","bldgclass":"C1","yearbuilt":"2025","numfloors":"4.0000000","landuse":"2","latitude":"40.8332678","longitude":"-73.9298947"}
+,{"bbl":"2025120012.00000000","address":"1028 OGDEN AVENUE","bldgclass":"C0","yearbuilt":"1910","numfloors":"3.0000000","landuse":"2","latitude":"40.8336129","longitude":"-73.9285753"}
+,{"bbl":"2025120111.00000000","address":"1026 OGDEN AVENUE","bldgclass":"S2","yearbuilt":"2005","numfloors":"3.0000000","landuse":"4","latitude":"40.8336075","longitude":"-73.9287307"}
+,{"bbl":"2025110098.00000000","address":"981 WOODYCREST AVENUE","bldgclass":"B3","yearbuilt":"1901","numfloors":"2.7500000","landuse":"1","latitude":"40.8323311","longitude":"-73.9285550"}
+,{"bbl":"2025110099.00000000","address":"977 WOODYCREST AVENUE","bldgclass":"V0","yearbuilt":"0","landuse":"11","latitude":"40.8322653","longitude":"-73.9286490"}
+,{"bbl":"2025110151.00000000","address":"93 WEST 163 STREET","bldgclass":"B2","yearbuilt":"2000","numfloors":"2.0000000","landuse":"1","latitude":"40.8322627","longitude":"-73.9289851"}
+,{"bbl":"2025110095.00000000","address":"985 WOODYCREST AVENUE","bldgclass":"A3","yearbuilt":"1901","numfloors":"2.7500000","landuse":"1","latitude":"40.8324573","longitude":"-73.9284790"}
+,{"bbl":"2025040070.00000000","address":"970 ANDERSON AVENUE","bldgclass":"C1","yearbuilt":"1909","numfloors":"5.0000000","landuse":"2","latitude":"40.8315947","longitude":"-73.9272694"}
+,{"bbl":"2025080041.00000000","address":"1015 ANDERSON AVENUE","bldgclass":"C6","yearbuilt":"1922","numfloors":"6.0000000","landuse":"2","latitude":"40.8325800","longitude":"-73.9272791"}
+,{"bbl":"2025040045.00000000","address":"948 ANDERSON AVENUE","bldgclass":"K1","yearbuilt":"1931","numfloors":"1.0000000","landuse":"5","latitude":"40.8308566","longitude":"-73.9276171"}
+,{"bbl":"2025040066.00000000","address":"964 ANDERSON AVENUE","bldgclass":"C1","yearbuilt":"1908","numfloors":"4.0000000","landuse":"2","latitude":"40.8314027","longitude":"-73.9274322"}
+,{"bbl":"2025040067.00000000","address":"966 ANDERSON AVENUE","bldgclass":"C1","yearbuilt":"1908","numfloors":"4.0000000","landuse":"2","latitude":"40.8314658","longitude":"-73.9273779"}
+,{"bbl":"2025040069.00000000","address":"968 ANDERSON AVENUE","bldgclass":"C1","yearbuilt":"1908","numfloors":"4.0000000","landuse":"2","latitude":"40.8315261","longitude":"-73.9273273"}
+,{"bbl":"2025040072.00000000","address":"974 ANDERSON AVENUE","bldgclass":"C1","yearbuilt":"1908","numfloors":"5.0000000","landuse":"2","latitude":"40.8317373","longitude":"-73.9271500"}
+,{"bbl":"2025070024.00000000","address":"985 ANDERSON AVENUE","bldgclass":"D1","yearbuilt":"1931","numfloors":"6.0000000","landuse":"3","latitude":"40.8320780","longitude":"-73.9276736"}
+,{"bbl":"2025080010.00000000","address":"1018 WOODYCREST AVENUE","bldgclass":"C0","yearbuilt":"1905","numfloors":"3.0000000","landuse":"2","latitude":"40.8330055","longitude":"-73.9273762"}
+,{"bbl":"2025080031.00000000","address":"1035 ANDERSON AVENUE","bldgclass":"D3","yearbuilt":"2014","numfloors":"7.0000000","landuse":"3","latitude":"40.8331452","longitude":"-73.9268413"}
+,{"bbl":"2025080043.00000000","address":"1001 ANDERSON AVENUE","bldgclass":"C6","yearbuilt":"1922","numfloors":"6.0000000","landuse":"2","latitude":"40.8323770","longitude":"-73.9273372"}
+,{"bbl":"2025120080.00000000","address":"1015 WOODYCREST AVENUE","bldgclass":"C0","yearbuilt":"1899","numfloors":"3.0000000","landuse":"2","latitude":"40.8331431","longitude":"-73.9279109"}
+,{"bbl":"2025080013.00000000","address":"1024 WOODYCREST AVENUE","bldgclass":"V0","yearbuilt":"0","landuse":"11","latitude":"40.8331400","longitude":"-73.9272713"}
+,{"bbl":"2025040141.00000000","address":"1001 JEROME AVENUE","bldgclass":"D3","yearbuilt":"1937","numfloors":"11.0000000","landuse":"3","latitude":"40.8311198","longitude":"-73.9271470"}
+,{"bbl":"2025080014.00000000","address":"1030 WOODYCREST AVENUE","bldgclass":"D1","yearbuilt":"1927","numfloors":"6.0000000","landuse":"3","latitude":"40.8332250","longitude":"-73.9272062"}
+,{"bbl":"2025080016.00000000","address":"1036 WOODYCREST AVENUE","bldgclass":"B3","yearbuilt":"1901","numfloors":"2.0000000","landuse":"1","latitude":"40.8333512","longitude":"-73.9271084"}
+,{"bbl":"2025240025.00000000","address":"915 OGDEN AVENUE","bldgclass":"C0","yearbuilt":"1901","numfloors":"2.7500000","landuse":"2","latitude":"40.8310644","longitude":"-73.9307570"}
+,{"bbl":"2025230129.00000000","address":"1018 UNIVERSITY AVENUE","bldgclass":"B2","yearbuilt":"1899","numfloors":"3.0000000","landuse":"1","latitude":"40.8339324","longitude":"-73.9304180"}
+,{"bbl":"2025230130.00000000","address":"1020 UNIVERSITY AVENUE","bldgclass":"V0","yearbuilt":"0","landuse":"11","latitude":"40.8339927","longitude":"-73.9303745"}
+,{"bbl":"2025240013.00000000","address":"164 WEST 162 STREET","bldgclass":"C0","yearbuilt":"2005","numfloors":"3.0000000","landuse":"2","latitude":"40.8317424","longitude":"-73.9308756"}
+,{"bbl":"2025240207.00000000","address":"912 SUMMIT AVENUE","bldgclass":"C0","yearbuilt":"2007","numfloors":"3.0000000","landuse":"2","latitude":"40.8312402","longitude":"-73.9310206"}
+,{"bbl":"2025240009.00000000","address":"916 SUMMIT AVENUE","bldgclass":"C0","yearbuilt":"1901","numfloors":"3.0000000","landuse":"2","latitude":"40.8313499","longitude":"-73.9309555"}
+,{"bbl":"2025240010.00000000","address":"918 SUMMIT AVENUE","bldgclass":"B1","yearbuilt":"1901","numfloors":"3.0000000","landuse":"1","latitude":"40.8314048","longitude":"-73.9308759"}
+,{"bbl":"2025040016.00000000","address":"WOODYCREST AVENUE","bldgclass":"V0","yearbuilt":"0","landuse":"11","latitude":"40.8310824","longitude":"-73.9288418"}
+,{"bbl":"2025070001.00000000","address":"950 WOODYCREST AVENUE","bldgclass":"D7","yearbuilt":"1926","numfloors":"6.0000000","landuse":"4","latitude":"40.8314144","longitude":"-73.9286066"}
+,{"bbl":"2025110022.00000000","address":"939 WOODYCREST AVENUE","bldgclass":"D7","yearbuilt":"1928","numfloors":"8.0000000","landuse":"4","latitude":"40.8310637","longitude":"-73.9297380"}
+,{"bbl":"2025110025.00000000","address":"934 OGDEN AVENUE","bldgclass":"C1","yearbuilt":"1907","numfloors":"5.0000000","landuse":"2","latitude":"40.8313521","longitude":"-73.9299545"}
+,{"bbl":"2025110040.00000000","address":"923 WOODYCREST AVENUE","bldgclass":"M1","yearbuilt":"1927","numfloors":"3.0000000","landuse":"8","latitude":"40.8306658","longitude":"-73.9298613"}
+,{"bbl":"2025110044.00000000","address":"901 WOODYCREST AVENUE","bldgclass":"C1","yearbuilt":"1924","numfloors":"5.0000000","landuse":"2","latitude":"40.8305232","longitude":"-73.9299662"}
+,{"bbl":"2025110057.00000000","address":"952 OGDEN AVENUE","bldgclass":"C0","yearbuilt":"1901","numfloors":"3.0000000","landuse":"2","latitude":"40.8317307","longitude":"-73.9297518"}
+,{"bbl":"2025110059.00000000","address":"956 OGDEN AVENUE","bldgclass":"C0","yearbuilt":"1901","numfloors":"3.0000000","landuse":"2","latitude":"40.8318542","longitude":"-73.9296830"}
+,{"bbl":"2025110060.00000000","address":"958 OGDEN AVENUE","bldgclass":"M1","yearbuilt":"1927","numfloors":"2.0000000","landuse":"8","latitude":"40.8320133","longitude":"-73.9295925"}
+,{"bbl":"2025110072.00000000","address":"955 WOODYCREST AVENUE","bldgclass":"V0","yearbuilt":"0","landuse":"11","latitude":"40.8316343","longitude":"-73.9291123"}
+,{"bbl":"2025110084.00000000","address":"990 OGDEN AVENUE","bldgclass":"C0","yearbuilt":"1902","numfloors":"3.0000000","landuse":"2","latitude":"40.8324853","longitude":"-73.9293246"}
+,{"bbl":"2025110156.00000000","address":"986 OGDEN AVENUE","bldgclass":"B2","yearbuilt":"2000","numfloors":"2.0000000","landuse":"1","latitude":"40.8323481","longitude":"-73.9294006"}
+,{"bbl":"2025120003.00000000","address":"1006 OGDEN AVENUE","bldgclass":"S3","yearbuilt":"1931","numfloors":"3.0000000","landuse":"4","latitude":"40.8330312","longitude":"-73.9289373"}
+,{"bbl":"2025120038.00000000","address":"1017 NELSON AVENUE","bldgclass":"C0","yearbuilt":"1910","numfloors":"3.0000000","landuse":"2","latitude":"40.8332396","longitude":"-73.9286697"}
+,{"bbl":"2025120040.00000000","address":"1013 NELSON AVENUE","bldgclass":"A5","yearbuilt":"1910","numfloors":"3.0000000","landuse":"1","latitude":"40.8331491","longitude":"-73.9287276"}
+,{"bbl":"2025240043.00000000","address":"990 SUMMIT AVENUE","bldgclass":"Z9","yearbuilt":"0","latitude":"40.8326834","longitude":"-73.9302169"}
+,{"bbl":"2025240049.00000000","address":"992 SUMMIT AVENUE","bldgclass":"A9","yearbuilt":"1901","numfloors":"1.7500000","landuse":"1","latitude":"40.8329057","longitude":"-73.9300902"}
+,{"bbl":"2025240101.00000000","address":"161 WEST 161 STREET","bldgclass":"C0","yearbuilt":"2003","numfloors":"4.0000000","landuse":"2","latitude":"40.8309632","longitude":"-73.9313389"}
+,{"bbl":"2025240106.00000000","address":"171 WEST 161 STREET","bldgclass":"C3","yearbuilt":"2003","numfloors":"4.0000000","landuse":"2","latitude":"40.8308504","longitude":"-73.9309957"}
+,{"bbl":"2025240107.00000000","address":"173 WEST 161 STREET","bldgclass":"C3","yearbuilt":"2003","numfloors":"4.0000000","landuse":"2","latitude":"40.8308257","longitude":"-73.9309235"}
+,{"bbl":"2025250003.00000000","address":"1008 SUMMIT AVENUE","bldgclass":"C1","yearbuilt":"1916","numfloors":"5.0000000","landuse":"2","latitude":"40.8334215","longitude":"-73.9298114"}
+,{"bbl":"2025110068.00000000","address":"957 WOODYCREST AVENUE","bldgclass":"C1","yearbuilt":"1924","numfloors":"5.0000000","landuse":"2","latitude":"40.8318208","longitude":"-73.9289856"}
+,{"bbl":"2025110027.00000000","address":"100 WEST 162 STREET","bldgclass":"C6","yearbuilt":"1907","numfloors":"5.0000000","landuse":"2","latitude":"40.8314508","longitude":"-73.9299002"}
+,{"bbl":"2025240011.00000000","address":"920 SUMMIT AVENUE","bldgclass":"B3","yearbuilt":"1901","numfloors":"3.0000000","landuse":"1","latitude":"40.8314625","longitude":"-73.9309554"}
+,{"bbl":"2025120037.00000000","address":"1019 NELSON AVENUE","bldgclass":"C0","yearbuilt":"1910","numfloors":"3.0000000","landuse":"2","latitude":"40.8333028","longitude":"-73.9286299"}
+,{"bbl":"2025240012.00000000","address":"924 SUMMIT AVENUE","bldgclass":"C6","yearbuilt":"1910","numfloors":"5.0000000","landuse":"2","latitude":"40.8315832","longitude":"-73.9308396"}
+,{"bbl":"2025240074.00000000","address":"922 SUMMIT AVENUE","bldgclass":"B2","yearbuilt":"1901","numfloors":"3.0000000","landuse":"1","latitude":"40.8315036","longitude":"-73.9309120"}
+,{"bbl":"2025230257.00000000","address":"1001 SUMMIT AVENUE","bldgclass":"B2","yearbuilt":"2003","numfloors":"2.0000000","landuse":"1","latitude":"40.8334054","longitude":"-73.9303607"}
+,{"bbl":"2025120004.00000000","address":"1008 OGDEN AVENUE","bldgclass":"C1","yearbuilt":"2021","numfloors":"4.0000000","landuse":"2","latitude":"40.8330943","longitude":"-73.9288975"}
+,{"bbl":"2025230061.00000000","address":"950 UNIVERSITY AVENUE","bldgclass":"E7","yearbuilt":"1929","numfloors":"8.0000000","landuse":"6","latitude":"40.8326346","longitude":"-73.9311131"}
+,{"bbl":"2025250014.00000000","address":"1030 SUMMIT AVENUE","bldgclass":"B2","yearbuilt":"1901","numfloors":"2.0000000","landuse":"1","latitude":"40.8339949","longitude":"-73.9294711"}
+,{"bbl":"2025250039.00000000","address":"1007 OGDEN AVENUE","bldgclass":"K1","yearbuilt":"1929","numfloors":"1.0000000","landuse":"5","latitude":"40.8333472","longitude":"-73.9294718"}
+,{"bbl":"2025120082.00000000","address":"1009 WOODYCREST AVENUE","bldgclass":"C0","yearbuilt":"1899","numfloors":"3.0000000","landuse":"2","latitude":"40.8330224","longitude":"-73.9280050"}
+,{"bbl":"2025080048.00000000","address":"65 WEST 164 STREET","bldgclass":"B1","yearbuilt":"2010","numfloors":"2.0000000","landuse":"1","latitude":"40.8324237","longitude":"-73.9274419"}
+,{"bbl":"2025080005.00000000","address":"1008 WOODYCREST AVENUE","bldgclass":"B3","yearbuilt":"1901","numfloors":"2.7500000","landuse":"1","latitude":"40.8327202","longitude":"-73.9275970"}
+,{"bbl":"2025080050.00000000","address":"69 WEST 164 STREET","bldgclass":"B1","yearbuilt":"2010","numfloors":"2.0000000","landuse":"1","latitude":"40.8324677","longitude":"-73.9275394"}
+,{"bbl":"2025040059.00000000","address":"954 ANDERSON AVENUE","bldgclass":"C1","yearbuilt":"1908","numfloors":"4.0000000","landuse":"2","latitude":"40.8310872","longitude":"-73.9276999"}
+,{"bbl":"2025040060.00000000","address":"956 ANDERSON AVENUE","bldgclass":"C1","yearbuilt":"1908","numfloors":"4.0000000","landuse":"2","latitude":"40.8311475","longitude":"-73.9276493"}
+,{"bbl":"2025070027.00000000","address":"979 ANDERSON AVENUE","bldgclass":"C0","yearbuilt":"1899","numfloors":"3.0000000","landuse":"2","latitude":"40.8319189","longitude":"-73.9277930"}
+,{"bbl":"2025070032.00000000","address":"959 ANDERSON AVENUE","bldgclass":"D1","yearbuilt":"2022","numfloors":"7.0000000","landuse":"3","latitude":"40.8314854","longitude":"-73.9281259"}
+,{"bbl":"2025080003.00000000","address":"1004 WOODYCREST AVENUE","bldgclass":"V0","yearbuilt":"0","landuse":"11","latitude":"40.8326077","longitude":"-73.9276838"}
+,{"bbl":"2025120027.00000000","address":"1047 NELSON AVENUE","bldgclass":"B2","yearbuilt":"1901","numfloors":"2.0000000","landuse":"1","latitude":"40.8339612","longitude":"-73.9282027"}
+,{"bbl":"2025120059.00000000","address":"1030 NELSON AVENUE","bldgclass":"D7","yearbuilt":"1929","numfloors":"6.0000000","landuse":"4","latitude":"40.8337825","longitude":"-73.9277548"}
+,{"bbl":"2025120081.00000000","address":"1011 WOODYCREST AVENUE","bldgclass":"C0","yearbuilt":"1899","numfloors":"3.0000000","landuse":"2","latitude":"40.8330828","longitude":"-73.9279580"}
+,{"bbl":"2025080049.00000000","address":"67 WEST 164 STREET","bldgclass":"B1","yearbuilt":"2010","numfloors":"2.0000000","landuse":"1","latitude":"40.8324457","longitude":"-73.9274889"}
+,{"bbl":"2025040053.00000000","address":"946 ANDERSON AVENUE","bldgclass":"C1","yearbuilt":"1916","numfloors":"5.0000000","landuse":"2","latitude":"40.8307333","longitude":"-73.9279641"}
+,{"bbl":"2025070028.00000000","address":"975 ANDERSON AVENUE","bldgclass":"B1","yearbuilt":"1920","numfloors":"2.0000000","landuse":"1","latitude":"40.8318448","longitude":"-73.9278509"}
+,{"bbl":"2025040036.00000000","address":"941 JEROME AVENUE","bldgclass":"D4","yearbuilt":"1927","numfloors":"8.0000000","landuse":"3","latitude":"40.8305960","longitude":"-73.9279498"}
+,{"bbl":"2025040021.00000000","address":"951 ANDERSON AVENUE","bldgclass":"D1","yearbuilt":"1911","numfloors":"5.0000000","landuse":"3","latitude":"40.8308956","longitude":"-73.9285096"}
+,{"bbl":"2025070007.00000000","address":"972 WOODYCREST AVENUE","bldgclass":"D3","yearbuilt":"2019","numfloors":"7.0000000","landuse":"3","latitude":"40.8318039","longitude":"-73.9283026"}
+,{"bbl":"2025070018.00000000","address":"990 WOODYCREST AVENUE","bldgclass":"D7","yearbuilt":"2020","numfloors":"6.0000000","landuse":"4","latitude":"40.8322758","longitude":"-73.9279408"}
+,{"bbl":"2025120054.00000000","address":"1022 NELSON AVENUE","bldgclass":"B2","yearbuilt":"1899","numfloors":"2.0000000","landuse":"1","latitude":"40.8333408","longitude":"-73.9280661"}
+,{"bbl":"2025080001.00000000","address":"1000 WOODYCREST AVENUE","bldgclass":"D9","yearbuilt":"2021","numfloors":"7.0000000","landuse":"3","latitude":"40.8325090","longitude":"-73.9277598"}
+,{"bbl":"2025120077.00000000","address":"1021 WOODYCREST AVENUE","bldgclass":"B2","yearbuilt":"1899","numfloors":"3.0000000","landuse":"1","latitude":"40.8333132","longitude":"-73.9277590"}
+,{"bbl":"2025120078.00000000","address":"1019 WOODYCREST AVENUE","bldgclass":"C0","yearbuilt":"1899","numfloors":"3.0000000","landuse":"2","latitude":"40.8332556","longitude":"-73.9278024"}
+,{"bbl":"2025120083.00000000","address":"1007 WOODYCREST AVENUE","bldgclass":"C0","yearbuilt":"1899","numfloors":"3.0000000","landuse":"2","latitude":"40.8329648","longitude":"-73.9280593"}
+,{"bbl":"2025120057.00000000","address":"1026 NELSON AVENUE","bldgclass":"A1","yearbuilt":"1901","numfloors":"2.0000000","landuse":"1","latitude":"40.8334862","longitude":"-73.9279647"}
+,{"bbl":"2025040058.00000000","address":"952 ANDERSON AVENUE","bldgclass":"I1","yearbuilt":"1909","numfloors":"5.0000000","landuse":"8","latitude":"40.8310214","longitude":"-73.9277687"}
+,{"bbl":"2025070029.00000000","address":"963 ANDERSON AVENUE","bldgclass":"C1","yearbuilt":"1924","numfloors":"5.0000000","landuse":"2","latitude":"40.8316775","longitude":"-73.9279775"}
+,{"bbl":"2025240108.00000000","address":"175 WEST 161 STREET","bldgclass":"C3","yearbuilt":"2003","numfloors":"4.0000000","landuse":"2","latitude":"40.8308037","longitude":"-73.9308476"}
+,{"bbl":"2025240102.00000000","address":"163 WEST 161 STREET","bldgclass":"C3","yearbuilt":"2003","numfloors":"4.0000000","landuse":"2","latitude":"40.8309384","longitude":"-73.9312667"}
+,{"bbl":"2025230069.00000000","address":"931 SUMMIT AVENUE","bldgclass":"C1","yearbuilt":"2014","numfloors":"4.0000000","landuse":"2","latitude":"40.8318195","longitude":"-73.9312585"}
+,{"bbl":"2025110064.00000000","address":"100 WEST 163 STREET","bldgclass":"C1","yearbuilt":"1906","numfloors":"4.0000000","landuse":"2","latitude":"40.8319501","longitude":"-73.9293902"}
+,{"bbl":"2025240113.00000000","address":"162 WEST 162 STREET","bldgclass":"C0","yearbuilt":"2005","numfloors":"3.0000000","landuse":"2","latitude":"40.8317094","longitude":"-73.9307708"}
+,{"bbl":"2025230120.00000000","address":"UNIVERSITY AVENUE","bldgclass":"V1","yearbuilt":"0","landuse":"11","latitude":"40.8334303","longitude":"-73.9307004"}
+,{"bbl":"2025110013.00000000","address":"900 OGDEN AVENUE","bldgclass":"D1","yearbuilt":"2001","numfloors":"9.0000000","landuse":"3","latitude":"40.8307951","longitude":"-73.9302370"}
+,{"bbl":"2025090002.00000000","address":"1062 WOODYCREST AVENUE","bldgclass":"C0","yearbuilt":"1997","numfloors":"3.0000000","landuse":"2","latitude":"40.8339877","longitude":"-73.9266127"}
+,{"bbl":"2025090032.00000000","address":"1051 ANDERSON AVENUE","bldgclass":"C1","yearbuilt":"1997","numfloors":"3.0000000","landuse":"2","latitude":"40.8338200","longitude":"-73.9263201"}
+,{"bbl":"2025050001.00000000","address":"1060 ANDERSON AVENUE","bldgclass":"C1","yearbuilt":"1925","numfloors":"5.0000000","landuse":"2","latitude":"40.8335946","longitude":"-73.9257169"}
+,{"bbl":"2025090001.00000000","address":"1060 WOODYCREST AVENUE","bldgclass":"K1","yearbuilt":"1927","numfloors":"1.0000000","landuse":"5","latitude":"40.8339301","longitude":"-73.9266597"}
+,{"bbl":"2025090029.00000000","address":"1057 ANDERSON AVENUE","bldgclass":"C0","yearbuilt":"1997","numfloors":"3.0000000","landuse":"2","latitude":"40.8339956","longitude":"-73.9261862"}
+,{"bbl":"2025090030.00000000","address":"1055 ANDERSON AVENUE","bldgclass":"C0","yearbuilt":"1997","numfloors":"3.0000000","landuse":"2","latitude":"40.8339353","longitude":"-73.9262333"}
+,{"bbl":"2025050030.00000000","address":"1065 JEROME AVENUE","bldgclass":"D1","yearbuilt":"1929","numfloors":"6.0000000","landuse":"3","latitude":"40.8336903","longitude":"-73.9251820"}
+,{"bbl":"2025040094.00000000","address":"1038 ANDERSON AVENUE","bldgclass":"C1","yearbuilt":"1926","numfloors":"5.0000000","landuse":"2","latitude":"40.8332379","longitude":"-73.9259161"}
+,{"bbl":"2025050036.00000000","address":"1061 JEROME AVENUE","bldgclass":"C3","yearbuilt":"1925","numfloors":"2.0000000","landuse":"2","latitude":"40.8334461","longitude":"-73.9252907"}
+,{"bbl":"2025040105.00000000","address":"1055 JEROME AVENUE","bldgclass":"D1","yearbuilt":"1927","numfloors":"7.0000000","landuse":"3","latitude":"40.8330976","longitude":"-73.9254573"}
+,{"bbl":"2025050003.00000000","address":"1070 ANDERSON AVENUE","bldgclass":"D1","yearbuilt":"2011","numfloors":"8.0000000","landuse":"3","latitude":"40.8337592","longitude":"-73.9256083"}
+,{"bbl":"2024790001.00000000","address":"85 MCCLELLAN STREET","bldgclass":"D4","yearbuilt":"1940","numfloors":"6.0000000","landuse":"3","latitude":"40.8339482","longitude":"-73.9208380"}
+,{"bbl":"2024790042.00000000","address":"1155 WALTON AVENUE","bldgclass":"D7","yearbuilt":"1940","numfloors":"6.0000000","landuse":"4","latitude":"40.8338299","longitude":"-73.9205093"}
+,{"bbl":"2024940001.00000000","address":"1015 RIVER AVENUE","bldgclass":"Q1","yearbuilt":"1962","numfloors":"1.0000000","landuse":"9","latitude":"40.8316535","longitude":"-73.9248879"}
+,{"bbl":"2024910001.00000000","address":"800 EAST 161 STREET","bldgclass":"Q6","yearbuilt":"2013","landuse":"9","latitude":"40.8270113","longitude":"-73.9277947"}
+,{"bbl":"2025390132.00000000","address":"10 MAJ WM DEEGAN BLVD","bldgclass":"F4","yearbuilt":"1931","numfloors":"1.0000000","landuse":"6","latitude":"40.8257829","longitude":"-73.9297364"}
+,{"bbl":"2024740001.00000000","address":"811 WALTON AVENUE","bldgclass":"D4","yearbuilt":"1927","numfloors":"6.0000000","landuse":"3","latitude":"40.8255772","longitude":"-73.9256030"}
+,{"bbl":"2024830023.00000000","address":"815 GERARD AVENUE","bldgclass":"D7","yearbuilt":"1928","numfloors":"6.0000000","landuse":"4","latitude":"40.8257561","longitude":"-73.9263399"}
+,{"bbl":"2024740034.00000000","address":"844 GERARD AVENUE","bldgclass":"M1","yearbuilt":"1939","numfloors":"2.0000000","landuse":"8","latitude":"40.8266913","longitude":"-73.9251393"}
+,{"bbl":"2024740035.00000000","address":"846 GERARD AVENUE","bldgclass":"K1","yearbuilt":"1931","numfloors":"1.0000000","landuse":"5","latitude":"40.8267928","longitude":"-73.9250705"}
+,{"bbl":"2024740015.00000000","address":"825 WALTON AVENUE","bldgclass":"D4","yearbuilt":"1924","numfloors":"6.0000000","landuse":"3","latitude":"40.8259118","longitude":"-73.9252196"}
+,{"bbl":"2024740049.00000000","address":"853 WALTON AVENUE","bldgclass":"D1","yearbuilt":"1927","numfloors":"6.0000000","landuse":"3","latitude":"40.8267431","longitude":"-73.9247237"}
+,{"bbl":"2024740028.00000000","address":"835 WALTON AVENUE","bldgclass":"D1","yearbuilt":"1926","numfloors":"6.0000000","landuse":"3","latitude":"40.8263015","longitude":"-73.9251072"}
+,{"bbl":"2024740032.00000000","address":"840 GERARD AVENUE","bldgclass":"M1","yearbuilt":"1963","numfloors":"3.0000000","landuse":"8","latitude":"40.8265266","longitude":"-73.9252262"}
+,{"bbl":"2024740046.00000000","address":"865 WALTON AVENUE","bldgclass":"D7","yearbuilt":"1925","numfloors":"6.0000000","landuse":"4","latitude":"40.8269654","longitude":"-73.9245897"}
+,{"bbl":"2024740051.00000000","address":"845 WALTON AVENUE","bldgclass":"C1","yearbuilt":"1910","numfloors":"5.0000000","landuse":"2","latitude":"40.8266169","longitude":"-73.9248105"}
+,{"bbl":"2025240103.00000000","address":"165 WEST 161 STREET","bldgclass":"C3","yearbuilt":"2003","numfloors":"4.0000000","landuse":"2","latitude":"40.8309164","longitude":"-73.9311980"}
+,{"bbl":"2024840005.00000000","address":"51 EAST 161 STREET","bldgclass":"K5","yearbuilt":"1981","numfloors":"1.0000000","landuse":"5","latitude":"40.8280720","longitude":"-73.9254051"}
+,{"bbl":"2024840009.00000000","address":"880 RIVER AVENUE","bldgclass":"O5","yearbuilt":"1950","numfloors":"2.0000000","landuse":"5","latitude":"40.8283848","longitude":"-73.9251916"}
+,{"bbl":"2024840015.00000000","address":"70 EAST 162 STREET","bldgclass":"D6","yearbuilt":"1953","numfloors":"7.0000000","landuse":"4","latitude":"40.8287689","longitude":"-73.9249815"}
+,{"bbl":"2024840033.00000000","address":"881 GERARD AVENUE","bldgclass":"K2","yearbuilt":"1950","numfloors":"2.0000000","landuse":"5","latitude":"40.8282528","longitude":"-73.9248195"}
+,{"bbl":"2024840035.00000000","address":"67 EAST 161 STREET","bldgclass":"K1","yearbuilt":"1995","numfloors":"1.0000000","landuse":"5","latitude":"40.8279483","longitude":"-73.9250186"}
+,{"bbl":"2024710050.00000000","address":"1001 GRAND CONCOURSE","bldgclass":"D4","yearbuilt":"1941","numfloors":"10.0000000","landuse":"3","latitude":"40.8299853","longitude":"-73.9215221"}
+,{"bbl":"2024760108.00000000","address":"956 GERARD AVENUE","bldgclass":"A5","yearbuilt":"1945","numfloors":"2.0000000","landuse":"1","latitude":"40.8294130","longitude":"-73.9236041"}
+,{"bbl":"2024760091.00000000","address":"901 WALTON AVENUE","bldgclass":"D7","yearbuilt":"1927","numfloors":"6.0000000","landuse":"4","latitude":"40.8279531","longitude":"-73.9240574"}
+,{"bbl":"2024760009.00000000","address":"958 GERARD AVENUE","bldgclass":"A5","yearbuilt":"1945","numfloors":"2.0000000","landuse":"1","latitude":"40.8294542","longitude":"-73.9235787"}
+,{"bbl":"2024760101.00000000","address":"942 GERARD AVENUE","bldgclass":"A5","yearbuilt":"1945","numfloors":"2.0000000","landuse":"1","latitude":"40.8291194","longitude":"-73.9237779"}
+,{"bbl":"2024760044.00000000","address":"955 WALTON AVENUE","bldgclass":"D1","yearbuilt":"1927","numfloors":"6.0000000","landuse":"3","latitude":"40.8291494","longitude":"-73.9233551"}
+,{"bbl":"2024710036.00000000","address":"1015 GRAND CONCOURSE","bldgclass":"D4","yearbuilt":"1941","numfloors":"6.0000000","landuse":"3","latitude":"40.8303008","longitude":"-73.9213555"}
+,{"bbl":"2024760056.00000000","address":"81 EAST 161 STREET","bldgclass":"O5","yearbuilt":"1940","numfloors":"3.0000000","landuse":"5","latitude":"40.8276735","longitude":"-73.9244950"}
+,{"bbl":"2024760061.00000000","address":"880 GERARD AVENUE","bldgclass":"K1","yearbuilt":"1920","numfloors":"1.0000000","landuse":"5","latitude":"40.8280659","longitude":"-73.9243934"}
+,{"bbl":"2024760068.00000000","address":"910 GERARD AVENUE","bldgclass":"C1","yearbuilt":"1927","numfloors":"3.0000000","landuse":"2","latitude":"40.8285543","longitude":"-73.9241073"}
+,{"bbl":"2024760071.00000000","address":"918 GERARD AVENUE","bldgclass":"C1","yearbuilt":"1925","numfloors":"3.0000000","landuse":"2","latitude":"40.8287518","longitude":"-73.9239915"}
+,{"bbl":"2024690001.00000000","address":"GRAND CONCOURSE","bldgclass":"Q1","yearbuilt":"0","landuse":"9","latitude":"40.8285258","longitude":"-73.9226620"}
+,{"bbl":"2024760100.00000000","address":"940 GERARD AVENUE","bldgclass":"A5","yearbuilt":"1945","numfloors":"2.0000000","landuse":"1","latitude":"40.8290701","longitude":"-73.9238032"}
+,{"bbl":"2024760102.00000000","address":"944 GERARD AVENUE","bldgclass":"A5","yearbuilt":"1945","numfloors":"2.0000000","landuse":"1","latitude":"40.8291606","longitude":"-73.9237525"}
+,{"bbl":"2024760103.00000000","address":"946 GERARD AVENUE","bldgclass":"A5","yearbuilt":"1945","numfloors":"2.0000000","landuse":"1","latitude":"40.8292045","longitude":"-73.9237272"}
+,{"bbl":"2024760106.00000000","address":"952 GERARD AVENUE","bldgclass":"A5","yearbuilt":"1945","numfloors":"2.0000000","landuse":"1","latitude":"40.8293280","longitude":"-73.9236548"}
+,{"bbl":"2024770034.00000000","address":"1005 WALTON AVENUE","bldgclass":"D1","yearbuilt":"1926","numfloors":"6.0000000","landuse":"3","latitude":"40.8303976","longitude":"-73.9225225"}
+,{"bbl":"2024760105.00000000","address":"950 GERARD AVENUE","bldgclass":"A5","yearbuilt":"1945","numfloors":"2.0000000","landuse":"1","latitude":"40.8292841","longitude":"-73.9236801"}
+,{"bbl":"2024760074.00000000","address":"928 GERARD AVENUE","bldgclass":"C1","yearbuilt":"1925","numfloors":"3.0000000","landuse":"2","latitude":"40.8289466","longitude":"-73.9238756"}
+,{"bbl":"2024760107.00000000","address":"954 GERARD AVENUE","bldgclass":"A5","yearbuilt":"1945","numfloors":"2.0000000","landuse":"1","latitude":"40.8293691","longitude":"-73.9236294"}
+,{"bbl":"2024760065.00000000","address":"906 GERARD AVENUE","bldgclass":"S5","yearbuilt":"1927","numfloors":"3.0000000","landuse":"4","latitude":"40.8283595","longitude":"-73.9242232"}
+,{"bbl":"2024710001.00000000","address":"1000 WALTON AVENUE","bldgclass":"W2","yearbuilt":"1931","numfloors":"4.0000000","landuse":"8","latitude":"40.8303121","longitude":"-73.9218505"}
+,{"bbl":"2024780064.00000000","address":"1055 WALTON AVENUE","bldgclass":"D7","yearbuilt":"1938","numfloors":"6.0000000","landuse":"4","latitude":"40.8316597","longitude":"-73.9217947"}
+,{"bbl":"2024720023.00000000","address":"1055 GRAND CONCOURSE","bldgclass":"C7","yearbuilt":"1918","numfloors":"5.0000000","landuse":"4","latitude":"40.8316343","longitude":"-73.9206745"}
+,{"bbl":"2024720010.00000000","address":"1070 WALTON AVENUE","bldgclass":"C0","yearbuilt":"1899","numfloors":"3.0000000","landuse":"2","latitude":"40.8319090","longitude":"-73.9210211"}
+,{"bbl":"2024710021.00000000","address":"150 EAST 165 STREET","bldgclass":"C7","yearbuilt":"1928","numfloors":"5.0000000","landuse":"4","latitude":"40.8308908","longitude":"-73.9211669"}
+,{"bbl":"2024720005.00000000","address":"1060 WALTON AVENUE","bldgclass":"B9","yearbuilt":"1899","numfloors":"3.0000000","landuse":"1","latitude":"40.8316566","longitude":"-73.9211696"}
+,{"bbl":"2024720008.00000000","address":"1066 WALTON AVENUE","bldgclass":"C1","yearbuilt":"1899","numfloors":"3.0000000","landuse":"2","latitude":"40.8318075","longitude":"-73.9210790"}
+,{"bbl":"2024720009.00000000","address":"1068 WALTON AVENUE","bldgclass":"C0","yearbuilt":"1899","numfloors":"3.0000000","landuse":"2","latitude":"40.8318568","longitude":"-73.9210501"}
+,{"bbl":"2024720011.00000000","address":"1075 GRAND CONCOURSE","bldgclass":"D4","yearbuilt":"1928","numfloors":"6.0000000","landuse":"3","latitude":"40.8319719","longitude":"-73.9206669"}
+,{"bbl":"2024720032.00000000","address":"155 EAST 165 STREET","bldgclass":"C1","yearbuilt":"1927","numfloors":"5.0000000","landuse":"2","latitude":"40.8314121","longitude":"-73.9209603"}
+,{"bbl":"2024780030.00000000","address":"80 MCCLELLAN STREET","bldgclass":"D1","yearbuilt":"1966","numfloors":"6.0000000","landuse":"3","latitude":"40.8334816","longitude":"-73.9209181"}
+,{"bbl":"2024780040.00000000","address":"1113 WALTON AVENUE","bldgclass":"C1","yearbuilt":"1925","numfloors":"5.0000000","landuse":"2","latitude":"40.8331001","longitude":"-73.9209402"}
+,{"bbl":"2024710024.00000000","address":"1035 GRAND CONCOURSE","bldgclass":"D7","yearbuilt":"1939","numfloors":"6.0000000","landuse":"4","latitude":"40.8307343","longitude":"-73.9210803"}
+,{"bbl":"2024720028.00000000","address":"1049 GRAND CONCOURSE","bldgclass":"C7","yearbuilt":"1917","numfloors":"5.0000000","landuse":"4","latitude":"40.8313241","longitude":"-73.9207074"}
+,{"bbl":"2024770001.00000000","address":"1006 GERARD AVENUE","bldgclass":"D1","yearbuilt":"1927","numfloors":"6.0000000","landuse":"3","latitude":"40.8305132","longitude":"-73.9228620"}
+,{"bbl":"2024710015.00000000","address":"1024 WALTON AVENUE","bldgclass":"D7","yearbuilt":"1928","numfloors":"6.0000000","landuse":"4","latitude":"40.8310146","longitude":"-73.9215642"}
+,{"bbl":"2024870020.00000000","address":"1075 GERARD AVENUE","bldgclass":"D1","yearbuilt":"1999","numfloors":"7.0000000","landuse":"3","latitude":"40.8326154","longitude":"-73.9225127"}
+,{"bbl":"2024870030.00000000","address":"1079 GERARD AVENUE","bldgclass":"C9","yearbuilt":"2003","numfloors":"3.0000000","landuse":"2","latitude":"40.8330269","longitude":"-73.9222701"}
+,{"bbl":"2024870042.00000000","address":"1111 GERARD AVENUE","bldgclass":"D3","yearbuilt":"1991","numfloors":"6.0000000","landuse":"3","latitude":"40.8336578","longitude":"-73.9217309"}
+,{"bbl":"2024720001.00000000","address":"149 EAST 165 STREET","bldgclass":"C7","yearbuilt":"1919","numfloors":"5.0000000","landuse":"4","latitude":"40.8314316","longitude":"-73.9213035"}
+,{"bbl":"2024720006.00000000","address":"1062 WALTON AVENUE","bldgclass":"C0","yearbuilt":"1899","numfloors":"3.0000000","landuse":"2","latitude":"40.8317059","longitude":"-73.9211406"}
+,{"bbl":"2024770007.00000000","address":"1014 GERARD AVENUE","bldgclass":"D1","yearbuilt":"1929","numfloors":"6.0000000","landuse":"3","latitude":"40.8307957","longitude":"-73.9226015"}
+,{"bbl":"2024770015.00000000","address":"1040 GERARD AVENUE","bldgclass":"D4","yearbuilt":"1959","numfloors":"6.0000000","landuse":"3","latitude":"40.8313445","longitude":"-73.9223733"}
+,{"bbl":"2024770021.00000000","address":"1027 WALTON AVENUE","bldgclass":"D7","yearbuilt":"1927","numfloors":"6.0000000","landuse":"4","latitude":"40.8311165","longitude":"-73.9221061"}
+,{"bbl":"2024770028.00000000","address":"1015 WALTON AVENUE","bldgclass":"M1","yearbuilt":"1931","numfloors":"3.0000000","landuse":"8","latitude":"40.8308668","longitude":"-73.9222473"}
+,{"bbl":"2024770029.00000000","address":"1011 WALTON AVENUE","bldgclass":"N2","yearbuilt":"1926","numfloors":"6.0000000","landuse":"8","latitude":"40.8306802","longitude":"-73.9222620"}
+,{"bbl":"2024780001.00000000","address":"1058 GERARD AVENUE","bldgclass":"M9","yearbuilt":"1925","numfloors":"1.0000000","landuse":"8","latitude":"40.8317533","longitude":"-73.9221343"}
+,{"bbl":"2024780005.00000000","address":"1060 GERARD AVENUE","bldgclass":"G7","yearbuilt":"0","landuse":"10","latitude":"40.8319234","longitude":"-73.9220329"}
+,{"bbl":"2024780007.00000000","address":"1068 GERARD AVENUE","bldgclass":"D1","yearbuilt":"2007","numfloors":"11.0000000","landuse":"3","latitude":"40.8321237","longitude":"-73.9219170"}
+,{"bbl":"2024780012.00000000","address":"1082 GERARD AVENUE","bldgclass":"C1","yearbuilt":"1925","numfloors":"5.0000000","landuse":"2","latitude":"40.8324639","longitude":"-73.9217179"}
+,{"bbl":"2024780046.00000000","address":"1097 WALTON AVENUE","bldgclass":"C1","yearbuilt":"1925","numfloors":"5.0000000","landuse":"2","latitude":"40.8327215","longitude":"-73.9211647"}
+,{"bbl":"2024780052.00000000","address":"1083 WALTON AVENUE","bldgclass":"C1","yearbuilt":"1925","numfloors":"5.0000000","landuse":"2","latitude":"40.8323484","longitude":"-73.9213819"}
+,{"bbl":"2024860030.00000000","address":"1015 GERARD AVENUE","bldgclass":"D1","yearbuilt":"1928","numfloors":"6.0000000","landuse":"3","latitude":"40.8309251","longitude":"-73.9232771"}
+,{"bbl":"2024870038.00000000","address":"RIVER AVENUE","bldgclass":"G7","yearbuilt":"0","landuse":"10","latitude":"40.8337212","longitude":"-73.9221356"}
+,{"bbl":"2024870032.00000000","address":"1083 GERARD AVENUE","bldgclass":"C1","yearbuilt":"2003","numfloors":"3.0000000","landuse":"2","latitude":"40.8333068","longitude":"-73.9221072"}
+,{"bbl":"2024780024.00000000","address":"1112 GERARD AVENUE","bldgclass":"C1","yearbuilt":"1925","numfloors":"5.0000000","landuse":"2","latitude":"40.8332184","longitude":"-73.9212725"}
+,{"bbl":"2024770011.00000000","address":"1020 GERARD AVENUE","bldgclass":"D1","yearbuilt":"1927","numfloors":"6.0000000","landuse":"3","latitude":"40.8310838","longitude":"-73.9225253"}
+,{"bbl":"2024860025.00000000","address":"1025 GERARD AVENUE","bldgclass":"D1","yearbuilt":"1928","numfloors":"6.0000000","landuse":"3","latitude":"40.8312379","longitude":"-73.9230925"}
+,{"bbl":"2024720003.00000000","address":"1056 WALTON AVENUE","bldgclass":"B9","yearbuilt":"1899","numfloors":"3.0000000","landuse":"1","latitude":"40.8315578","longitude":"-73.9212275"}
+,{"bbl":"2024720002.00000000","address":"1054 WALTON AVENUE","bldgclass":"C1","yearbuilt":"1899","numfloors":"3.0000000","landuse":"2","latitude":"40.8315057","longitude":"-73.9212601"}
+,{"bbl":"2024720007.00000000","address":"1064 WALTON AVENUE","bldgclass":"C0","yearbuilt":"1899","numfloors":"3.0000000","landuse":"2","latitude":"40.8317581","longitude":"-73.9211080"}
+,{"bbl":"2024870010.00000000","address":"1065 GERARD AVENUE","bldgclass":"D1","yearbuilt":"1999","numfloors":"7.0000000","landuse":"3","latitude":"40.8321160","longitude":"-73.9228060"}
+,{"bbl":"2024780061.00000000","address":"1063 WALTON AVENUE","bldgclass":"G7","yearbuilt":"0","landuse":"10","latitude":"40.8318792","longitude":"-73.9216571"}
+,{"bbl":"2024780018.00000000","address":"1098 GERARD AVENUE","bldgclass":"C1","yearbuilt":"1925","numfloors":"5.0000000","landuse":"2","latitude":"40.8328397","longitude":"-73.9214970"}
+,{"bbl":"2024710011.00000000","address":"1020 WALTON AVENUE","bldgclass":"D1","yearbuilt":"1928","numfloors":"6.0000000","landuse":"3","latitude":"40.8307731","longitude":"-73.9216620"}
+,{"bbl":"2024720004.00000000","address":"1058 WALTON AVENUE","bldgclass":"D1","yearbuilt":"1899","numfloors":"3.0000000","landuse":"3","latitude":"40.8316072","longitude":"-73.9211985"}
+,{"bbl":"2024780058.00000000","address":"1069 WALTON AVENUE","bldgclass":"C1","yearbuilt":"1926","numfloors":"5.0000000","landuse":"2","latitude":"40.8320685","longitude":"-73.9215485"}
+,{"bbl":"2024710019.00000000","address":"130 EAST 165 STREET","bldgclass":"D1","yearbuilt":"2024","numfloors":"8.0000000","landuse":"3","latitude":"40.8308058","longitude":"-73.9213838"}
+,{"bbl":"2025240056.00000000","address":"989 OGDEN AVENUE","bldgclass":"C1","yearbuilt":"2016","numfloors":"4.0000000","landuse":"2","latitude":"40.8326859","longitude":"-73.9298230"}
+,{"bbl":"2025040065.00000000","address":"962 ANDERSON AVENUE","bldgclass":"C1","yearbuilt":"1908","numfloors":"4.0000000","landuse":"2","latitude":"40.8313396","longitude":"-73.9274865"}
+,{"bbl":"2025080037.00000000","address":"ANDERSON AVENUE","bldgclass":"QG","yearbuilt":"0","landuse":"9","latitude":"40.8328050","longitude":"-73.9271054"}
+,{"bbl":"2025080011.00000000","address":"1020 WOODYCREST AVENUE","bldgclass":"B3","yearbuilt":"1910","numfloors":"3.0000000","landuse":"1","latitude":"40.8330577","longitude":"-73.9273364"}
+,{"bbl":"2025080018.00000000","address":"1038 WOODYCREST AVENUE","bldgclass":"A1","yearbuilt":"1901","numfloors":"2.7500000","landuse":"1","latitude":"40.8334390","longitude":"-73.9270397"}
+,{"bbl":"2025230067.00000000","address":"935 SUMMIT AVENUE","bldgclass":"C1","yearbuilt":"2014","numfloors":"4.0000000","landuse":"2","latitude":"40.8319512","longitude":"-73.9311934"}
+,{"bbl":"2025080026.00000000","address":"1045 ANDERSON AVENUE","bldgclass":"D4","yearbuilt":"1931","numfloors":"6.0000000","landuse":"3","latitude":"40.8333976","longitude":"-73.9266422"}
+,{"bbl":"2025070015.00000000","address":"984 WOODYCREST AVENUE","bldgclass":"D3","yearbuilt":"2016","numfloors":"6.0000000","landuse":"3","latitude":"40.8321277","longitude":"-73.9280529"}
+,{"bbl":"2025120084.00000000","address":"1003 WOODYCREST AVENUE","bldgclass":"B2","yearbuilt":"1920","numfloors":"2.0000000","landuse":"1","latitude":"40.8329044","longitude":"-73.9281063"}
+,{"bbl":"2025270001.00000000","address":"1001 UNIVERSITY AVENUE","bldgclass":"D1","yearbuilt":"2004","numfloors":"8.0000000","landuse":"3","latitude":"40.8338065","longitude":"-73.9309891"}
+,{"bbl":"2025230166.00000000","address":"983 SUMMIT AVENUE","bldgclass":"C1","yearbuilt":"1905","numfloors":"4.0000000","landuse":"2","latitude":"40.8327139","longitude":"-73.9307625"}
+,{"bbl":"2025230173.00000000","address":"975 SUMMIT AVENUE","bldgclass":"C1","yearbuilt":"1905","numfloors":"4.0000000","landuse":"2","latitude":"40.8324396","longitude":"-73.9309218"}
+,{"bbl":"2025230049.00000000","address":"909 SUMMIT AVENUE","bldgclass":"C0","yearbuilt":"1905","numfloors":"3.0000000","landuse":"2","latitude":"40.8313777","longitude":"-73.9315589"}
+,{"bbl":"2025230053.00000000","address":"926 SEDGWICK AVENUE","bldgclass":"H3","yearbuilt":"2015","numfloors":"11.0000000","landuse":"5","latitude":"40.8316165","longitude":"-73.9314683"}
+,{"bbl":"2025230259.00000000","address":"999A SUMMIT AVENUE","bldgclass":"B2","yearbuilt":"2003","numfloors":"2.0000000","landuse":"1","latitude":"40.8333011","longitude":"-73.9304186"}
+,{"bbl":"2025240055.00000000","address":"993 OGDEN AVENUE","bldgclass":"K1","yearbuilt":"1931","numfloors":"1.0000000","landuse":"5","latitude":"40.8327655","longitude":"-73.9297796"}
+,{"bbl":"2025230071.00000000","address":"927 SUMMIT AVENUE","bldgclass":"B3","yearbuilt":"1910","numfloors":"2.5000000","landuse":"1","latitude":"40.8316878","longitude":"-73.9313237"}
+,{"bbl":"2025040075.00000000","address":"990 ANDERSON AVENUE","bldgclass":"D1","yearbuilt":"1957","numfloors":"6.0000000","landuse":"3","latitude":"40.8319925","longitude":"-73.9269329"}
+,{"bbl":"2025120075.00000000","address":"1025 WOODYCREST AVENUE","bldgclass":"B1","yearbuilt":"2004","numfloors":"3.0000000","landuse":"1","latitude":"40.8334284","longitude":"-73.9276721"}
+,{"bbl":"2025117501.00000000","address":"950 OGDEN AVENUE","bldgclass":"RM","yearbuilt":"2023","numfloors":"5.0000000","landuse":"4","latitude":"40.8316566","longitude":"-73.9297916"}
+,{"bbl":"2024837501.00000000","address":"810 RIVER AVENUE","bldgclass":"RM","yearbuilt":"2015","numfloors":"17.0000000","landuse":"4","latitude":"40.8262064","longitude":"-73.9265381"}
+,{"bbl":"2025080040.00000000","address":"ANDERSON AVENUE","bldgclass":"QG","yearbuilt":"0","landuse":"9","latitude":"40.8326843","longitude":"-73.9271995"}
+,{"bbl":"2025080035.00000000","address":"ANDERSON AVENUE","bldgclass":"VG","yearbuilt":"0","latitude":"40.8329559","longitude":"-73.9269896"}
+,{"bbl":"2024990104.00000000","address":"MACOMBS ROAD","bldgclass":"Y8","yearbuilt":"1931","numfloors":"1.0000000","landuse":"7","latitude":"40.8287225","longitude":"-73.9297405"}
+,{"bbl":"2025000001.00000000","address":"EAST 161 STREET","bldgclass":"Q1","yearbuilt":"0","landuse":"9","latitude":"40.8297813","longitude":"-73.9286083"}
+,{"bbl":"2024950001.00000000","address":"RIVER AVENUE","bldgclass":"Q1","yearbuilt":"0","landuse":"9","latitude":"40.8334342","longitude":"-73.9238054"}
+,{"bbl":"2025090031.00000000","address":"1053 ANDERSON AVENUE","bldgclass":"C0","yearbuilt":"1997","numfloors":"3.0000000","landuse":"2","latitude":"40.8338777","longitude":"-73.9262767"}
+,{"bbl":"2024830053.00000000","address":"845 GERARD AVENUE","bldgclass":"D1","yearbuilt":"1930","numfloors":"6.0000000","landuse":"3","latitude":"40.8269359","longitude":"-73.9256232"}
+,{"bbl":"2025240039.00000000","address":"979 OGDEN AVENUE","bldgclass":"V1","yearbuilt":"0","landuse":"11","latitude":"40.8323429","longitude":"-73.9298559"}
+,{"bbl":"2024830158.00000000","address":"GERARD AVENUE","bldgclass":"V3","yearbuilt":"0","landuse":"11","latitude":"40.8268317","longitude":"-73.9258545"}
+,{"bbl":"2025390025.00000000","address":"MAJ WM DEEGAN BLVD","bldgclass":"V1","yearbuilt":"0","landuse":"11","latitude":"40.8272195","longitude":"-73.9315451"}
+,{"bbl":"2023570032.00000000","address":"GATEWAY CENTER BLVD","bldgclass":"V9","yearbuilt":"0","landuse":"11","latitude":"40.8259785","longitude":"-73.9309574"}
+,{"bbl":"2023570070.00000000","address":"780 EXTERIOR STREET","bldgclass":"G7","yearbuilt":"0","landuse":"10","latitude":"40.8258191","longitude":"-73.9305493"}
+,{"bbl":"2025390170.00000000","address":"EAST 157 STREET","bldgclass":"V1","yearbuilt":"0","landuse":"11","latitude":"40.8266425","longitude":"-73.9305376"}
+,{"bbl":"2025390022.00000000","address":"MAJ WM DEEGAN BLVD","bldgclass":"V9","yearbuilt":"0","landuse":"11","latitude":"40.8269395","longitude":"-73.9315635"}
+,{"bbl":"2025390179.00000000","address":"MAJ WM DEEGAN BLVD","bldgclass":"Q1","yearbuilt":"0","landuse":"9","latitude":"40.8280866","longitude":"-73.9311106"}
+,{"bbl":"2024590046.00000000","address":"871 CONCOURSE VILLAGE W","bldgclass":"K2","yearbuilt":"1931","numfloors":"2.0000000","landuse":"5","latitude":"40.8262772","longitude":"-73.9215698"}
+,{"bbl":"2024590049.00000000","address":"869 CONCOURSE VILLAGE WEST","bldgclass":"H3","yearbuilt":"2024","numfloors":"11.0000000","landuse":"5","latitude":"40.8261894","longitude":"-73.9216385"}
+,{"bbl":"2024590001.00000000","address":"840 GRAND CONCOURSE","bldgclass":"C7","yearbuilt":"1927","numfloors":"6.0000000","landuse":"4","latitude":"40.8255203","longitude":"-73.9225788"}
+,{"bbl":"2024590030.00000000","address":"860 GRAND CONCOURSE","bldgclass":"D4","yearbuilt":"1941","numfloors":"7.0000000","landuse":"3","latitude":"40.8260966","longitude":"-73.9223866"}
+,{"bbl":"2024590053.00000000","address":"857 CONCOURSE VILLAGE WEST","bldgclass":"H3","yearbuilt":"2018","numfloors":"12.0000000","landuse":"5","latitude":"40.8259782","longitude":"-73.9218158"}
+,{"bbl":"2024590055.00000000","address":"185 EAST 159 STREET","bldgclass":"D1","yearbuilt":"1938","numfloors":"6.0000000","landuse":"3","latitude":"40.8258547","longitude":"-73.9219208"}]
