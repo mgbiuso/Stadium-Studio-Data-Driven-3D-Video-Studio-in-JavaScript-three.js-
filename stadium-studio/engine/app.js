@@ -69,7 +69,7 @@ if(controls){controls.enableDamping=true; controls.dampingFactor=.08; controls.e
    Styles
 ===================================================================== */
 const PAL={
-  day:{k:{seat2:'#22406f',pier:'#d8c4a2',ring:'#f4f2ec',gap:'#2c2723',ceil:'#dcc59e',ceil2:'#ceb48b',beam:'#8e7657',unit:'#d9d6cf',nbr:'#9a5b44',nbr2:'#cdc2ad',nbr3:'#bab6ad',sidewalk:'#c9c4b9',curb:'#a29d93',steel:'#56645b',nbrTop:'#8f8b85',podium:'#e3ded3',curtain:'#46525f',
+  day:{k:{granite:'#d9c2b0',dirt:'#9a8a73',seat2:'#22406f',pier:'#d8c4a2',ring:'#f4f2ec',gap:'#2c2723',ceil:'#dcc59e',ceil2:'#ceb48b',beam:'#8e7657',unit:'#d9d6cf',nbr:'#9a5b44',nbr2:'#cdc2ad',nbr3:'#bab6ad',sidewalk:'#c9c4b9',curb:'#a29d93',steel:'#56645b',nbrTop:'#8f8b85',podium:'#e3ded3',curtain:'#46525f',
     seat:'#22406f',aisle:'#a39f96',walk:'#b3aea4',riser:'#7e7c77',fascia:'#1a2947',soffit:'#6f6c66',back:'#bdb5a5',cap:'#b3ab9b',canopy:'#efeeea',roof:'#a9a397',wall:'#1a2947',wallTop:'#22345a',ground:'#8d877c',mpark:'#4d7b3d',inner:'#cfc4ad',boards:'#f3f3f0',cable:'#5d6470',roofTop:'#c3c6cb',slab:'#9b978f',platform:'#cfcac0',track:'#4a4743'},
     plinth:'#c9c2b4',field:'#ffffff',fieldMap:true,facade:'#ffffff',facadeMap:true,letters:true,ribbon:'#ffffff',ribbonMap:true,board:'#ffffff',boardMap:true,frieze:'#f4f3ef',dark:'#1f2622',accent:'#1a2947',monument:'#e3dfd6',lights:'#dcdcd8',red:'#c8102e',trunk:'#6b5641',crown:'#5a8549',trees:true,trainMap:true,soilTop:'#b9b2a5'},
   wire:{k:{seat:'#a2a6ac',aisle:'#b3b6bb',walk:'#b3b6bb',riser:'#979ba1',fascia:'#a9adb3',soffit:'#8f9399',back:'#aeb2b7',cap:'#a7abb1',canopy:'#c3c6ca',roof:'#aaaeb3',wall:'#9da1a7',wallTop:'#a5a9ae',ground:'#9a9ea4',mpark:'#9a9ea4',inner:'#b0b3b8',boards:'#b5b8bd',cable:'#8a8e94',roofTop:'#b9bcc1',slab:'#a0a4aa',platform:'#b0b3b8',track:'#8a8e94'},
@@ -282,6 +282,7 @@ function applyStyle(key,instant){
   bReset.hidden=hint.hidden=!controls||!!S.sheet; if(controls) controls.enabled=!S.sheet; userMoved=false;
   updateDataNote(); layoutCache=null;
   for(const k in V.G) if(instant||reduceMotion){V.G[k].position.copy(expOf(k));}
+  if(V.eras&&V.eras.refresh) V.eras.refresh();   // keep the other era's buildings hidden
   goTo(preset(viewKey()),instant);
   if(SS.studio&&SS.studio.onStyle) SS.studio.onStyle(S);
 }
@@ -443,14 +444,32 @@ if(controls) controls.addEventListener('start',()=>{userMoved=true;});
 const viewKey=()=>shotsOn&&V.shots&&!STYLES[current].sheet?'shots':(curStyle().cam||current);
 bShots.addEventListener('click',()=>{shotsOn=!shotsOn; applyStyle(current);});
 bReset.addEventListener('click',()=>goTo(preset(viewKey())));
+/* eras: a venue can carry more than one moment in time (V.eras, e.g. MSG today and Penn Station in 1910).
+   The venue swaps its own buildings; the engine shows the switch, the title and the styles that era supports. */
+const erasBox=$('eras');
+const eraInfo=()=>(V.eras&&V.eras.info[V.era])||{};
+const skipped=k=>(V.skipStyles||[]).includes(k)||(eraInfo().skip||[]).includes(k);
+function renderTitle(){
+  const e=eraInfo(); $('v-eyebrow').textContent=e.eyebrow||V.eyebrow; $('v-name').textContent=e.name||V.name;
+  const sp=$('v-spec'); sp.textContent=''; (e.spec||V.spec).forEach(t=>{const s=document.createElement('span'); s.textContent=t; sp.appendChild(s);});
+  canvas.setAttribute('aria-label','3D model of '+(e.name||V.name));
+  document.querySelectorAll('.style-btn').forEach(b=>b.hidden=skipped(b.dataset.key));
+}
+function renderEras(){
+  erasBox.textContent=''; erasBox.hidden=!V.eras; if(!V.eras) return;
+  V.eras.list.forEach(([k,label])=>{const b=document.createElement('button'); b.type='button'; b.textContent=label; b.setAttribute('aria-pressed',String(k===V.era));
+    b.addEventListener('click',()=>setEra(k)); erasBox.appendChild(b);});
+}
+function setEra(k,instant){
+  if(!V.eras||V.era===k) return;
+  V.era=k; V.eras.apply(k,!!(instant||reduceMotion));   // the venue swaps its buildings (animated in V.eras.tick)
+  renderTitle(); renderEras(); applyStyle(skipped(current)?'aerial':current);
+}
 function setVenue(key){
   if(V) V.root.visible=false;
   V=VENUES[key]; V.root.visible=true; if(!V.shots) shotsOn=false;
-  document.querySelectorAll('.style-btn').forEach(b=>b.hidden=(V.skipStyles||[]).includes(b.dataset.key));
-  if((V.skipStyles||[]).includes(current)) current='aerial';
-  $('v-eyebrow').textContent=V.eyebrow; $('v-name').textContent=V.name;
-  const sp=$('v-spec'); sp.textContent=''; V.spec.forEach(t=>{const s=document.createElement('span'); s.textContent=t; sp.appendChild(s);});
-  canvas.setAttribute('aria-label','3D model of '+V.name);
+  if(skipped(current)) current='aerial';
+  renderTitle(); renderEras();
   document.querySelectorAll('.venues button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.venue===key)));
   applyStyle(current,true);
 }
@@ -500,6 +519,7 @@ function frame(){
 }
 /* one frame: move things on by dt seconds, then draw */
 function step(dt){
+  if(V.eras&&V.eras.tick) V.eras.tick(dt);
   for(const k in V.G){const want=expOf(k),g=V.G[k]; if(reduceMotion) g.position.copy(want); else g.position.lerp(want,Math.min(1,dt*4));}
   if(REC.driver){REC.driver(dt); if(controls) controls.target.copy(target);}
   else if(tw){
@@ -546,6 +566,7 @@ SS.studio={
     layoutCache=null;
   },
   refit(){resize();},
+  setEra(k,instant){setEra(k,instant);},
   // a point in the scene to screen position (-1 to 1 across and up), using the camera of the last drawn frame
   project(v){return v.project(cam);},
   setControls(on){if(controls) controls.enabled=on&&!STYLES[current].sheet;}

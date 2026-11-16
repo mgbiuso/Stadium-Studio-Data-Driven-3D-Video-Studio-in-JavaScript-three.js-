@@ -45,9 +45,9 @@ const mats={
   tank:std({color:lin('#6e5139'),roughness:.95}), tankRoof:std({color:lin('#3d3934')}), globe:std({color:lin('#4fbf74'),roughness:.4})
 };
 const K={seat:0,aisle:1,walk:2,riser:3,fascia:4,soffit:5,back:6,cap:7,canopy:8,roof:9,wall:10,wallTop:11,ground:12,mpark:13,inner:14,boards:15,cable:16,roofTop:17,slab:18,platform:19,track:20,
-  seat2:21,pier:22,ring:23,gap:24,ceil:25,ceil2:26,beam:27,unit:28,nbr:29,nbr2:30,nbrTop:31,podium:32,curtain:33,nbr3:34,sidewalk:35,curb:36,steel:37};
+  seat2:21,pier:22,ring:23,gap:24,ceil:25,ceil2:26,beam:27,unit:28,nbr:29,nbr2:30,nbrTop:31,podium:32,curtain:33,nbr3:34,sidewalk:35,curb:36,steel:37,granite:38,dirt:39};
 // newer kinds borrow an older kind's color in palettes that do not name them
-const KFALL={nbr3:'back',sidewalk:'aisle',curb:'riser',steel:'cable',seat2:'seat',pier:'back',ring:'canopy',gap:'fascia',ceil:'inner',ceil2:'inner',beam:'cable',unit:'roofTop',nbr:'back',nbr2:'back',nbrTop:'roof',podium:'back',curtain:'fascia'};
+const KFALL={nbr3:'back',sidewalk:'aisle',curb:'riser',steel:'cable',seat2:'seat',pier:'back',ring:'canopy',gap:'fascia',ceil:'inner',ceil2:'inner',beam:'cable',unit:'roofTop',nbr:'back',nbr2:'back',nbrTop:'roof',podium:'back',curtain:'fascia',granite:'pier',dirt:'ground'};
 
 class KB{
   constructor(){this.p=[];this.k=[];}
@@ -347,33 +347,41 @@ const FACADE=(()=>{
 })();
 
 // the neighborhood: buildings (style from the tax lots), rooftops, ground, sidewalks, trees, signals, subway entrances
+// wooden rooftop water tanks at [x, roofY, z] spots
+function waterTanks(tanks,parent){
+  const body=new THREE.InstancedMesh(new THREE.CylinderGeometry(2.3,2.3,4.4,12),mats.tank,tanks.length), roof=new THREE.InstancedMesh(new THREE.ConeGeometry(2.55,1.7,12),mats.tankRoof,tanks.length),
+    legs=new THREE.InstancedMesh(new THREE.BoxGeometry(3.8,2.6,3.8),mats.tankRoof,tanks.length), M=new THREE.Matrix4();
+  tanks.forEach(([x,y,z],i)=>{M.makeTranslation(x,y+1.3,z); legs.setMatrixAt(i,M); M.makeTranslation(x,y+4.8,z); body.setMatrixAt(i,M); M.makeTranslation(x,y+7.85,z); roof.setMatrixAt(i,M);});
+  [body,roof,legs].forEach(m=>{m.castShadow=true; parent.add(m);});
+}
 function buildCity(V,D,parent,o){
   o=o||{};
   const box=o.box||D.box, lots=(D.city&&D.city.lots)||[], skip=new Set(o.skipBins||[]);
   V.mats.win=V.mats.win||std({vertexColors:true,map:FACADE.brick,roughness:.85});
   V.mats.glassWall=V.mats.glassWall||std({vertexColors:true,map:V.tex.win||FACADE.band,roughness:.16,metalness:.55});
-  V.mats.brick=std({vertexColors:true,map:FACADE.brick,roughness:.9}); V.mats.stone=std({vertexColors:true,map:FACADE.stone,roughness:.85}); V.mats.band=std({vertexColors:true,map:FACADE.band,roughness:.8});
+  if(!V.mats.brick){V.mats.brick=std({vertexColors:true,map:FACADE.brick,roughness:.9}); V.mats.stone=std({vertexColors:true,map:FACADE.stone,roughness:.85}); V.mats.band=std({vertexColors:true,map:FACADE.band,roughness:.8});}
   V.facadeMats=[V.mats.brick,V.mats.stone,V.mats.band];
-  const groups={brick:[],stone:[],band:[],glass:[]}, tanks=[], bulk=new KB();
+  // o.split(yr,b) sends some buildings to a second group (o.splitParent), e.g. everything built after 1910 for a then-vs-now era switch;
+  // their footprints are kept in V.splitFoot so an era can put period buildings in their place
+  const mkSet=par=>({groups:{brick:[],stone:[],band:[],glass:[]},tanks:[],bulk:new KB(),par});
+  const A=mkSet(parent), B=o.split&&o.splitParent?mkSet(o.splitParent):null; if(B) V.splitFoot=[];
   (D.buildings||[]).filter(b=>!skip.has(b.bin)&&!(o.skipNear&&o.skipNear(b))).forEach(b=>{
     const c=centroid(b.pts), lot=lots.find(l=>pip(l,b.pts))||null;
     const yr=lot?lot[2]:parseInt(b.yr||'0',10)||0, floors=lot&&lot[3]?lot[3]:Math.round(b.h/3.4), seed=(parseInt(String(b.bin).replace(/\D/g,'')||'7',10)%97)/97;
+    const S=B&&o.split(parseInt(b.yr||'0',10)||yr,b)?B:A; if(S===B) V.splitFoot.push({pts:b.pts,h:b.h,yr:parseInt(b.yr||'0',10)||yr,bin:b.bin});
     let kind=b.h>80||(yr>=1985&&b.h>35)?'glass':yr&&yr<1946?(seed<.62?'brick':'stone'):'band';
     const k=kind==='glass'?K.curtain:kind==='brick'?K.nbr:kind==='stone'?K.nbr2:K.nbr3;
-    groups[kind].push({pts:b.pts,h:b.h,k,kt:K.nbrTop});
+    S.groups[kind].push({pts:b.pts,h:b.h,k,kt:K.nbrTop});
     const area=polyArea(b.pts);
     // rooftops: a stair and elevator bulkhead on most buildings, a wooden water tank on prewar mid-rises (a New York signature)
-    if(kind!=='glass'&&b.h>14&&area>220&&pip(c,b.pts)) boxKB(bulk,[c[0],b.h+1.6,c[1]],[5.5,3.2,4.5],0,K.unit,K.nbrTop);
-    if((kind==='brick'||kind==='stone')&&floors>=6&&floors<=26&&area>260){const tp=[c[0]+3.5,c[1]-2.5]; if(pip(tp,b.pts)) tanks.push([tp[0],b.h,tp[1]]);}
+    if(kind!=='glass'&&b.h>14&&area>220&&pip(c,b.pts)) boxKB(S.bulk,[c[0],b.h+1.6,c[1]],[5.5,3.2,4.5],0,K.unit,K.nbrTop);
+    if((kind==='brick'||kind==='stone')&&floors>=6&&floors<=26&&area>260){const tp=[c[0]+3.5,c[1]-2.5]; if(pip(tp,b.pts)) S.tanks.push([tp[0],b.h,tp[1]]);}
   });
-  blocks(V,groups.brick,parent,V.mats.brick); blocks(V,groups.stone,parent,V.mats.stone); blocks(V,groups.band,parent,V.mats.band); blocks(V,groups.glass,parent,V.mats.glassWall);
-  if(bulk.p.length) bulk.mesh(V,parent);
-  if(tanks.length){
-    const body=new THREE.InstancedMesh(new THREE.CylinderGeometry(2.3,2.3,4.4,12),mats.tank,tanks.length), roof=new THREE.InstancedMesh(new THREE.ConeGeometry(2.55,1.7,12),mats.tankRoof,tanks.length),
-      legs=new THREE.InstancedMesh(new THREE.BoxGeometry(3.8,2.6,3.8),mats.tankRoof,tanks.length), M=new THREE.Matrix4();
-    tanks.forEach(([x,y,z],i)=>{M.makeTranslation(x,y+1.3,z); legs.setMatrixAt(i,M); M.makeTranslation(x,y+4.8,z); body.setMatrixAt(i,M); M.makeTranslation(x,y+7.85,z); roof.setMatrixAt(i,M);});
-    [body,roof,legs].forEach(m=>{m.castShadow=true; parent.add(m);});
-  }
+  [A,B].filter(Boolean).forEach(S=>{const par=S.par;
+    blocks(V,S.groups.brick,par,V.mats.brick); blocks(V,S.groups.stone,par,V.mats.stone); blocks(V,S.groups.band,par,V.mats.band); blocks(V,S.groups.glass,par,V.mats.glassWall);
+    if(S.bulk.p.length) S.bulk.mesh(V,par);
+    if(S.tanks.length) waterTanks(S.tanks,par);
+  });
   // ground: streets, crosswalks and lane lines painted; sidewalks raised as real curbs
   const [x0,x1,z0,z1]=box, W=x1-x0, H=z1-z0, sc=2048/Math.max(W,H), c=mk(Math.round(W*sc),Math.round(H*sc)), x=c.getContext('2d');
   x.setTransform(sc,0,0,sc,-x0*sc,-z0*sc); x.lineCap='round'; x.lineJoin='round';
@@ -433,6 +441,6 @@ Object.assign(SS,{$,app,stage,canvas,loading,labelsEl,renderer,maxAniso,reduceMo
 function tierProfile(L,i,T){const f=v=>typeof v==='function'?v(i):v, o0=f(T.o0),o1=f(T.o1),S=T.steps,dO=(o1-o0)/S,dH=(T.h1-T.h0)/(S-1),fb=T.soffit?T.h0-T.fascia:0,pts=[L.pos(i,o0,fb)];
   for(let s=0;s<S;s++){const y=T.h0+s*dH; pts.push(L.pos(i,o0+s*dO,y),L.pos(i,o0+(s+1)*dO,y));}
   pts.push(L.pos(i,o1,T.soffit?T.sb:0)); if(T.soffit) pts.push(L.pos(i,o0,fb)); return pts;}
-Object.assign(SS,{blocks,pip,centroid,polyArea,FACADE,buildCity,buildEl,tierProfile});
+Object.assign(SS,{blocks,pip,centroid,polyArea,FACADE,buildCity,buildEl,tierProfile,waterTanks});
 SS.ok=true;
 })();

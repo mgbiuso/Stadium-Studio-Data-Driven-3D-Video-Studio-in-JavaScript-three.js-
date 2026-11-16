@@ -51,3 +51,17 @@ Each venue lists its sets in `V.layers`. Each set has a `key`, a button `name`, 
 | `label` | A title and fact lines with a leader line to a point | `p`, `slot` (`top`, `mid`, `low`), `title`, `sub` |
 
 Rule: every number in a label comes from the venue's data or a source written in a comment next to it.
+
+## Eras (then vs. now)
+
+A venue can carry more than one moment in time, like MSG today and Penn Station in 1910 on the same blocks. Put the older building in its own recipe file that runs after the venue (see `venues/msg-1910.js`) and give the venue `V.eras`:
+
+| Part | What it does |
+|---|---|
+| `list` | The switch buttons, for example `[['today','Today'],['1910','1910']]` |
+| `info[key]` | That era's `name`, `eyebrow`, `spec` lines, and `skip` (styles it can't show) |
+| `apply(key, instant)` | Starts the swap: today's buildings sink while the old ones rise (or jumps when `instant`) |
+| `tick(dt)` | Moves the swap on each frame, so recordings capture it smoothly |
+| `refresh()` | Re-hides the other era's parts after a style change |
+
+The city kit can split the neighborhood by year built: `buildCity(..., {split: yr => !yr || yr > 1910, splitParent: V.cityNew})`. Newer buildings go into `V.cityNew`, and their footprints land in `V.splitFoot` so the era can put period buildings in their place. Layer sets can be tied to an era with `era:'1910'`.

@@ -41,6 +41,7 @@
       <button id="reset" type="button">Reset view</button>
       <button id="rec-open" type="button" aria-pressed="false" aria-controls="rec" class="rec-open" hidden>Record</button>
     </div>
+    <div class="mode card" id="eras" role="group" aria-label="Era" hidden></div>
     <div class="mode card" id="opts" role="group" aria-label="Style option" hidden></div>
     <section class="card rec" id="rec" aria-label="Recorder" hidden>
       <p class="rec-head"><strong>Record</strong><span>1080 × 1920 · 30 fps · MP4</span></p>
@@ -119,6 +120,7 @@
 <script src="engine/core.js"></script>
 <script src="venues/yankee.js"></script>
 <script src="venues/msg.js"></script>
+<script src="venues/msg-1910.js"></script>
 <script src="engine/app.js"></script>
 <!-- recorder: mp4-muxer packs encoded frames into an .mp4 file (free, no account) -->
 <script src="https://cdn.jsdelivr.net/npm/mp4-muxer@5.2.1/build/mp4-muxer.js"></script>

@@ -14,7 +14,7 @@ const v3=new THREE.Vector3(), clamp01=x=>Math.max(0,Math.min(1,x));
 if(document.fonts) ['700 30px "Barlow Condensed"','600 17px "Barlow Condensed"','500 14px "IBM Plex Mono"'].forEach(f=>document.fonts.load(f));
 
 const venue=()=>SS.VENUES[ST.style().venue];
-const presets=()=>{const V=venue(); return (V&&V.layers)||[];};
+const presets=()=>{const V=venue(); return ((V&&V.layers)||[]).filter(p=>!p.era||p.era===(V.era||'today'));};   // some sets belong to one era
 const current=()=>presets().find(p=>p.key===state.key)||null;
 function restart(){state.t0=performance.now();}
 function setKey(k){state.key=k; restart(); buttons();}
@@ -117,7 +117,7 @@ function draw(ctx,w,h,t){
 }
 
 // a new venue brings its own layer sets
-function syncVenue(){const V=venue(); if(V&&V.key!==state.venue){state.venue=V.key; if(!presets().some(p=>p.key===state.key)) state.key='off'; buttons();}}
+function syncVenue(){const V=venue(), id=V&&(V.key+'|'+(V.era||'')); if(V&&id!==state.venue){state.venue=id; if(!presets().some(p=>p.key===state.key)) state.key='off'; buttons();}}
 {const prev=ST.onStyle; ST.onStyle=S=>{if(prev) prev(S); syncVenue();};}
 syncVenue();
 

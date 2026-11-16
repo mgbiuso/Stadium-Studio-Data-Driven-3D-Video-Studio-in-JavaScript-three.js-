@@ -32,7 +32,7 @@ function buildMSG(){
     const day=opened?opened.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}).toUpperCase():'FEB 11, 1968';
     const TY=-22;   // the model's track level under the arena
     V.layers=[
-      {key:'facts',name:'Facts',items:[
+      {key:'facts',name:'Facts',era:'today',items:[
         {type:'outline',circle:[0,0,R],y:HT+.3},
         {type:'span',c:[0,HT+34,0],r:R,text:`${FT(R*2)} FT ACROSS`},
         {type:'height',c:[0,0],r:R,y0:0,y1:HT,text:`${FT(HT)} FT`},
@@ -278,12 +278,15 @@ function buildMSG(){
       const b={pts:p.pts,h,minh:parseFloat(p.minh)||0,k:K.podium,kt:K.nbrTop};
       if(h>80||cx>100){if(h>80) b.k=K.curtain; tall.push(b);}            // Two Penn Plaza and its base belong to the city, not the arena icon
       else{ if(h>=44&&cx>40&&Math.abs(cz)<40){b.k=K.curtain; V.glassBoxes.push(Object.assign({cx,cz},b));} own.push(b);}});
-    blocks(own.filter(b=>b.k!==K.curtain),V.annex,V.mats.pod); blocks(own.filter(b=>b.k===K.curtain),V.annex,V.mats.glassWall); blocks(tall.filter(b=>b.k!==K.curtain),V.city,V.mats.pod); blocks(tall.filter(b=>b.k===K.curtain),V.city,V.mats.glassWall);
+    if(!V.cityNew){V.cityNew=new THREE.Group(); V.city.add(V.cityNew);}   // Two Penn Plaza (1968) belongs to today only
+    blocks(own.filter(b=>b.k!==K.curtain),V.annex,V.mats.pod); blocks(own.filter(b=>b.k===K.curtain),V.annex,V.mats.glassWall); blocks(tall.filter(b=>b.k!==K.curtain),V.cityNew,V.mats.pod); blocks(tall.filter(b=>b.k===K.curtain),V.cityNew,V.mats.glassWall);
     // video screens on the two 7th Avenue glass boxes
     V.glassBoxes.forEach((b,k)=>{const xs=b.pts.map(p=>p[0]),zs=b.pts.map(p=>p[1]),zw=Math.max(...zs)-Math.min(...zs);
       const s=new THREE.Mesh(new THREE.PlaneGeometry(Math.min(zw*.82,15),10.5),k?V.mats.ad:V.mats.marquee); s.position.set(Math.max(...xs)+.2,26,b.cz); s.rotation.y=Math.PI/2; V.annex.add(s); V.roadHide.push(s);});
     // the neighborhood: real buildings, streets, sidewalks, census trees, signals, subway entrances (shared city kit)
-    SS.buildCity(V,D,V.city,{skipBins:['1083026'],box:BOX});
+    // buildings newer than 1910 go in their own group, so the 1910 era (venues/msg-1910.js) can hide them
+    if(!V.cityNew){V.cityNew=new THREE.Group(); V.city.add(V.cityNew);}
+    SS.buildCity(V,D,V.city,{skipBins:['1083026'],box:BOX,split:yr=>!yr||yr>1910,splitParent:V.cityNew});
   }
   // "Madison Square Garden" letters over the 8th Avenue entrance
   V.letters=new THREE.Mesh(new THREE.PlaneGeometry(30,2.4),V.mats.letters); V.letters.position.set(-R-6.6,21.2,0); V.letters.rotation.y=-Math.PI/2; V.annex.add(V.letters);
