@@ -27,21 +27,31 @@ function buildMSG(){
   const edge=L.P.map((p,i)=>{const n=L.NR[i],pn=p[0]*n[0]+p[1]*n[1],pp=p[0]*p[0]+p[1]*p[1]; return -pn+Math.sqrt(pn*pn-pp+Ri*Ri);});
   const yC=r=>HT-10.5+6.4*Math.pow(Math.min(r,Ri)/Ri,1.4);   // ceiling: sags toward the center ring, like the real cable roof
   V.yC=yC;
+  /* Depths under the street (y = 0 is street level), shared by the station, trains, labels, sections and the 1910 era.
+     Tracks: "The level of the track system below the street surface varies from 39 to 58 ft., and is from 7 to 10 ft.
+     below mean high water" (Transactions of the ASCE, vol. 68, 1910, general description; data/penn1910/sources).
+     Street at the Garden is about 35 ft above NAVD88 (NYC building footprints, ground_elevation); mean high water at
+     the Battery is 1.96 ft NAVD88 today (NOAA station 8518750, 1983-2001 epoch), about 0.75 ft lower in 1910 (sea level
+     rises about 2.8 mm a year). So top of rail is about 1.2 - 8.5 = -7.3 ft NAVD88, or 42 ft (12.9 m) below the street.
+     LIRR concourse: 18 ft above the tracks (Wikipedia, Pennsylvania Station (1910-1963)). Upper concourse and the subway
+     platforms are approximate (OpenStreetMap only gives their order: levels -1, -2, -3). */
+  V.depth={rail:-12.9, plat:-11.7, slab:-13.45, lower:-12.9+5.49, upper:-3.9, irt:-6.4, ind:-9.2};
   // design layer sets (engine/layer.js). Sizes come from the city data above; feet = meters x 3.28084
   {const FT=m=>Math.round(m*3.28084), cap=D&&D.facts.capacity?D.facts.capacity:19812;
     const day=opened?opened.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}).toUpperCase():'FEB 11, 1968';
-    const TY=-22;   // the model's track level under the arena
+    const TY=V.depth.rail+.3;   // just above the rails (sourced depth, see V.depth)
     V.layers=[
       {key:'facts',name:'Facts',era:'today',items:[
         {type:'outline',circle:[0,0,R],y:HT+.3},
         {type:'span',c:[0,HT+34,0],r:R,text:`${FT(R*2)} FT ACROSS`},
         {type:'height',c:[0,0],r:R,y0:0,y1:HT,text:`${FT(HT)} FT`},
         {type:'label',p:[0,HT,0],slot:'top',title:'MADISON SQUARE GARDEN',sub:[`OPENED ${day} · ${cap.toLocaleString('en-US')} SEATS`]}]},
-      {key:'under',name:'Underneath',items:[
+      {key:'under',name:'Underneath',era:'today',items:[
         ...[-36,-18,0,18,36].map((z,k)=>({type:'path',pts:[[-150,TY,z],[220,TY,z]],flow:true,color:k%2?'gold':'cyan',dir:k%2?-1:1,phase:k*9})),
-        {type:'drop',a:[-75,0,0],b:[-75,TY+3,0]},{type:'drop',a:[62,0,-30],b:[62,TY+3,-15]},{type:'drop',a:[30,0,64],b:[30,TY+3,32]},
+        ...((D&&D.under&&D.under.entrances)||[]).filter((e,i,a)=>a.findIndex(f=>Math.hypot(f.p[0]-e.p[0],f.p[1]-e.p[1])<25)===i).slice(0,6)
+          .map(e=>({type:'drop',a:[e.p[0],0,e.p[1]],b:[e.p[0],/A/.test(e.routes)?V.depth.ind:V.depth.irt,e.p[1]],color:/A/.test(e.routes)?'gold':'cyan'})),   // real MTA entrances
         // MTA hourly subway ridership (data.ny.gov 5wq4-mkjj), both 34 St-Penn Station complexes, Nov 1-14, 2026
-        {type:'label',p:[150,TY,36],slot:'low',small:true,title:'TRAINS UNDER THE ARENA',sub:['34 ST–PENN: 563,795 SUBWAY ENTRIES','NOV 1–14 · MTA DATA']}]}
+        {type:'label',p:[150,TY,36],slot:'low',small:true,title:'TRAINS 42 FT UNDER THE ARENA',sub:['34 ST–PENN: 563,795 SUBWAY ENTRIES','NOV 1–14 · MTA DATA']}]}
     ];}
   const roofMat=std({vertexColors:true,flatShading:true,side:THREE.FrontSide});   // one-sided: roof seen from above, ceiling from below
 
@@ -286,7 +296,8 @@ function buildMSG(){
     // the neighborhood: real buildings, streets, sidewalks, census trees, signals, subway entrances (shared city kit)
     // buildings newer than 1910 go in their own group, so the 1910 era (venues/msg-1910.js) can hide them
     if(!V.cityNew){V.cityNew=new THREE.Group(); V.city.add(V.cityNew);}
-    SS.buildCity(V,D,V.city,{skipBins:['1083026'],box:BOX,split:yr=>!yr||yr>1910,splitParent:V.cityNew});
+    SS.buildCity(V,D,V.city,{skipBins:['1083026'],box:BOX,split:yr=>!yr||yr>1910,splitParent:V.cityNew,
+      walkSplit:pts=>{const c=SS.centroid(pts), gr=D.grid; return c[0]<gr.x_hi-14&&c[1]>gr.z_lo+8&&c[1]<gr.z_hi-8;}});   // the Garden's plaza is today-only
   }
   // "Madison Square Garden" letters over the 8th Avenue entrance
   V.letters=new THREE.Mesh(new THREE.PlaneGeometry(30,2.4),V.mats.letters); V.letters.position.set(-R-6.6,21.2,0); V.letters.rotation.y=-Math.PI/2; V.annex.add(V.letters);
@@ -316,26 +327,36 @@ function buildMSG(){
     const xs=lirr.flatMap(p=>p.pts.map(q=>q[0])), zs=lirr.flatMap(p=>p.pts.map(q=>q[1]));
     const PX=[Math.max(BOX[0],Math.min(...xs)),Math.min(BOX[1],Math.max(...xs))], PZ=[Math.min(...zs)-6,Math.max(...zs)+6];
     V.station={PX,PZ};
-    boxKB(kbU,[(PX[0]+PX[1])/2,-24.1,(PZ[0]+PZ[1])/2],[PX[1]-PX[0],1,PZ[1]-PZ[0]],0,K.track,K.slab);
-    boxKB(kbU,[(PX[0]+PX[1])/2,-11,(PZ[0]-2)/2],[PX[1]-PX[0],1,-(PZ[0]-2)],0,K.slab,K.slab);    // concourse: north half only, so the cutaway sees the platforms
+    const DP=V.depth;
+    boxKB(kbU,[(PX[0]+PX[1])/2,DP.slab-.5,(PZ[0]+PZ[1])/2],[PX[1]-PX[0],1,PZ[1]-PZ[0]],0,K.track,K.slab);
+    boxKB(kbU,[(PX[0]+PX[1])/2,DP.lower-.5,(PZ[0]-2)/2],[PX[1]-PX[0],1,-(PZ[0]-2)],0,K.slab,K.slab);    // LIRR concourse, 18 ft above the tracks: north half only, so the cutaway sees the platforms
+    boxKB(kbU,[(PX[0]+PX[1])/2,DP.upper-.5,(PZ[0]-2)/2],[PX[1]-PX[0],1,-(PZ[0]-2)],0,K.slab,K.slab);    // upper concourse (approximate depth)
     const plat=(p,y0,y1)=>{const pts=p.pts[0][0]===p.pts[p.pts.length-1][0]&&p.pts[0][1]===p.pts[p.pts.length-1][1]?p.pts.slice(0,-1):p.pts; if(pts.length<3) return;
       const A=pts.reduce((s,q,i)=>{const r=pts[(i+1)%pts.length]; return s+q[0]*r[1]-r[0]*q[1];},0),sg=A>0?1:-1;
       pts.forEach((a,i)=>{const c=pts[(i+1)%pts.length]; kbU.quadF([a[0],y0,a[1]],[c[0],y0,c[1]],[c[0],y1,c[1]],[a[0],y1,a[1]],K.slab,[sg*(c[1]-a[1]),0,-sg*(c[0]-a[0])]);});
       THREE.ShapeUtils.triangulateShape(pts.map(q=>new THREE.Vector2(q[0],q[1])),[]).forEach(f=>kbU.triF([pts[f[0]][0],y1,pts[f[0]][1]],[pts[f[1]][0],y1,pts[f[1]][1]],[pts[f[2]][0],y1,pts[f[2]][1]],K.platform,up));};
-    lirr.forEach(p=>plat(p,-23.6,-21.9));
-    sub.forEach(p=>{const y=p.layer==='-2'?-9.2:-6.4; plat(p,y-1.1,y);});
+    lirr.forEach(p=>plat(p,DP.slab,DP.plat));   // high platforms at car-floor height
+    sub.forEach(p=>{const y=p.layer==='-2'?DP.ind:DP.irt; plat(p,y-1.1,y);});
     const strip=(pts,y,w,k)=>{for(let i=0;i<pts.length-1;i++){const a=pts[i],b=pts[i+1],dx=b[0]-a[0],dz=b[1]-a[1],l=Math.hypot(dx,dz)||1,ox=-dz/l*w/2,oz=dx/l*w/2;
       kbU.quad([a[0]+ox,y,a[1]+oz],[b[0]+ox,y,b[1]+oz],[b[0]-ox,y,b[1]-oz],[a[0]-ox,y,a[1]-oz],k);}};
-    D.rails.forEach(r=>{if(r.subway){strip(r.pts,(r.layer==='-2'?-9.2:-6.4)-1.15,1.6,K.track);} else strip(r.pts,-23.55,1.6,K.cable);});
+    D.rails.forEach(r=>{if(r.subway){strip(r.pts,(r.layer==='-2'?DP.ind:DP.irt)-1.15,1.6,K.track);} else strip(r.pts,DP.rail,1.6,K.cable);});
     // columns that hold up the street, standing on the platforms
-    lirr.forEach(p=>{const cz=p.pts.reduce((s,q)=>s+q[1],0)/p.pts.length, pxs=p.pts.map(q=>q[0]); for(let xx=Math.min(...pxs)+12;xx<Math.max(...pxs)-6;xx+=26) boxKB(kbU,[xx,-13.3,cz],[1,17.2,1],0,K.slab,K.slab);});
+    lirr.forEach(p=>{const cz=p.pts.reduce((s,q)=>s+q[1],0)/p.pts.length, pxs=p.pts.map(q=>q[0]); for(let xx=Math.min(...pxs)+12;xx<Math.max(...pxs)-6;xx+=26) boxKB(kbU,[xx,(DP.plat-.5)/2,cz],[1,-.5-DP.plat,1],0,K.slab,K.slab);});
     V.stationMesh=kbU.mesh(V,V.G.under,underMat);
+    // every subway stair and elevator to the street (MTA open data): a stair dropping to its line, today only
+    V.underNew=new THREE.Group(); V.G.under.add(V.underNew);
+    {const kbE=new KB(), ents=((D.under&&D.under.entrances)||[]).filter(e=>e.p[0]>BOX[0]&&e.p[0]<BOX[1]&&e.p[1]>BOX[2]&&e.p[1]<BOX[3]);
+      ents.forEach(e=>{const ace=/A/.test(e.routes), y1=(ace?DP.ind:DP.irt), [x,z]=e.p, toward=Math.sign((ace?-90:184)-x)||1, run=Math.abs(y1)*1.6;
+        if(/Elevator/.test(e.type)){boxKB(kbE,[x,y1/2,z],[2.2,-y1,2.2],0,K.steel,K.steel); return;}
+        for(let k=0;k<8;k++){const t0=k/8,t1=(k+1)/8; kbE.quadF([x+toward*run*t0,y1*t0,z-.9],[x+toward*run*t1,y1*t1,z-.9],[x+toward*run*t1,y1*t1,z+.9],[x+toward*run*t0,y1*t0,z+.9],K.steel,[0,1,0]);}
+        boxKB(kbE,[x,.55,z],[2.4,1.1,.12],0,K.steel,K.steel);});
+      if(kbE.p.length) kbE.mesh(V,V.underNew,underMat); V.entrances=ents;}
     [[-55,0],[15,2],[85,4]].forEach(([xx,k])=>{const p=lirr[Math.min(lirr.length-1,k*2+2)]; if(!p) return; const cz=p.pts.reduce((s,q)=>s+q[1],0)/p.pts.length;
-      const m=new THREE.Mesh(new THREE.BoxGeometry(17,.8,3),mats.trainEnd); m.position.set(xx,-16.4,cz); m.rotation.z=Math.atan2(10.9,17); V.G.under.add(m);});
+      const drop=DP.lower-DP.plat, run=9; const m=new THREE.Mesh(new THREE.BoxGeometry(Math.hypot(run,drop),.8,3),mats.trainEnd); m.position.set(xx,(DP.lower+DP.plat)/2,cz); m.rotation.z=Math.atan2(drop,run); V.G.under.add(m);});   // stairs, concourse to platform
     // departures board (real LIRR times, redrawn as the clock runs)
     const bc=mk(512,128); V.depCanvas=bc; V.depMap=tex(bc);
     const dep=std({map:V.depMap,emissive:lin('#ffffff'),emissiveIntensity:.8},'under'); dep.emissiveMap=V.depMap;
-    const db=new THREE.Mesh(new THREE.BoxGeometry(18,4.5,.5),[mats.dark,mats.dark,mats.dark,mats.dark,dep,dep]); db.position.set(-20,-7.6,PZ[0]/2); V.G.under.add(db);
+    const db=new THREE.Mesh(new THREE.BoxGeometry(18,4.5,.5),[mats.dark,mats.dark,mats.dark,mats.dark,dep,dep]); db.position.set(-20,DP.lower+1.8,PZ[0]/2); db.scale.y=.7; V.G.under.add(db);
     // LIRR trains on tracks 13 to 21 (the tracks LIRR mostly uses). The schedule is real; which track each train uses is illustrative.
     const trackZ={};
     D.rails.filter(r=>!r.subway&&/^\d+$/.test(r.ref)&&+r.ref>=13).forEach(r=>{const pts=r.pts.filter(q=>q[0]>-60&&q[0]<150); if(pts.length){(trackZ[r.ref]=trackZ[r.ref]||[]).push(...pts.map(q=>q[1]));}});
@@ -351,7 +372,7 @@ function buildMSG(){
     const makeTrains=moves=>{V.trains.forEach(T=>V.G.under.remove(T.mesh)); V.trains=[]; tracks.forEach(t=>t.busy=[]); V.moves=moves;
       moves.forEach(mv=>{const m=mv.min, iv=mv.kind==='dep'?[m-9,m+2.5]:[m-2.5,m+9];
         const tr=tracks.find(t=>t.busy.every(b=>!overlaps(iv,b))); if(!tr) return; tr.busy.push(iv);
-        const mesh=new THREE.Mesh(trainGeo,[endMat,endMat,endMat,endMat,tmat,tmat]); mesh.position.set(xOut,-21.6,tr.z); mesh.visible=false; mesh.castShadow=true; V.G.under.add(mesh);
+        const mesh=new THREE.Mesh(trainGeo,[endMat,endMat,endMat,endMat,tmat,tmat]); mesh.position.set(xOut,DP.rail+1.95,tr.z); mesh.visible=false; mesh.castShadow=true; V.G.under.add(mesh);
         V.trains.push({mesh,mv,iv});});};
     makeTrains(D.trains.moves); V.resetTrains=()=>makeTrains(D.trains.moves);
     V.setLive=(arr,base)=>makeTrains((arr||[]).filter(a=>a.line==='LIRR').map(a=>{const d=new Date(a.t*1000); return {min:(a.t-base)/60,kind:a.kind,line:'LIRR',to:a.kind==='dep'?'LIRR departure':'LIRR arrival',t:`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`};}));
@@ -366,7 +387,60 @@ function buildMSG(){
       x.font='600 20px Helvetica,Arial,sans-serif'; next.forEach((m,k)=>{x.fillStyle='#ffc94a'; x.fillText(`${(+m.t.slice(0,2))%12||12}:${m.t.slice(3)}`,14,56+k*26); x.fillStyle='#e8edf5'; x.fillText(m.to.toUpperCase().slice(0,26),96,56+k*26);});
       V.depMap.needsUpdate=true; return clock;};
     V.drawBoard(0);
+
+    // ---------------------------------------------------------------- the ground: bedrock from USGS borings, soil, tunnels, basements
+    const gr=D.grid, X7=gr.x_hi-15.24, Z33=gr.z_lo+9.1, Z31=gr.z_hi-9.1;      // 7th Avenue building line, 33rd and 31st Street building lines
+    // where the rock and soil are dug out: the station and its track yard (7th Avenue to past 9th), and the subway corridors
+    const railPts=[]; D.rails.filter(r=>!r.subway).forEach(r=>{for(let i=0;i<r.pts.length-1;i++){const a=r.pts[i],b=r.pts[i+1],n=Math.ceil(Math.hypot(b[0]-a[0],b[1]-a[1])/5);
+      for(let k=0;k<=n;k++) railPts.push([a[0]+(b[0]-a[0])*k/n,a[1]+(b[1]-a[1])*k/n]);}});
+    const nearRail=(x,z)=>railPts.some(p=>Math.abs(p[0]-x)<7&&Math.abs(p[1]-z)<7);
+    const cut=(x,z)=>{
+      if(x<X7&&z>Z33&&z<Z31) return DP.slab-.6;                            // station trench, cut down to sub-grade
+      if(Math.abs(x-gr.x_hi)<10) return DP.irt-1.8;                          // 1 2 3 under 7th Avenue
+      if(Math.abs(x-gr.x_lo)<10) return DP.ind-1.8;                          // A C E under 8th Avenue
+      if(nearRail(x,z)) return DP.slab-.6;                                   // the river tunnels leaving the station
+      return null;};
+    SS.buildGround(V,D,V.G.under,{cut,bottom:-30});
+    if(V.ground&&V.soilHalf){V.soilHalf.visible=false; V.soilHalf=new THREE.Group();}   // the new ground replaces the old cutaway soil
+    // tunnel shells: subway tunnels (today only: they opened in 1917 and 1932) and the railroad's river tunnels (1910)
+    {const kt=new KB(), kr=new KB();
+      D.rails.filter(r=>r.subway).forEach(r=>SS.tunnelShell(kt,r.pts,(r.layer==='-2'?DP.ind:DP.irt)-1.4,4.4,5,K.lining));
+      D.rails.filter(r=>!r.subway).forEach(r=>{const out=r.pts.filter(q=>!(q[0]<X7&&q[1]>Z33&&q[1]<Z31)); if(out.length>1) SS.tunnelShell(kr,out,DP.rail-.4,5.2,6,K.lining);});
+      if(kt.p.length) kt.mesh(V,V.underNew,underMat); if(kr.p.length) kr.mesh(V,V.G.under,underMat);}
+    // basements: the city lists which buildings have space below grade (yes or no). Shown one story deep (3.5 m), an approximation.
+    {const has=new Set(D.basements||[]), list=D.buildings.filter(b=>has.has(String(b.bin))&&!(SS.centroid(b.pts)[0]<X7&&SS.centroid(b.pts)[1]>Z33&&SS.centroid(b.pts)[1]<Z31))
+        .map(b=>({pts:b.pts,h:-.06,minh:-3.5,k:K.lining,kt:K.lining}));
+      if(list.length) SS.blocks(V,list,V.underNew,underMat); V.basementCount=list.length;}
+    V.labels.under=[{p:[20,DP.upper+.3,Z33+8],t:'Penn Station concourses'},{p:[60,DP.plat+.3,0],t:'21 tracks · 42 ft down'},
+      {p:[gr.x_hi,DP.irt-1,Z31-20],t:'1 2 3 · 7th Avenue'},{p:[gr.x_lo,DP.ind-1,Z31-20],t:'A C E · 8th Avenue'},
+      {p:[60,-12,Z31+40],t:'Bedrock · Manhattan schist'},{p:[150,-2,Z31+60],t:'Soil and fill'},{p:[-230,DP.plat+.3,0],t:'Tracks under Moynihan Train Hall'}];
   }
+  // ---------------------------------------------------------------- Moynihan Train Hall (opened 2021) in the Farley Building, today only
+  // Four steel-and-glass vaults over the old 150 x 200 ft mail sorting room, up to 92 ft (SOM; ASCE Civil Engineering, 2022).
+  // Placed over the sunken hall in the city's 3D model of the Farley Building; the vault direction is approximate.
+  if(D){const far=D.buildings.find(b=>String(b.bin)==='1084820');
+    if(far&&V.cityNew){const xs=far.pts.map(p=>p[0]), zs=far.pts.map(p=>p[1]);
+      let cx=(Math.min(...xs)+Math.max(...xs))/2, cz=(Math.min(...zs)+Math.max(...zs))/2, HW=150*.3048/2, HL=200*.3048/2, spring=16;
+      const top=92*.3048, m3=D.city3d&&D.city3d['1084820'];
+      // the hall: the sunken roof inside the Farley Building in the city's 2014 3D model (about 154 x 210 ft, where the sorting room was)
+      if(m3){const low=[], ring=[]; m3.p.forEach(pl=>{if(pl[0]!=='R') return; const X=[],Y=[],Z=[]; for(let i=1;i<pl.length;i+=3){X.push(pl[i]); Y.push(pl[i+1]); Z.push(pl[i+2]);}
+          const b={x0:Math.min(...X),x1:Math.max(...X),z0:Math.min(...Z),z1:Math.max(...Z),y:Math.max(...Y)};
+          if(b.x0>Math.min(...xs)+15&&b.x1<Math.max(...xs)-15&&b.z0>Math.min(...zs)+8&&b.z1<Math.max(...zs)-8) (b.y<=14?low:ring).push(b);});
+        if(low.length){const x0=Math.min(...low.map(b=>b.x0)),x1=Math.max(...low.map(b=>b.x1)),z0=Math.min(...low.map(b=>b.z0)),z1=Math.max(...low.map(b=>b.z1));
+          cx=(x0+x1)/2; cz=(z0+z1)/2; HW=(x1-x0)/2; HL=(z1-z0)/2;
+          const r=ring.filter(b=>b.x1>x0-2&&b.x0<x1+2&&b.z1>z0-2&&b.z0<z1+2&&b.y<top-3); spring=r.length?Math.max(...r.map(b=>b.y)):14;}}
+      const kg=new KB(), ks=new KB(), n=4, w=HW*2/n;
+      for(let v=0;v<n;v++){const x0=cx-HW+v*w, steps=10;
+        for(let k=0;k<steps;k++){const a0=k/steps*Math.PI,a1=(k+1)/steps*Math.PI, X=a=>x0+w/2-Math.cos(a)*w/2, Y=a=>spring+Math.sin(a)*(top-spring);
+          kg.quadF([X(a0),Y(a0),cz-HL],[X(a1),Y(a1),cz-HL],[X(a1),Y(a1),cz+HL],[X(a0),Y(a0),cz+HL],K.curtain,[-Math.cos((a0+a1)/2),Math.sin((a0+a1)/2),0]);
+          for(let r=0;r<=6;r++){const z=cz-HL+r*HL/3; ks.quadF([X(a0),Y(a0),z-.25],[X(a1),Y(a1),z-.25],[X(a1),Y(a1),z+.25],[X(a0),Y(a0),z+.25],K.steel,[0,1,0]);}}}
+      const gm=std({color:lin('#bcd6e6'),transparent:true,opacity:.42,roughness:.08,metalness:.25,side:THREE.DoubleSide,depthWrite:false});
+      const g=new THREE.Group(); V.cityNew.add(g); const gmesh=kg.mesh(V,g,gm); const i=V.kindMeshes.indexOf(gmesh); if(i>=0) V.kindMeshes.splice(i,1); ks.mesh(V,g);
+      V.moynihan={cx,cz,top};
+      V.layers.push({key:'moynihan',name:'Moynihan',era:'today',items:[
+        {type:'outline',pts:[[cx-HW,cz-HL],[cx+HW,cz-HL],[cx+HW,cz+HL],[cx-HW,cz+HL]],y:top+.3},
+        {type:'dim',a:[cx+HW+4,0,cz+HL],b:[cx+HW+4,top,cz+HL],text:'92 FT',textAt:.55},
+        {type:'label',p:[cx,top,cz],slot:'top',title:'MOYNIHAN TRAIN HALL',sub:['OPENED JAN 1, 2021','INSIDE THE OLD FARLEY POST OFFICE']}]});}}
   V.EXP={base:0,lower:12,facade:0,middle:30,upper:54,crown:78,roof:102,under:[0,-40,0]};
   V.flyGuard=R+24; V.boxR=78;
 
@@ -374,18 +448,18 @@ function buildMSG(){
 
   // ---------------------------------------------------------------- labels + sightlines
   V.labels.exploded=[{g:'roof',p:P(R-6,-50*deg,HT-1),t:'Cable-suspended roof'},{g:'crown',p:P(48,-50*deg,yC(48)-1),t:'Ceiling, banners & light rings'},{g:'upper',p:[-10,30,0],t:'Scoreboard & Chase Bridges'},
-    {g:'middle',p:L.pos(L.idxAtPhi(-60),26,26),t:'200 level & suites'},{g:'lower',p:L.pos(L.idxAtPhi(-110),7,7),t:'100 level'},{g:'base',p:[22,1,10],t:'Event level · NHL rink'},{g:'under',p:[-40,-21.4,40],t:'Penn Station tracks'}];
+    {g:'middle',p:L.pos(L.idxAtPhi(-60),26,26),t:'200 level & suites'},{g:'lower',p:L.pos(L.idxAtPhi(-110),7,7),t:'100 level'},{g:'base',p:[22,1,10],t:'Event level · NHL rink'},{g:'under',p:[-40,V.depth.plat+.3,40],t:'Penn Station tracks · 42 ft down'}];
   const iS=L.idxAtPhi(180);
   const row=(T,s,i)=>{const o0=typeof T.o0==='function'?T.o0(i):T.o0,o1=typeof T.o1==='function'?T.o1(i):T.o1,dO=(o1-o0)/T.steps,dH=(T.h1-T.h0)/(T.steps-1); return L.pos(i,o0+(s+.5)*dO,T.h0+s*dH+1.2);};
   addSight(V,[row(T1,2,iS),row(T1,10,iS),row(T2,3,iS),row(T2,10,iS),row(T2,17,iS),[0,35.4,-36]],L.pos(iS,-2.5,1.07));
   V.labels.section=[{p:[0,HT-1,-30],t:'Cable roof & ceiling'},{p:[0,25,8],t:'Center-hung scoreboard'},{p:[0,35.5,-44],t:'Chase Bridge'},{p:row(T2,12,iS),t:'200 level'},{p:row(T1,6,iS),t:'100 level'},
-    {p:[0,.5,6],t:'Event level · NHL rink'},{p:[0,-10.5,-40],t:'Penn Station concourse'},{p:[0,-21.4,-20],t:'Train platforms · tracks 1 to 21'},{p:[-90,-6,30],t:'A C E subway · 8th Ave'}];
+    {p:[0,.5,6],t:'Event level · NHL rink'},{p:[0,V.depth.upper+.5,-40],t:'Penn Station concourses'},{p:[0,V.depth.plat+.3,-20],t:'Platforms · tracks 1 to 21 · 42 ft down'},{p:[-90,-6,30],t:'A C E subway · 8th Ave'}];
   // blueprint cross section: the real outlines at the north side (x = 0), drawn as lines
   {const iN=L.idxAtPhi(180), z=r=>[0,0,-r], Pz=(r,y)=>[0,y,-r], prof=[SS.tierProfile(L,iN,T1),SS.tierProfile(L,iN,T2)];
    const ceil=[],roof=[]; for(let r=Rin;r<=Ri;r+=2) ceil.push(Pz(r,yC(r))); for(let r=7;r<=Rm;r+=2) roof.push(Pz(r,yd(r)));
    prof.push(ceil,roof,[Pz(R-3,HT),Pz(R+.4,HT),Pz(R+.4,HT-3),Pz(Rw-.7,HT-3),Pz(Rw-.7,Hw),Pz(Rw,Hw),Pz(Rw,0)],[Pz(R+18,0),Pz(0,0)],
      [Pz(edge[iN]-.3+15.5,34),Pz(edge[iN]-.3+15.5,HT-3.2)],[Pz(41.8,34.2),Pz(46.2,34.2),Pz(46.2,35.8),Pz(41.8,35.8),Pz(41.8,34.2)],
-     [Pz(-2,-11),Pz(R+18,-11)],[Pz(-2,-21.9),Pz(R+18,-21.9)],[Pz(-2,-24.1),Pz(R+18,-24.1)]);
+     [Pz(-2,V.depth.upper),Pz(R+18,V.depth.upper)],[Pz(-2,V.depth.lower),Pz(R+18,V.depth.lower)],[Pz(-2,V.depth.plat),Pz(R+18,V.depth.plat)],[Pz(-2,V.depth.slab),Pz(R+18,V.depth.slab)]);
    V.sheet.profile=prof;}
   // cameras + lights
   const bo=row(T2,17,L.idxAtPhi(16));

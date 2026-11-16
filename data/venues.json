@@ -7,13 +7,13 @@
       -73.99343
     ],
     "download_bbox": [
-      40.7476,
-      -73.9975,
-      40.7534,
+      40.746,
+      -74.0035,
+      40.7555,
       -73.9893
     ],
     "model_box": [
-      -170.0,
+      -385.0,
       265.0,
       -160.0,
       160.0
@@ -61,6 +61,32 @@
       "team": "NYR",
       "team_id": 3,
       "season": "20252026"
+    },
+    "history": {
+      "weather_station": "USW00094728",
+      "days": [
+        {
+          "date": "1910-11-27",
+          "label": "Penn Station opens to all trains"
+        },
+        {
+          "date": "1963-10-28",
+          "label": "Demolition of the station house begins"
+        },
+        {
+          "date": "1968-02-11",
+          "label": "Madison Square Garden opens"
+        }
+      ]
+    },
+    "nyc3d": {
+      "zip": "nyc3d/raw/DA_WISE_GML.zip",
+      "members": [
+        "DA12"
+      ]
+    },
+    "bedrock": {
+      "zip": "geology/raw/Bedrock_Points_Shapefile_v3.zip"
     }
   },
   "yankee": {

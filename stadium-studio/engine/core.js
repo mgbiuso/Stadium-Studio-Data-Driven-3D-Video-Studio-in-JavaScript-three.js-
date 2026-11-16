@@ -45,9 +45,9 @@ const mats={
   tank:std({color:lin('#6e5139'),roughness:.95}), tankRoof:std({color:lin('#3d3934')}), globe:std({color:lin('#4fbf74'),roughness:.4})
 };
 const K={seat:0,aisle:1,walk:2,riser:3,fascia:4,soffit:5,back:6,cap:7,canopy:8,roof:9,wall:10,wallTop:11,ground:12,mpark:13,inner:14,boards:15,cable:16,roofTop:17,slab:18,platform:19,track:20,
-  seat2:21,pier:22,ring:23,gap:24,ceil:25,ceil2:26,beam:27,unit:28,nbr:29,nbr2:30,nbrTop:31,podium:32,curtain:33,nbr3:34,sidewalk:35,curb:36,steel:37,granite:38,dirt:39};
+  seat2:21,pier:22,ring:23,gap:24,ceil:25,ceil2:26,beam:27,unit:28,nbr:29,nbr2:30,nbrTop:31,podium:32,curtain:33,nbr3:34,sidewalk:35,curb:36,steel:37,granite:38,dirt:39,schist:40,soil:41,lining:42};
 // newer kinds borrow an older kind's color in palettes that do not name them
-const KFALL={nbr3:'back',sidewalk:'aisle',curb:'riser',steel:'cable',seat2:'seat',pier:'back',ring:'canopy',gap:'fascia',ceil:'inner',ceil2:'inner',beam:'cable',unit:'roofTop',nbr:'back',nbr2:'back',nbrTop:'roof',podium:'back',curtain:'fascia',granite:'pier',dirt:'ground'};
+const KFALL={nbr3:'back',sidewalk:'aisle',curb:'riser',steel:'cable',seat2:'seat',pier:'back',ring:'canopy',gap:'fascia',ceil:'inner',ceil2:'inner',beam:'cable',unit:'roofTop',nbr:'back',nbr2:'back',nbrTop:'roof',podium:'back',curtain:'fascia',granite:'pier',dirt:'ground',schist:'track',soil:'ground',lining:'slab'};
 
 class KB{
   constructor(){this.p=[];this.k=[];}
@@ -347,6 +347,70 @@ const FACADE=(()=>{
 })();
 
 // the neighborhood: buildings (style from the tax lots), rooftops, ground, sidewalks, trees, signals, subway entrances
+// buildings from the NYC 3D Building Model: real setbacks and roof levels. Walls get the same window textures as
+// extruded blocks (u along the wall / 32 m, v up / 28.8 m); roofs are flat-colored. list: [{m3:{p:[[kind,x,y,z,...]]}, k}]
+function solids3d(V,list,group,mat){
+  const pos=[],uv=[],kinds=[],kbT=new KB();
+  list.forEach(({m3,k})=>m3.p.forEach(poly=>{
+    const P=[]; for(let i=1;i<poly.length;i+=3) P.push([poly[i],poly[i+1],poly[i+2]]); if(P.length<3) return;
+    let nx=0,ny=0,nz=0; P.forEach((a,i)=>{const b=P[(i+1)%P.length]; nx+=(a[1]-b[1])*(a[2]+b[2]); ny+=(a[2]-b[2])*(a[0]+b[0]); nz+=(a[0]-b[0])*(a[1]+b[1]);});
+    const nl=Math.hypot(nx,ny,nz); if(nl<1e-6) return; nx/=nl; ny/=nl; nz/=nl;
+    if(Math.abs(ny)<.35){   // a wall: lay it flat along its own direction, triangulate, keep the window texture running
+      const dx=-nz, dz=nx, dl=Math.hypot(dx,dz)||1, ux=dx/dl, uz=dz/dl, flat=P.map(p=>new THREE.Vector2(p[0]*ux+p[2]*uz,p[1]));
+      THREE.ShapeUtils.triangulateShape(flat,[]).forEach(f=>{let [a,b,c]=f; const A=P[a],Bp=P[b],C=P[c];
+        const cx=(Bp[1]-A[1])*(C[2]-A[2])-(Bp[2]-A[2])*(C[1]-A[1]), cz=(Bp[0]-A[0])*(C[1]-A[1])-(Bp[1]-A[1])*(C[0]-A[0]);
+        if(cx*nx+cz*nz<0){const t=b; b=c; c=t;}
+        [a,b,c].forEach(i=>{pos.push(...P[i]); uv.push(flat[i].x/32,flat[i].y/28.8); kinds.push(k);});});
+    } else {                // a roof (flat or sloped): triangulate seen from above
+      THREE.ShapeUtils.triangulateShape(P.map(p=>new THREE.Vector2(p[0],p[2])),[]).forEach(f=>kbT.triF(P[f[0]],P[f[1]],P[f[2]],K.nbrTop,[nx,ny,nz]));
+    }
+  }));
+  if(pos.length){const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3)); g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));
+    g.setAttribute('color',new THREE.Float32BufferAttribute(new Float32Array(kinds.length*3),3)); g.computeVertexNormals();
+    const m=new THREE.Mesh(g,mat); m.userData.kinds=Uint8Array.from(kinds); m.castShadow=m.receiveShadow=true; V.kindMeshes.push(m); V.edgeTargets.push(m); group.add(m);}
+  if(kbT.p.length) kbT.mesh(V,group);
+}
+
+// ---------------------------------------------------------------- the ground under a venue (shared by every venue with D.ground)
+// Bedrock from real boreholes as a solid surface; soil above it as a see-through layer; cuts where trenches and tunnels go;
+// a marker at each boring. o.cut(x,z) -> the deepest point (meters, below the street) dug out there, or null.
+// o.bottom: how deep the block goes. Everything here ignores the above-ground clip, so the underground views can show it.
+function buildGround(V,D,parent,o){
+  const Gd=D&&D.ground; if(!Gd) return null; o=o||{};
+  const g=new THREE.Group(); parent.add(g);
+  const {cell,x0,z0,nx,nz,rock}=Gd, bot=o.bottom||-32, cut=o.cut||(()=>null);
+  const RY=(i,j)=>{const x=x0+i*cell,z=z0+j*cell; let y=Math.min(-.4,rock[j*nx+i]); const c=cut(x,z); if(c!=null) y=Math.min(y,c); return Math.max(bot+1,y);};
+  const H=[]; for(let j=0;j<nz;j++) for(let i=0;i<nx;i++) H.push(RY(i,j));
+  const P=(i,j)=>[x0+i*cell,H[j*nx+i],z0+j*cell];
+  // bedrock: top surface, then the four outer walls down to the bottom
+  const kr=new KB();
+  for(let j=0;j<nz-1;j++) for(let i=0;i<nx-1;i++){kr.triF(P(i,j),P(i,j+1),P(i+1,j+1),K.schist,[0,1,0]); kr.triF(P(i,j),P(i+1,j+1),P(i+1,j),K.schist,[0,1,0]);}
+  const side=(pts,n)=>{for(let k=0;k<pts.length-1;k++){const a=pts[k],b=pts[k+1]; kr.quadF([a[0],bot,a[2]],[b[0],bot,b[2]],b,a,K.schist,n);}};
+  side([...Array(nx).keys()].map(i=>P(i,0)),[0,0,-1]); side([...Array(nx).keys()].map(i=>P(i,nz-1)),[0,0,1]);
+  side([...Array(nz).keys()].map(j=>P(0,j)),[-1,0,0]); side([...Array(nz).keys()].map(j=>P(nx-1,j)),[1,0,0]);
+  const rockMat=std({vertexColors:true,flatShading:true,roughness:.95},'under'); V.groundMats=[rockMat];
+  kr.mesh(V,g,rockMat);
+  // soil and fill between the street and the rock: see-through, so the rock, trenches and tunnels show inside it
+  const ks=new KB(), T=(i,j)=>{const x=x0+i*cell,z=z0+j*cell, c=cut(x,z); return [x,c!=null?Math.min(-.05,c):-.05,z];};
+  const wall=(n,a,b,ya,yb)=>ks.quadF([a[0],ya,a[2]],[b[0],yb,b[2]],[b[0],-.05,b[2]],[a[0],-.05,a[2]],K.soil,n);
+  for(let i=0;i<nx-1;i++){wall([0,0,-1],P(i,0),P(i+1,0),P(i,0)[1],P(i+1,0)[1]); wall([0,0,1],P(i,nz-1),P(i+1,nz-1),P(i,nz-1)[1],P(i+1,nz-1)[1]);}
+  for(let j=0;j<nz-1;j++){wall([-1,0,0],P(0,j),P(0,j+1),P(0,j)[1],P(0,j+1)[1]); wall([1,0,0],P(nx-1,j),P(nx-1,j+1),P(nx-1,j)[1],P(nx-1,j+1)[1]);}
+  for(let j=0;j<nz-1;j++) for(let i=0;i<nx-1;i++) if(cut(x0+i*cell+cell/2,z0+j*cell+cell/2)==null) ks.quadF(T(i,j),T(i+1,j),T(i+1,j+1),T(i,j+1),K.soil,[0,1,0]);
+  const soilMat=std({vertexColors:true,transparent:true,opacity:.26,depthWrite:false,side:THREE.DoubleSide,roughness:1},'under'); V.groundMats.push(soilMat);
+  const sm=ks.mesh(V,g,soilMat); sm.castShadow=false; sm.receiveShadow=false;
+  // a thin marker at every real boring, from the street down to where it hit rock
+  const pts=(Gd.points||[]).filter(p=>p[2]<0);
+  if(pts.length){const bm=std({color:lin('#f2c14e'),emissive:lin('#f2c14e'),emissiveIntensity:.35,roughness:.6},'under'); V.groundMats.push(bm);
+    const inst=new THREE.InstancedMesh(new THREE.CylinderGeometry(.35,.35,1,8),bm,pts.length), M=new THREE.Matrix4();
+    pts.forEach(([x,z,y],k)=>{M.compose(new THREE.Vector3(x,y/2,z),new THREE.Quaternion(),new THREE.Vector3(1,-y,1)); inst.setMatrixAt(k,M);}); g.add(inst); V.borings=inst;}
+  V.ground=g; return g;
+}
+// open-topped tunnel shells (floor and two walls) along a line at depth y, so you can look in from above
+function tunnelShell(kb,pts,y,w,h,k){
+  for(let i=0;i<pts.length-1;i++){const a=pts[i],b=pts[i+1],dx=b[0]-a[0],dz=b[1]-a[1],l=Math.hypot(dx,dz)||1,ox=-dz/l*w/2,oz=dx/l*w/2;
+    kb.quadF([a[0]+ox,y,a[1]+oz],[b[0]+ox,y,b[1]+oz],[b[0]-ox,y,b[1]-oz],[a[0]-ox,y,a[1]-oz],k,[0,1,0]);
+    [1,-1].forEach(sg=>kb.quadF([a[0]+sg*ox,y,a[1]+sg*oz],[b[0]+sg*ox,y,b[1]+sg*oz],[b[0]+sg*ox,y+h,b[1]+sg*oz],[a[0]+sg*ox,y+h,a[1]+sg*oz],k,[sg*ox,0,sg*oz]));}
+}
 // wooden rooftop water tanks at [x, roofY, z] spots
 function waterTanks(tanks,parent){
   const body=new THREE.InstancedMesh(new THREE.CylinderGeometry(2.3,2.3,4.4,12),mats.tank,tanks.length), roof=new THREE.InstancedMesh(new THREE.ConeGeometry(2.55,1.7,12),mats.tankRoof,tanks.length),
@@ -363,7 +427,8 @@ function buildCity(V,D,parent,o){
   V.facadeMats=[V.mats.brick,V.mats.stone,V.mats.band];
   // o.split(yr,b) sends some buildings to a second group (o.splitParent), e.g. everything built after 1910 for a then-vs-now era switch;
   // their footprints are kept in V.splitFoot so an era can put period buildings in their place
-  const mkSet=par=>({groups:{brick:[],stone:[],band:[],glass:[]},tanks:[],bulk:new KB(),par});
+  const mkSet=par=>({groups:{brick:[],stone:[],band:[],glass:[]},d3:{brick:[],stone:[],band:[],glass:[]},tanks:[],bulk:new KB(),par});
+  const C3=o.no3d?null:D.city3d; let n3=0;   // NYC 3D Building Model (2014), matched by BIN
   const A=mkSet(parent), B=o.split&&o.splitParent?mkSet(o.splitParent):null; if(B) V.splitFoot=[];
   (D.buildings||[]).filter(b=>!skip.has(b.bin)&&!(o.skipNear&&o.skipNear(b))).forEach(b=>{
     const c=centroid(b.pts), lot=lots.find(l=>pip(l,b.pts))||null;
@@ -371,6 +436,8 @@ function buildCity(V,D,parent,o){
     const S=B&&o.split(parseInt(b.yr||'0',10)||yr,b)?B:A; if(S===B) V.splitFoot.push({pts:b.pts,h:b.h,yr:parseInt(b.yr||'0',10)||yr,bin:b.bin});
     let kind=b.h>80||(yr>=1985&&b.h>35)?'glass':yr&&yr<1946?(seed<.62?'brick':'stone'):'band';
     const k=kind==='glass'?K.curtain:kind==='brick'?K.nbr:kind==='stone'?K.nbr2:K.nbr3;
+    const m3=C3&&C3[b.bin];
+    if(m3&&m3.h>2){S.d3[kind].push({m3,k}); n3++; return;}   // real setbacks and roof levels; no generic bulkhead or tank on these
     S.groups[kind].push({pts:b.pts,h:b.h,k,kt:K.nbrTop});
     const area=polyArea(b.pts);
     // rooftops: a stair and elevator bulkhead on most buildings, a wooden water tank on prewar mid-rises (a New York signature)
@@ -381,7 +448,9 @@ function buildCity(V,D,parent,o){
     blocks(V,S.groups.brick,par,V.mats.brick); blocks(V,S.groups.stone,par,V.mats.stone); blocks(V,S.groups.band,par,V.mats.band); blocks(V,S.groups.glass,par,V.mats.glassWall);
     if(S.bulk.p.length) S.bulk.mesh(V,par);
     if(S.tanks.length) waterTanks(S.tanks,par);
+    solids3d(V,S.d3.brick,par,V.mats.brick); solids3d(V,S.d3.stone,par,V.mats.stone); solids3d(V,S.d3.band,par,V.mats.band); solids3d(V,S.d3.glass,par,V.mats.glassWall);
   });
+  V.city3dCount=n3;
   // ground: streets, crosswalks and lane lines painted; sidewalks raised as real curbs
   const [x0,x1,z0,z1]=box, W=x1-x0, H=z1-z0, sc=2048/Math.max(W,H), c=mk(Math.round(W*sc),Math.round(H*sc)), x=c.getContext('2d');
   x.setTransform(sc,0,0,sc,-x0*sc,-z0*sc); x.lineCap='round'; x.lineJoin='round';
@@ -393,8 +462,10 @@ function buildCity(V,D,parent,o){
   for(let i=0;i<900;i++){x.fillStyle=`rgba(0,0,0,${Math.random()*.05})`; x.fillRect(x0+Math.random()*W,z0+Math.random()*H,.6+Math.random()*1.5,.4);}   // asphalt wear
   V.tex.streets=tex(c); V.mats.streets=std({map:V.tex.streets,roughness:1});
   const gp=new THREE.Mesh(new THREE.PlaneGeometry(W,H).rotateX(-Math.PI/2),V.mats.streets); gp.position.set((x0+x1)/2,.03,(z0+z1)/2); gp.receiveShadow=true; parent.add(gp);
+  // o.walkSplit(pts) sends some sidewalks to o.splitParent too (e.g. the plaza on a block that an older era dug out)
   const walks=((D.city&&D.city.sidewalks)||[]).map(pts=>({pts,h:.18,k:K.curb,kt:K.sidewalk}));
-  if(walks.length){V.mats.walk=std({vertexColors:true,roughness:.95}); blocks(V,walks,parent,V.mats.walk);}
+  const walksB=o.walkSplit&&o.splitParent?walks.filter(w=>o.walkSplit(w.pts)):[], walksA=walks.filter(w=>!walksB.includes(w));
+  if(walks.length){V.mats.walk=std({vertexColors:true,roughness:.95}); if(walksA.length) blocks(V,walksA,parent,V.mats.walk); if(walksB.length) blocks(V,walksB,o.splitParent,V.mats.walk);}
   // street trees from the city's tree census, sized by real trunk width (falls back to OpenStreetMap trees)
   const ct=(D.city&&D.city.trees)||[], spots=ct.length?ct.map(t=>[t[0],t[1],t[2]||6]):(D.trees||[]).map(t=>[t[0],t[1],8]);
   V.trees=new THREE.Group(); parent.add(V.trees);
@@ -441,6 +512,6 @@ Object.assign(SS,{$,app,stage,canvas,loading,labelsEl,renderer,maxAniso,reduceMo
 function tierProfile(L,i,T){const f=v=>typeof v==='function'?v(i):v, o0=f(T.o0),o1=f(T.o1),S=T.steps,dO=(o1-o0)/S,dH=(T.h1-T.h0)/(S-1),fb=T.soffit?T.h0-T.fascia:0,pts=[L.pos(i,o0,fb)];
   for(let s=0;s<S;s++){const y=T.h0+s*dH; pts.push(L.pos(i,o0+s*dO,y),L.pos(i,o0+(s+1)*dO,y));}
   pts.push(L.pos(i,o1,T.soffit?T.sb:0)); if(T.soffit) pts.push(L.pos(i,o0,fb)); return pts;}
-Object.assign(SS,{blocks,pip,centroid,polyArea,FACADE,buildCity,buildEl,tierProfile,waterTanks});
+Object.assign(SS,{blocks,pip,centroid,polyArea,FACADE,buildCity,buildEl,tierProfile,waterTanks,buildGround,tunnelShell});
 SS.ok=true;
 })();

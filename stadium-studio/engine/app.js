@@ -69,7 +69,7 @@ if(controls){controls.enableDamping=true; controls.dampingFactor=.08; controls.e
    Styles
 ===================================================================== */
 const PAL={
-  day:{k:{granite:'#d9c2b0',dirt:'#9a8a73',seat2:'#22406f',pier:'#d8c4a2',ring:'#f4f2ec',gap:'#2c2723',ceil:'#dcc59e',ceil2:'#ceb48b',beam:'#8e7657',unit:'#d9d6cf',nbr:'#9a5b44',nbr2:'#cdc2ad',nbr3:'#bab6ad',sidewalk:'#c9c4b9',curb:'#a29d93',steel:'#56645b',nbrTop:'#8f8b85',podium:'#e3ded3',curtain:'#46525f',
+  day:{k:{granite:'#d9c2b0',dirt:'#9a8a73',schist:'#4c535d',soil:'#b38b5d',lining:'#a39f96',seat2:'#22406f',pier:'#d8c4a2',ring:'#f4f2ec',gap:'#2c2723',ceil:'#dcc59e',ceil2:'#ceb48b',beam:'#8e7657',unit:'#d9d6cf',nbr:'#9a5b44',nbr2:'#cdc2ad',nbr3:'#bab6ad',sidewalk:'#c9c4b9',curb:'#a29d93',steel:'#56645b',nbrTop:'#8f8b85',podium:'#e3ded3',curtain:'#46525f',
     seat:'#22406f',aisle:'#a39f96',walk:'#b3aea4',riser:'#7e7c77',fascia:'#1a2947',soffit:'#6f6c66',back:'#bdb5a5',cap:'#b3ab9b',canopy:'#efeeea',roof:'#a9a397',wall:'#1a2947',wallTop:'#22345a',ground:'#8d877c',mpark:'#4d7b3d',inner:'#cfc4ad',boards:'#f3f3f0',cable:'#5d6470',roofTop:'#c3c6cb',slab:'#9b978f',platform:'#cfcac0',track:'#4a4743'},
     plinth:'#c9c2b4',field:'#ffffff',fieldMap:true,facade:'#ffffff',facadeMap:true,letters:true,ribbon:'#ffffff',ribbonMap:true,board:'#ffffff',boardMap:true,frieze:'#f4f3ef',dark:'#1f2622',accent:'#1a2947',monument:'#e3dfd6',lights:'#dcdcd8',red:'#c8102e',trunk:'#6b5641',crown:'#5a8549',trees:true,trainMap:true,soilTop:'#b9b2a5'},
   wire:{k:{seat:'#a2a6ac',aisle:'#b3b6bb',walk:'#b3b6bb',riser:'#979ba1',fascia:'#a9adb3',soffit:'#8f9399',back:'#aeb2b7',cap:'#a7abb1',canopy:'#c3c6ca',roof:'#aaaeb3',wall:'#9da1a7',wallTop:'#a5a9ae',ground:'#9a9ea4',mpark:'#9a9ea4',inner:'#b0b3b8',boards:'#b5b8bd',cable:'#8a8e94',roofTop:'#b9bcc1',slab:'#a0a4aa',platform:'#b0b3b8',track:'#8a8e94'},
@@ -134,11 +134,15 @@ const STYLES={
   studio:{name:'Color studio',refs:'Ref 16',desc:'A white model on one bold floor color, with only the team colors picked out.',pal:'studio',light:'studio',bg:'studio',plinth:false,trees:false},
   cutaway:{name:'Cutaway',refs:'Refs 20 · 23',desc:'The real building sliced in half to show every layer, from the roof down to the trains, with sightlines from the seats.',pal:'day',light:'day',bg:'white',station:true,edges:'soft',plinth:false,real:true,
     clip:'half',soil:'half',sight:true,labels:'section',cam:'section'},
+  underground:{name:'Underground',refs:'City, MTA and USGS data',desc:'Everything above the sidewalk lifted away: the station levels, subway and rail tunnels, soil and the bedrock underneath, from real borings.',
+    pal:'day',light:'day',bg:'drawing',real:true,station:true,under:true,clip:'ground',plinth:false,trees:false,labels:'under',cam:'underground'},
+  xray:{name:'X-ray city',refs:'City, MTA and USGS data',desc:'The buildings turn to glass so you can see what runs underneath them: station, tunnels and rock.',
+    pal:'day',light:'day',bg:'drawing',station:true,under:true,xray:true,edges:'xray',plinth:false,trees:false,labels:'under',cam:'underground'},
   blueprint:{name:'Blueprint sheet',refs:'New ref · blueprint',desc:'A flat drawing sheet: an elevation on top and the floor plan below, drawn as white lines from the real outline and heights. A still drawing, so Explore is off.',pal:'bpsheet',light:'sheet',bg:'bpsheet',edges:'chalk',plinth:false,trees:false,city:false,sheet:true}
 };
-const ORDER=['aerial','corner','night','bowl','overhead','exploded','wire','isoCel','isoPixel','isoInk','studio','cutaway','blueprint'];
+const ORDER=['aerial','corner','night','bowl','overhead','underground','xray','exploded','wire','isoCel','isoPixel','isoInk','studio','cutaway','blueprint'];
 // views that show the real neighborhood around the venue
-const CITY=new Set(['aerial','corner','night','overhead','wire']);
+const CITY=new Set(['aerial','corner','night','overhead','wire','underground','xray']);
 const CAMS={
   aerial:{off:[-200,169,257],tgt:[0,-4,-2],fov:34},
   corner:{off:[-235,62,250],tgt:[0,8,0],fov:40},
@@ -152,7 +156,8 @@ const CAMS={
   studio:{off:[-240,200,300],tgt:[0,-6,0],fov:32},
   pastel:{ortho:true,dir:[-1,1.1,1],tgt:[0,-8,0],size:150},
   cutaway:{ortho:true,dir:[1,.95,1],tgt:[0,-16,0],size:168},
-  section:{ortho:true,dir:'section',tgt:[0,6,0],size:96}
+  section:{ortho:true,dir:'section',tgt:[0,6,0],size:96},
+  underground:{off:[-150,175,235],tgt:[0,-10,0],fov:36}
 };
 
 let V=null, current='aerial', exploded=false;
@@ -168,7 +173,7 @@ function glow(mat,hex,map,intensity){
   if(mat.emissiveMap!==em){mat.emissiveMap=em; mat.needsUpdate=true;} mat.emissiveIntensity=intensity||1;
 }
 const edgeMats={above:new THREE.LineBasicMaterial({transparent:true}),under:new THREE.LineBasicMaterial({transparent:true})};
-const EDGE_LOOK={wire:['#2a2d31',.75],ink:['#1d1f24',.5],blue:['#1f4e8c',.6],chalk:['#eef3ff',.92],soft:['#2a2c31',.22],cel:['#26303c',.5],pixel:['#1b2330',.6],inkbold:['#141414',.85],sepia:['#4a3622',.9]};
+const EDGE_LOOK={xray:['#7fb8e6',.32],wire:['#2a2d31',.75],ink:['#1d1f24',.5],blue:['#1f4e8c',.6],chalk:['#eef3ff',.92],soft:['#2a2c31',.22],cel:['#26303c',.5],pixel:['#1b2330',.6],inkbold:['#141414',.85],sepia:['#4a3622',.9]};
 function setEdges(look){
   if(look && !V.edgesBuilt){V.edgeTargets.forEach(m=>{const under=m.material===underMat||CLIP_UNDER.includes(Array.isArray(m.material)?m.material[4]:m.material);
       const l=new THREE.LineSegments(new THREE.EdgesGeometry(m.geometry,15),under?edgeMats.under:edgeMats.above); m.add(l); m.userData.edge=l;}); V.edgesBuilt=true;}
@@ -179,17 +184,25 @@ function setClip(modeC,underC){
   let above=[],under=[],inter=false;
   // three.js hides points on the negative side of a plane, so a normal of -x with constant c hides everything where x > c
   if(modeC==='quad'){above=[new THREE.Plane(new THREE.Vector3(-1,0,0),V.cut.x),new THREE.Plane(new THREE.Vector3(0,0,-1),V.cut.z)]; inter=true;}
+  // hide everything above the sidewalk: set on the renderer itself, so the shading and shadow passes skip it too
+  renderer.clippingPlanes=modeC==='ground'?[new THREE.Plane(new THREE.Vector3(0,-1,0),0)]:[];
   if(modeC==='half'){const s=V.section,p=new THREE.Plane(s.axis==='x'?new THREE.Vector3(-1,0,0):new THREE.Vector3(0,0,-1),s.c); above=[p]; under=[p];}
   // exploded: keep only the part of the station right under the arena (hidden if outside any of the four walls)
   if(underC==='box'){const r=V.boxR||80; under=[[-1,0,r],[1,0,r],[0,-1,r],[0,1,r]].map(([x,z,c])=>new THREE.Plane(new THREE.Vector3(x,0,z),c));}
-  const set=(m,pl)=>{m.clippingPlanes=pl; m.clipIntersection=inter; m.needsUpdate=true;};
+  const set=(m,pl)=>{m.clippingPlanes=pl; m.clipIntersection=inter; m.clipShadows=true; m.needsUpdate=true;};   // cut-away parts cast no shadows either
   CLIP_ABOVE.forEach(m=>set(m,above)); set(edgeMats.above,above); CLIP_UNDER.forEach(m=>set(m,under)); set(edgeMats.under,under);
   (V.trainMats||[]).forEach(m=>{m.clippingPlanes=under.concat(V.trainClip||[]); m.clipIntersection=false; m.needsUpdate=true;});
+}
+function setXray(on){
+  CLIP_ABOVE.forEach(m=>{
+    if(on){if(!m.userData.xr){m.userData.xr={t:m.transparent,o:m.opacity,d:m.depthWrite}; m.transparent=true; m.opacity=.12; m.depthWrite=false; m.needsUpdate=true;}}
+    else if(m.userData.xr){const x=m.userData.xr; m.transparent=x.t; m.opacity=x.o; m.depthWrite=x.d; delete m.userData.xr; m.needsUpdate=true;}});
 }
 function setLights(lightKey){
   const Lt=LIGHTS[lightKey], S=STYLES[current];
   hemi.color.copy(lin(Lt.hs)); hemi.groundColor.copy(lin(Lt.hg)); hemi.intensity=Lt.hi*(scene.environment?.55:1);
-  sun.color.copy(lin(Lt.sc)); sun.intensity=Lt.si; sun.position.set(V.center.x+Lt.sp[0],Lt.sp[1],V.center.z+Lt.sp[2]); sun.target.position.copy(V.center);
+  const es=(V.eras&&V.eras.info[V.era]||{}).sun, sp=es&&Lt.si>1?es:Lt.sp;   // an era can bring its own sun (e.g. opening day, 1910)
+  sun.color.copy(lin(Lt.sc)); sun.intensity=Lt.si; sun.position.set(V.center.x+sp[0],sp[1],V.center.z+sp[2]); sun.target.position.copy(V.center);
   const pp=V.pointPos[lightKey]||[]; pointLights.forEach((l,k)=>{if(pp[k]){l.position.set(...pp[k]); l.intensity=Lt.pl;} else l.intensity=0;});
   catcher.visible=Lt.cat>0; catcher.material.opacity=Lt.cat; catcher.position.set(V.center.x,S.wood?-9.4:-3.7,V.center.z);
 }
@@ -240,7 +253,8 @@ function applyStyle(key,instant){
   if(V.sight) V.sight.visible=!!S.sight;
   V.letters.visible=pal.letters; clouds.visible=!!S.clouds;
   $('tilt-top').hidden=$('tilt-bot').hidden=$('vignette').hidden=!S.tilt;
-  setEdges(S.edges||null); setClip(S.clip||null,S.clipUnder||null);
+  setEdges(S.edges||null); setClip(S.clip||null,S.clipUnder||null); setXray(!!S.xray);
+  if(V.ground) V.ground.visible=!!(S.under||S.clip==='half');   // the soil and bedrock block shows in the underground views and the cutaway
   // map-icon looks: pixel art is drawn small and scaled up without smoothing
   const pr=S.pixel||(REC.size?1:Math.min(window.devicePixelRatio||1,2)); if(renderer.getPixelRatio()!==pr){renderer.setPixelRatio(pr); renderer.setSize(Wd,Ht,false); if(POST.comp){POST.comp.setPixelRatio(pr); POST.comp.setSize(Wd,Ht);}}
   canvas.style.imageRendering=S.pixel?'pixelated':'';

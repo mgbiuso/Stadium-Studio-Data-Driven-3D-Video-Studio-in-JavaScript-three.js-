@@ -13,3 +13,4 @@ data/msg/raw/
 # Local safety copies made before edits
 _backup_before_changes/
 **/_backup_before_changes/
+data/nyc3d/raw/

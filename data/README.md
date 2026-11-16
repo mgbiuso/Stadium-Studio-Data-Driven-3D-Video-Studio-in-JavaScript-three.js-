@@ -58,3 +58,12 @@ under MSG. Press Ctrl + C to stop. The shared link always uses the timetable.
 ## Credits
 
 Put the credit line from `data/<venue>/credits.md` in every video caption that shows a model.
+
+
+## Extras pack (added 2026-11-16)
+
+Set in `data/venues.json` per venue:
+
+- `history.days`: dates to look up in NOAA's daily weather (Central Park station by default, back to 1869).
+- `nyc3d`: `{"zip": "nyc3d/raw/DA_WISE_GML.zip", "members": ["DA12"]}` reads the NYC 3D Building Model for the venue's area. Download the zip once from https://s-media.nyc.gov/agencies/oti/DA_WISE_GML.zip (916 MB). Do not unzip it: it is 13.8 GB unzipped, and the recipe streams the one area it needs. Pick the member from `DeliveryArea.shp` inside the zip (DA12 covers west Midtown).
+- NYC venues also get MTA subway entrances and the Landmarks Preservation Commission totals automatically.

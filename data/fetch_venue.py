@@ -346,6 +346,204 @@ def city_extra(extra, G):
     return out
 
 
+
+# ---------------------------------------------------------------- extras pack: what's under and around, and the history
+def fetch_entrances():
+    """Every subway stair, elevator and passage to the street (MTA, New York State open data)."""
+    where = f"within_box(entrance_georeference,{N},{W},{S},{E})"
+    q = urllib.parse.urlencode({"$where": where, "$limit": 2000})
+    return get("https://data.ny.gov/resource/i9wp-a4ja.json?" + q)
+
+
+def fetch_day_weather(day, station):
+    """One day's weather from NOAA's daily records (Central Park goes back to 1869)."""
+    q = urllib.parse.urlencode({"dataset": "daily-summaries", "stations": station, "startDate": day, "endDate": day,
+                                "dataTypes": "TMAX,TMIN,PRCP,SNOW", "units": "standard", "format": "json"})
+    return get("https://www.ncei.noaa.gov/access/services/data/v1?" + q)
+
+
+def fetch_landmarks():
+    """NYC Landmarks Preservation Commission totals: individual landmarks and historic districts."""
+    sites = json.loads(get("https://data.cityofnewyork.us/resource/buis-pvji.json?" + urllib.parse.urlencode(
+        {"$select": "lpc_lpnumb,desdate,lpc_sitest", "$limit": 10000})))
+    first = {}
+    for r in sites:
+        if r.get("lpc_sitest") == "Designated" and r.get("desdate"):
+            m, d, y = r["desdate"][:10].split("/") if "/" in r["desdate"] else (r["desdate"][5:7], r["desdate"][8:10], r["desdate"][:4])
+            iso = f"{y[:4]}-{int(m):02d}-{int(d):02d}"
+            first[r["lpc_lpnumb"]] = min(first.get(r["lpc_lpnumb"], iso), iso)
+    days = sorted(first.values())
+    districts = json.loads(get("https://data.cityofnewyork.us/resource/skyk-mpzq.json?$select=count(*)"))[0]["count"]
+    return json.dumps({"individual_landmarks": len(first), "first_designation": days[0], "latest_designation": days[-1],
+                       "historic_district_records": int(districts), "checked": date.today().isoformat(),
+                       "sources": ["data.cityofnewyork.us buis-pvji (Individual Landmark Sites)", "data.cityofnewyork.us skyk-mpzq (Historic Districts)"]}).encode()
+
+
+
+# ---------------------------------------------------------------- NYC 3D Building Model (2014, CityGML), read straight from the zip
+def sp_to_ll(X, Y):
+    """New York State Plane, Long Island zone (EPSG:2263, US survey feet) -> latitude, longitude.
+    Checked against NYC PLUTO lot coordinates: 0.0 m difference."""
+    ftUS = 1200 / 3937; a = 6378137.0; f = 1 / 298.257222101; e = math.sqrt(2 * f - f * f); r = math.radians
+    p1, p2, p0, l0 = r(41 + 2 / 60), r(40 + 40 / 60), r(40 + 10 / 60), r(-74)
+    x = X * ftUS - 300000.0; y = Y * ftUS
+    m = lambda p: math.cos(p) / math.sqrt(1 - e * e * math.sin(p) ** 2)
+    t = lambda p: math.tan(math.pi / 4 - p / 2) / ((1 - e * math.sin(p)) / (1 + e * math.sin(p))) ** (e / 2)
+    n = (math.log(m(p1)) - math.log(m(p2))) / (math.log(t(p1)) - math.log(t(p2))); F = m(p1) / (n * t(p1) ** n); r0 = a * F * t(p0) ** n
+    rr = math.copysign(math.hypot(x, r0 - y), n); tt = (rr / (a * F)) ** (1 / n); th = math.atan2(x, r0 - y)
+    lat = math.pi / 2 - 2 * math.atan(tt)
+    for _ in range(8):
+        lat = math.pi / 2 - 2 * math.atan(tt * ((1 - e * math.sin(lat)) / (1 + e * math.sin(lat))) ** (e / 2))
+    return math.degrees(lat), math.degrees(th / n + l0)
+
+
+def read_nyc3d(cfg):
+    """Buildings from the city's 2014 3D model inside the download area: BIN, then roof and wall polygons
+    as [x_ft, y_ft, z_ft] state plane points. The 13.8 GB of files are streamed from the zip, never unzipped."""
+    import zipfile, xml.etree.ElementTree as ET
+    zpath = os.path.join(HERE, cfg["zip"])
+    lo = [min(c) for c in zip(*[sp_xy(S, W), sp_xy(N, E), sp_xy(S, E), sp_xy(N, W)])]
+    hi = [max(c) for c in zip(*[sp_xy(S, W), sp_xy(N, E), sp_xy(S, E), sp_xy(N, W)])]
+    G_ = "{http://www.opengis.net/gml}"; B_ = "{http://www.opengis.net/citygml/building/1.0}"; GEN = "{http://www.opengis.net/citygml/generics/1.0}"
+    out = []
+    with zipfile.ZipFile(zpath) as z:
+        for member in cfg["members"]:
+            name = next(n for n in z.namelist() if n.endswith(f"/{member}_3D_Buildings_Merged.gml"))
+            print(f"    reading {name} ({z.getinfo(name).file_size // 1_000_000} MB) ...")
+            with z.open(name) as f:
+                for ev, el in ET.iterparse(f, events=("end",)):
+                    if el.tag != B_ + "Building":
+                        continue
+                    first = el.find(f".//{G_}posList")
+                    if first is not None:
+                        v = first.text.split()
+                        x, y = float(v[0]), float(v[1])
+                        if lo[0] - 300 < x < hi[0] + 300 and lo[1] - 300 < y < hi[1] + 300:
+                            bin_ = None
+                            for a in el.findall(f"{GEN}stringAttribute"):
+                                if a.get("name") == "BIN":
+                                    bin_ = a.findtext(f"{GEN}value")
+                            surf = []
+                            for kind, tag in (("R", "RoofSurface"), ("W", "WallSurface"), ("G", "GroundSurface")):
+                                for s_ in el.iter(B_ + tag):
+                                    for pl in s_.iter(G_ + "posList"):
+                                        n_ = list(map(float, pl.text.split()))
+                                        surf.append([kind, [n_[i:i + 3] for i in range(0, len(n_), 3)]])
+                            out.append({"bin": bin_, "s": surf})
+                    el.clear()
+    return json.dumps(out).encode()
+
+
+def sp_xy(lat, lon):
+    """latitude, longitude -> New York State Plane feet (the inverse of sp_to_ll)."""
+    ftUS = 1200 / 3937; a = 6378137.0; f = 1 / 298.257222101; e = math.sqrt(2 * f - f * f); r = math.radians
+    p1, p2, p0, l0 = r(41 + 2 / 60), r(40 + 40 / 60), r(40 + 10 / 60), r(-74)
+    m = lambda p: math.cos(p) / math.sqrt(1 - e * e * math.sin(p) ** 2)
+    t = lambda p: math.tan(math.pi / 4 - p / 2) / ((1 - e * math.sin(p)) / (1 + e * math.sin(p))) ** (e / 2)
+    n = (math.log(m(p1)) - math.log(m(p2))) / (math.log(t(p1)) - math.log(t(p2))); F = m(p1) / (n * t(p1) ** n); r0 = a * F * t(p0) ** n
+    rr = a * F * t(r(lat)) ** n; th = n * (r(lon) - l0)
+    return (rr * math.sin(th) + 300000) / ftUS, (r0 - rr * math.cos(th)) / ftUS
+
+
+def city3d(blds, G):
+    """3D model buildings in scene meters: each wall and roof polygon as flat [x, y, z, ...], y measured up from the
+    building's own ground (the model's street is flat at 0). Only buildings inside the model box are kept."""
+    if not blds:
+        return None
+    inside = lambda p: BOX[0] - 5 < p[0] < BOX[1] + 5 and BOX[2] - 5 < p[1] < BOX[3] + 5
+    cache, out = {}, {}
+    def P(x, y):
+        k = (round(x, 1), round(y, 1))
+        if k not in cache:
+            cache[k] = G(*sp_to_ll(x, y))
+        return cache[k]
+    for b in blds:
+        if not b.get("bin"):
+            continue
+        zs = [p[2] for kind, ring in b["s"] for p in ring]
+        g = [p for kind, ring in b["s"] if kind == "G" for p in ring]
+        base = min(p[2] for p in g) if g else min(zs)
+        cx = sum(p[0] for p in (g or [q for _, r in b["s"] for q in r])) / max(1, len(g or [q for _, r in b["s"] for q in r]))
+        cy = sum(p[1] for p in (g or [q for _, r in b["s"] for q in r])) / max(1, len(g or [q for _, r in b["s"] for q in r]))
+        if not inside(P(cx, cy)):
+            continue
+        polys = []
+        for kind, ring in b["s"]:
+            if kind == "G" or len(ring) < 4:
+                continue
+            flat = []
+            for x, y, z in ring[:-1]:
+                sx, sz = P(x, y); flat += [sx, rnd((z - base) * FT), sz]
+            polys.append([kind] + flat)
+        if polys:
+            out[b["bin"]] = {"h": rnd((max(zs) - base) * FT), "p": polys}
+    return out
+
+
+
+# ---------------------------------------------------------------- geology pack: bedrock from USGS boreholes, basements from the city
+def utm18_ll(E_, N_):
+    """UTM zone 18N meters (NAD83) -> latitude, longitude."""
+    a = 6378137.0; f = 1 / 298.257222101; e2 = 2 * f - f * f; k0 = .9996; ep2 = e2 / (1 - e2)
+    x = E_ - 500000; m = N_ / k0; mu = m / (a * (1 - e2 / 4 - 3 * e2 * e2 / 64 - 5 * e2 ** 3 / 256)); e1 = (1 - math.sqrt(1 - e2)) / (1 + math.sqrt(1 - e2))
+    p = mu + (3 * e1 / 2 - 27 * e1 ** 3 / 32) * math.sin(2 * mu) + (21 * e1 * e1 / 16 - 55 * e1 ** 4 / 32) * math.sin(4 * mu) + (151 * e1 ** 3 / 96) * math.sin(6 * mu)
+    C = ep2 * math.cos(p) ** 2; T = math.tan(p) ** 2; Nn = a / math.sqrt(1 - e2 * math.sin(p) ** 2); R = a * (1 - e2) / (1 - e2 * math.sin(p) ** 2) ** 1.5; D_ = x / (Nn * k0)
+    lat = p - (Nn * math.tan(p) / R) * (D_ * D_ / 2 - (5 + 3 * T + 10 * C - 4 * C * C - 9 * ep2) * D_ ** 4 / 24 + (61 + 90 * T + 298 * C + 45 * T * T - 252 * ep2 - 3 * C * C) * D_ ** 6 / 720)
+    lon = (D_ - (1 + 2 * T + C) * D_ ** 3 / 6 + (5 - 2 * C + 28 * T - 3 * C * C + 8 * ep2 + 24 * T * T) * D_ ** 5 / 120) / math.cos(p)
+    return math.degrees(lat), math.degrees(lon) - 75
+
+
+def read_bedrock_points(zpath):
+    """USGS bedrock points (DeMott and others, 2023, doi:10.5066/P911CSI3): latitude, longitude, rock-surface elevation (ft NAVD88), depth (ft), source."""
+    import zipfile, struct
+    z = zipfile.ZipFile(zpath); shp = z.read("bedrock_pts.shp"); dbf = z.read("bedrock_pts.dbf")
+    nrec = struct.unpack("<I", dbf[4:8])[0]; hl = struct.unpack("<H", dbf[8:10])[0]; rl = struct.unpack("<H", dbf[10:12])[0]
+    fields, i = [], 32
+    while dbf[i] != 0x0D:
+        fields.append((dbf[i:i + 11].split(b"\0")[0].decode(), dbf[i + 16])); i += 32
+    rows = []
+    for k in range(nrec):
+        r = dbf[hl + k * rl:hl + (k + 1) * rl]; pos = 1; row = {}
+        for nm, ln in fields:
+            row[nm] = r[pos:pos + ln].decode(errors="ignore").strip(); pos += ln
+        rows.append(row)
+    out, off, k = [], 100, 0
+    while off < len(shp):
+        num, cl = struct.unpack(">II", shp[off:off + 8]); st = struct.unpack("<i", shp[off + 8:off + 12])[0]
+        if st == 1 and rows[k].get("Elev_ft"):
+            la, lo = utm18_ll(*struct.unpack("<2d", shp[off + 12:off + 28]))
+            if S - .004 < la < N + .004 and W - .004 < lo < E + .004:
+                out.append([la, lo, float(rows[k]["Elev_ft"]), float(rows[k]["Depth_ft"] or 0), rows[k]["Source"], rows[k]["Data_type"]])
+        off += 8 + cl * 2; k += 1
+    return json.dumps(out).encode()
+
+
+def fetch_basements():
+    """Which buildings have space below grade (NYC Building Elevation and Subgrade, 2022). Yes or no only, no depth."""
+    where = f"latitude between {S} and {N} and longitude between {W} and {E}"
+    q = urllib.parse.urlencode({"$where": where, "$limit": 5000, "$select": "bin,subgrade,z_grade,z_floor"})
+    return get("https://data.cityofnewyork.us/resource/bsin-59hv.json?" + q)
+
+
+def ground_pack(pts, G, street_ft):
+    """Bedrock surface as a grid (inverse-distance weighting of the boreholes), in scene meters below the street."""
+    if not pts:
+        return None
+    P = [(G(la, lo), el, dp, src) for la, lo, el, dp, src, _ in pts]
+    cell = 10.0; x0, x1, z0, z1 = BOX; nx = int((x1 - x0) / cell) + 1; nz = int((z1 - z0) / cell) + 1
+    grid = []
+    for j in range(nz):
+        for i in range(nx):
+            x = x0 + i * cell; z = z0 + j * cell; ws = vs = 0.0
+            for (px, pz), el, dp, src in P:
+                d2 = (px - x) ** 2 + (pz - z) ** 2 + 25.0; w = 1 / d2
+                ws += w; vs += w * el
+            grid.append(rnd((vs / ws - street_ft) * FT))
+    return {"cell": cell, "x0": x0, "z0": z0, "nx": nx, "nz": nz, "rock": grid, "street_ft": street_ft,
+            "points": [[p[0], p[1], rnd((el - street_ft) * FT), rnd(dp * FT), src] for p, el, dp, src in P if BOX[0] < p[0] < BOX[1] and BOX[2] < p[1] < BOX[3]],
+            "source": "USGS: DeMott, Stumm, Como and Finkelstein, 2023, Geospatial data for bedrock elevation and overburden thickness maps of the Five Boroughs, New York City, New York, doi:10.5066/P911CSI3"}
+
+
 # ================================================================ main
 def main():
     os.makedirs(RAW, exist_ok=True)
@@ -369,6 +567,25 @@ def main():
         print(f"    {len(extra['census_trees'])} census trees, {len(extra['lots'])} tax lots, {len(extra['sidewalks'])} sidewalk shapes")
     else:
         print("    none for this city yet (see data/README.md)")
+    hist = CFG.get("history") or {}
+    if NYC:
+        extra["entrances"] = json.loads(cached("mta-entrances.json", fetch_entrances))
+        extra["landmarks"] = json.loads(cached("lpc-landmarks.json", fetch_landmarks))
+        print(f"    {len(extra['entrances'])} subway entrances, {extra['landmarks']['individual_landmarks']} city landmarks")
+    if CFG.get("nyc3d") and os.path.exists(os.path.join(HERE, CFG["nyc3d"]["zip"])):
+        extra["nyc3d"] = json.loads(cached("nyc3d.json", lambda: read_nyc3d(CFG["nyc3d"])))
+        print(f"    {len(extra['nyc3d'])} buildings from the NYC 3D Building Model (2014)")
+    if CFG.get("bedrock") and os.path.exists(os.path.join(HERE, CFG["bedrock"]["zip"])):
+        extra["bedrock"] = json.loads(cached("bedrock-points.json", lambda: read_bedrock_points(os.path.join(HERE, CFG["bedrock"]["zip"]))))
+        print(f"    {len(extra['bedrock'])} USGS bedrock points near the venue")
+    if NYC:
+        extra["basements"] = json.loads(cached("nyc-basements.json", fetch_basements))
+    extra["days"] = []
+    for d in hist.get("days", []):
+        w = json.loads(cached(f"weather-{d['date']}.json", lambda d=d: fetch_day_weather(d["date"], hist.get("weather_station", "USW00094728"))))
+        extra["days"].append(dict(d, weather=(w[0] if w else None), weather_source=f"NOAA daily summaries, station {hist.get('weather_station', 'USW00094728')}"))
+    if extra["days"]:
+        print(f"    weather for {len(extra['days'])} history dates")
     print("4/6 Transit")
     feeds = [(f, cached(f"gtfs-{f['name']}.zip", lambda f=f: fetch_gtfs(f["url"]))) for f in TRANSIT]
     print("5/6 Sport")
@@ -588,6 +805,14 @@ def main():
         "shots": {"season": SPORT.get("season"), "team": SPORT.get("team"), "games": len(pbps), "team_shots": rangers, "opp": opp, "goals": goals} if pbps else None,
         "city": city_extra(extra, G),
         "facts": facts,
+        "under": {"entrances": [{"p": G(float(e["entrance_latitude"]), float(e["entrance_longitude"])), "routes": e.get("daytime_routes", ""),
+                                 "station": e.get("stop_name", ""), "type": e.get("entrance_type", ""), "line": e.get("line", "")}
+                                for e in extra.get("entrances", []) if e.get("entrance_latitude")],
+                  "ground_ft": (sorted(float(b["ground_elevation"]) for b in fp if b.get("ground_elevation"))[len(fp) // 2] if NYC and fp else None)},
+        "history": {"days": extra.get("days", []), "landmarks": extra.get("landmarks")},
+        "city3d": city3d(extra.get("nyc3d"), G),
+        "ground": ground_pack(extra.get("bedrock"), G, (sorted(float(b["ground_elevation"]) for b in fp if b.get("ground_elevation"))[len(fp) // 2] if NYC and fp else 0)),
+        "basements": sorted({str(int(float(b["bin"]))) for b in extra.get("basements", []) if b.get("subgrade") == "Y" and b.get("bin")}),
     }
     with open(OUT, "w") as f:
         f.write("/* Made by data/fetch_msg.py. Do not edit by hand: run the script again instead. */\n")

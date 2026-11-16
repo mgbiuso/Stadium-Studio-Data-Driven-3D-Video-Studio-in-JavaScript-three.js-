@@ -27,7 +27,7 @@ SS.builders.push(function buildPenn1910(){
   const g=D&&D.grid?D.grid:{x_lo:-89.74,x_hi:183.75,z_lo:-78.91,z_hi:78.01};   // street centerlines (x = grid east, z = grid south)
   const CX=(g.x_lo+g.x_hi)/2, CZ=(g.z_lo+g.z_hi)/2;
   const X0=CX-788*FT/2, X1=CX+788*FT/2, Z0=CZ-432*FT/2, Z1=CZ+432*FT/2;       // the building's frontages
-  const H=69*FT, TOP=153*FT, FLOOR=-5;   // average height, highest point, waiting room and concourse floor (below the street)
+  const H=69*FT, TOP=153*FT, FLOOR=(V.depth&&V.depth.upper)||-4;   // average height, highest point, waiting room and concourse floor (below the street, approximate)
   const COL_H=35*FT, COL_R=4.5*FT/2, STYLO=1;   // Doric columns on a 1 m base
   const ENT=STYLO+COL_H;                         // top of the columns: the entablature starts here
   // east to west: 7th Avenue front, arcade, main waiting room, concourse, 8th Avenue block
@@ -149,54 +149,96 @@ SS.builders.push(function buildPenn1910(){
     }
   });
   blocks(V,rows.brick,N,V.mats.brick); blocks(V,rows.stone,N,V.mats.stone); if(tanks.length) SS.waterTanks(tanks,N);
-  // the open track cut west of 8th Avenue and the dug-out lot east of 7th
+  // ---- 1910 only: the open track cut west of 8th Avenue and the dug-out lot east of 7th
   const box2=(kbx,x0,x1,y0,y1,z0,z1,top,side)=>boxF(kbx,x0,x1,y0,y1,z0,z1,top,side);
-  const gk=new KB(), bx=D&&D.box?D.box:[-170,265,-160,160];
+  const gk=new KB(), bx=D&&D.box?D.box:[-170,265,-160,160], X10=new THREE.Group(); (V.city||V.G.base).add(X10);
   {const x0=bx[0], x1=g.x_lo-15.2, z0=g.z_lo+9.1, z1=g.z_hi-9.1;
-    if(x1>x0+5){box2(gk,x0,x1,-7,-6.5,z0,z1,k.dirt,k.dirt); box2(gk,x0,x1,-6.5,0,z0-1.2,z0,k.granite,k.granite); box2(gk,x0,x1,-6.5,0,z1,z1+1.2,k.granite,k.granite); box2(gk,x1,x1+1.2,-6.5,0,z0,z1,k.granite,k.granite);
-      for(let z=z0+4;z<z1-2;z+=5) box2(gk,x0,x1,-6.5,-6.3,z-.8,z+.8,k.track,k.track);}}
+    const fl=((V.depth&&V.depth.slab)||-13.45)-.6, rl=(V.depth&&V.depth.rail)||-12.9;   // the cut goes down to track level, like the station
+    if(x1>x0+5){box2(gk,x0,x1,fl-.5,fl,z0,z1,k.dirt,k.dirt); box2(gk,x0,x1,fl,0,z0-1.2,z0,k.granite,k.granite); box2(gk,x0,x1,fl,0,z1,z1+1.2,k.granite,k.granite); box2(gk,x1,x1+1.2,fl,0,z0,z1,k.granite,k.granite);
+      for(let z=z0+4;z<z1-2;z+=5) box2(gk,x0,x1,fl,rl,z-.8,z+.8,k.track,k.track);}}
   {const x0=g.x_hi+15.2, x1=Math.min(bx[1],g.x_hi+15.2+60), z0=g.z_lo+9.1, z1=CZ-9.1;
     if(x1>x0+5){box2(gk,x0,x1,-4,-3.5,z0,z1,k.dirt,k.dirt); box2(gk,x0,x1,-3.5,0,z0,z0+.4,k.dirt,k.dirt); box2(gk,x0,x0+.4,-3.5,0,z0,z1,k.dirt,k.dirt);}}
-  gk.mesh(V,N);
+  gk.mesh(V,X10);
 
-  // ---- ground for 1910: the same streets, with the station's footprint left open so its sunken halls show in a cutaway
+  // ---- the dig, before 1910: the block cleared and cut down to track level, from 7th Avenue west past 8th Avenue.
+  // "The level of the track system below the street surface varies from 39 to 58 ft." Retaining walls ran along 31st and 33rd
+  // Streets and 7th Avenue (ASCE Transactions vol. 68, 1910); some 500 buildings were demolished (Wikipedia). 8th Avenue was
+  // carried across the cut on steel (shown simply; the paper describes this for 9th Avenue in detail).
+  const DG=new THREE.Group(); V.G.base.add(DG);
+  const kd=new KB(), pitF=((V.depth&&V.depth.rail)||-12.9)-.6, px0=bx[0], px1=X1;
+  box2(kd,px0,px1,pitF-.6,pitF,Z0,Z1,k.dirt,k.dirt);                                         // rock floor at sub-grade
+  box2(kd,px0,px1,pitF,0,Z0-1.4,Z0,k.slab,k.slab); box2(kd,px0,px1,pitF,0,Z1,Z1+1.4,k.slab,k.slab);   // retaining walls on 33rd and 31st
+  box2(kd,px1,px1+1.4,pitF,0,Z0-1.4,Z1+1.4,k.slab,k.slab);                                  // and along 7th Avenue
+  {const ax0=g.x_lo-15.2, ax1=g.x_lo+15.2;                                                  // 8th Avenue on steel across the cut
+    box2(kd,ax0,ax1,-.8,0,Z0-1.4,Z1+1.4,k.walk,k.steel);
+    for(let z=Z0+6;z<Z1-3;z+=10) [ax0+3,(ax0+ax1)/2,ax1-3].forEach(x=>box2(kd,x-.35,x+.35,pitF,-.8,z-.35,z+.35,k.steel,k.steel));}
+  for(let x=px0+20;x<px1-20;x+=38) for(let z=Z0+20;z<Z1-10;z+=34) box2(kd,x-4,x+4,pitF,pitF+3.5,z-3,z+3,k.dirt,k.dirt);   // spoil heaps waiting to be hauled
+  kd.mesh(V,DG);
+
+  // ---- grounds: today's streets; 1910 with the station's footprint open; the dig with the whole cut open
   const ground=V.city&&V.city.children.find(c=>c.isMesh&&c.material===V.mats.streets);
-  let ground1910=null;
-  if(ground){const [x0,x1,z0,z1]=bx, W=x1-x0, Hh=z1-z0, sh=new THREE.Shape([[x0,z0],[x1,z0],[x1,z1],[x0,z1]].map(p=>new THREE.Vector2(p[0],p[1])));
-    sh.holes.push(new THREE.Path([[X0,Z0],[X0,Z1],[X1,Z1],[X1,Z0]].map(p=>new THREE.Vector2(p[0],p[1]))));
-    const geo=new THREE.ShapeGeometry(sh), pos=geo.attributes.position, uv=geo.attributes.uv;
-    for(let i=0;i<pos.count;i++){const x=pos.getX(i), z=pos.getY(i); pos.setXYZ(i,x,.03,z); uv.setXY(i,(x-x0)/W,(z1-z)/Hh);}
-    geo.computeVertexNormals(); if(geo.index){const a=geo.index.array; for(let i=0;i<a.length;i+=3){const t=a[i+1]; a[i+1]=a[i+2]; a[i+2]=t;}}   // face up
-    geo.computeVertexNormals(); ground1910=new THREE.Mesh(geo,V.mats.streets); ground1910.receiveShadow=true; ground.parent.add(ground1910); ground1910.visible=false;}
+  // the street ground with a rectangular opening, built from up to four rectangles around it (works even when the opening reaches the edge)
+  // the street ground with rectangular openings: cut into bands along z, and in each band keep the stretches no opening covers
+  const holed=(...holes)=>{if(!ground) return null; const [x0,x1,z0,z1]=bx, W=x1-x0, Hh=z1-z0, pos=[], uv=[];
+    holes=holes.map(([a,b,c,d])=>[Math.max(x0,a),Math.min(x1,b),Math.max(z0,c),Math.min(z1,d)]);
+    const rect=(a0,a1,c0,c1)=>{if(a1-a0<.01||c1-c0<.01) return; [[a0,c0],[a0,c1],[a1,c1],[a0,c0],[a1,c1],[a1,c0]].forEach(([x,z])=>{pos.push(x,.03,z); uv.push((x-x0)/W,(z1-z)/Hh);});};
+    const zs=[...new Set([z0,z1,...holes.flatMap(h=>[h[2],h[3]])])].sort((a,b)=>a-b);
+    for(let k=0;k<zs.length-1;k++){const c0=zs[k],c1=zs[k+1],mid=(c0+c1)/2, cov=holes.filter(h=>h[2]<=mid&&h[3]>=mid).map(h=>[h[0],h[1]]).sort((a,b)=>a[0]-b[0]);
+      let x=x0; cov.forEach(([a,b])=>{if(a>x) rect(x,a,c0,c1); x=Math.max(x,b);}); rect(x,x1,c0,c1);}
+    const geo=new THREE.BufferGeometry(); geo.setAttribute('position',new THREE.Float32BufferAttribute(pos,3)); geo.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2)); geo.computeVertexNormals();
+    const m=new THREE.Mesh(geo,V.mats.streets); m.receiveShadow=true; ground.parent.add(m); m.visible=false; return m;};
+  const ground1910=holed([X0,X1,Z0,Z1],[bx[0]-1,g.x_lo-15.2+1.2,g.z_lo+9.1-1.2,g.z_hi-9.1+1.2]), groundDig=holed([bx[0]-1,X1+1.4,Z0-1.4,Z1+1.4]);   // 1910: the station and the open track cut west of 8th Avenue
+
+  // ---- opening-day sun: where the sun stood over Manhattan on November 27, 1910, at 2 pm (time chosen; the date is real)
+  function sunScene(ms,lat,lon){
+    const r=Math.PI/180, d=(ms-946728000000)/86400000, g=(357.529+.98560028*d)*r, q=280.459+.98564736*d;
+    const L=(q+1.915*Math.sin(g)+.02*Math.sin(2*g))*r, e=(23.439-.00000036*d)*r, ra=Math.atan2(Math.cos(e)*Math.sin(L),Math.cos(L)), dec=Math.asin(Math.sin(e)*Math.sin(L));
+    const H=(((18.697374558+24.06570982441908*d)%24)*15+lon)*r-ra, f=lat*r;
+    const alt=Math.asin(Math.sin(f)*Math.sin(dec)+Math.cos(f)*Math.cos(dec)*Math.cos(H)), az=Math.atan2(-Math.sin(H),Math.tan(dec)*Math.cos(f)-Math.sin(f)*Math.cos(H));
+    const E=Math.cos(alt)*Math.sin(az), Nn=Math.cos(alt)*Math.cos(az), U=Math.sin(alt), gd=((D&&D.meta.grid_deg)||-29)*r, ex=[Math.cos(gd),Math.sin(gd)], nx=[-ex[1],ex[0]];
+    return {alt:alt/r, dir:[E*ex[0]+Nn*ex[1],U,-(E*nx[0]+Nn*nx[1])]};
+  }
+  const area=D&&D.meta.area?D.meta.area:[40.7476,-73.9975,40.7534,-73.9893], sun1910=sunScene(Date.UTC(1910,10,27,19,0),(area[0]+area[2])/2,(area[1]+area[3])/2);
+  const day=k=>((D&&D.history&&D.history.days)||[]).find(d=>d.date===k), w10=day('1910-11-27');
 
   // ---------------------------------------------------------------- switching eras
-  const keep=new Set([V.city,V.trees,V.road,V.lot,V.plinth,P]);
-  const scaled=[V.G.lower,V.G.facade,V.G.middle,V.G.upper,V.G.crown,V.G.roof,V.shell,V.annex,V.hang,V.sight,V.cityNew,
+  // Each piece belongs to some eras. Pieces fade by rising out of (or sinking into) the ground, so a switch is one continuous shot.
+  const keep=new Set([V.city,V.trees,V.road,V.lot,V.plinth,P,DG]);
+  const todayScaled=[V.G.lower,V.G.facade,V.G.middle,V.G.upper,V.G.crown,V.G.roof,V.shell,V.annex,V.hang,V.sight,V.cityNew,V.underNew,
     ...V.G.base.children.filter(c=>!keep.has(c))].filter(Boolean);
   const modern=(V.city?V.city.children:[]).filter(c=>c.isInstancedMesh&&(c.material===mats.globe||c.material===mats.dark));   // subway entrances (1917 and later) and traffic signals
-  const swapToday=[ground,V.trees,...modern].filter(Boolean), swapThen=[ground1910].filter(Boolean);
-  const grow=[P,N];
-  let t=0, target=0;
+  const GROUPS={today:{scaled:todayScaled,swap:[ground,V.trees,...modern].filter(Boolean)},penn:{grow:[P]},extra:{grow:[X10]},hood:{grow:[N]},dig:{grow:[DG]}};
+  const MEMBERS={today:['today'],'1910':['penn','extra','hood'],'1906':['dig','hood']};
+  const w={today:1,penn:0,extra:0,hood:0,dig:0}, goal=Object.assign({},w);
   const ease=x=>x*x*(3-2*x);
   function show(){
-    const e=ease(t);
-    scaled.forEach(o=>{o.scale.y=Math.max(1e-4,1-e); if(e>.999) o.visible=false; else if(e<.001&&o.userData.eraHid){o.visible=true;} o.userData.eraHid=e>.999;});
-    grow.forEach(o=>{o.scale.y=Math.max(1e-4,e); o.visible=e>.001;});
-    swapToday.forEach(o=>{if(e>=.5) o.visible=false;}); swapThen.forEach(o=>o.visible=e>=.5);
-    if(V.soilHalf&&e>.5) V.soilHalf.visible=false;
+    const T=GROUPS.today, et=ease(w.today);
+    T.scaled.forEach(o=>{o.scale.y=Math.max(1e-4,et); if(et<.001) o.visible=false; else if(et>.999&&o.userData.eraHid) o.visible=true; o.userData.eraHid=et<.001;});
+    T.swap.forEach(o=>{if(w.today<.5) o.visible=false; else if(o.userData.eraOff){o.visible=true;} o.userData.eraOff=w.today<.5;});
+    ['penn','extra','hood','dig'].forEach(k=>GROUPS[k].grow.forEach(o=>{const e=ease(w[k]); o.scale.y=Math.max(1e-4,e); o.visible=e>.001;}));
+    if(ground1910) ground1910.visible=w.penn>=.5; if(groundDig) groundDig.visible=w.dig>=.5&&w.penn<.5;
+    if(V.G.under) V.G.under.visible=w.dig<.5;                      // no platforms or trains yet during the dig
+    if(V.soilHalf&&w.today<.5) V.soilHalf.visible=false;
+    if(V.plinth&&w.today<.5) V.plinth.visible=false;   // the base slab would cover the sunken halls and the dig
   }
   const today={section:V.section,labels:V.labels.section};
-  const then={section:{axis:'z',c:CZ},labels:[
+  const SEC={'1910':{section:{axis:'z',c:CZ},labels:[
     {p:[wrMid,crown-6,CZ],t:'Main waiting room · 150 ft'},{p:[(coX0+coX1)/2,coY+3,CZ],t:'Concourse · glass and steel'},
-    {p:[(arcX0+xWall)/2,10,CZ],t:'Arcade from 7th Avenue'},{p:[(X0+coX0)/2,8,CZ],t:'8th Avenue building'},{p:[40,-22,CZ],t:'21 tracks below'}]};
+    {p:[(arcX0+xWall)/2,10,CZ],t:'Arcade from 7th Avenue'},{p:[(X0+coX0)/2,8,CZ],t:'8th Avenue building'},{p:[40,((V.depth&&V.depth.plat)||-12)+.3,CZ],t:'21 tracks · 42 ft below the street'}]},
+    '1906':{section:{axis:'z',c:CZ},labels:[{p:[40,pitF+.5,CZ],t:'Cut down to track level · 39 to 58 ft'},{p:[g.x_lo,0,CZ],t:'8th Avenue carried on steel'},{p:[X1-2,pitF/2,CZ],t:'Retaining wall · 7th Avenue'}]}};
   V.era='today'; const camSec=V.camOv.section;
   V.eras={
-    list:[['today','Today'],['1910','1910']],
-    info:{'1910':{name:'Pennsylvania Station',eyebrow:'3D study · 1910 · the site of today\'s Madison Square Garden',
-      spec:['Opened 1910','788 × 432 ft','Torn down 1963–66'],skip:['bowl','exploded','blueprint']}},
-    apply(key,instant){target=key==='1910'?1:0; if(instant) t=target; const E=target?then:today; V.section=E.section; V.labels.section=E.labels;
-      if(target) V.camOv.section={tgt:[CX,2,CZ],size:120}; else if(camSec) V.camOv.section=camSec; else delete V.camOv.section; show();},
-    tick(dt){if(t===target) return; t=Math.max(0,Math.min(1,t+Math.sign(target-t)*dt/2.4)); show();},
+    list:[['1906','The dig'],['1910','1910'],['today','Today']],
+    info:{
+      '1910':{name:'Pennsylvania Station',eyebrow:'3D study · 1910 · the site of today\'s Madison Square Garden',
+        spec:['Opened 1910','788 × 432 ft','Torn down 1963–66'],skip:['bowl','exploded','blueprint'],
+        sun:sun1910.alt>3?sun1910.dir.map(v=>v*260):null, sunNote:`Opening-day sun, Nov 27, 1910, 2 pm${w10&&w10.weather?` · ${w10.weather.TMAX}°F, dry (NOAA)`:''}`},
+      '1906':{name:'Digging Penn Station',eyebrow:'3D study · before 1910 · the cut for the tracks',
+        spec:['About 500 buildings cleared','Tracks 39 to 58 ft down','Opened 1910'],skip:['bowl','exploded','blueprint']}},
+    apply(key,instant){Object.keys(goal).forEach(k=>goal[k]=(MEMBERS[key]||[]).includes(k)?1:0); if(instant) Object.assign(w,goal);
+      const E=SEC[key]||today; V.section=E.section; V.labels.section=E.labels;
+      if(SEC[key]) V.camOv.section={tgt:[CX,2,CZ],size:120}; else if(camSec) V.camOv.section=camSec; else delete V.camOv.section; show();},
+    tick(dt){let moved=false; Object.keys(w).forEach(k=>{if(w[k]!==goal[k]){w[k]=Math.max(0,Math.min(1,w[k]+Math.sign(goal[k]-w[k])*dt/2.4)); moved=true;}}); if(moved) show();},
     refresh:show
   };
   show();
@@ -208,7 +250,11 @@ SS.builders.push(function buildPenn1910(){
       {type:'dim',a:[X0,H+10,Z1+3],b:[X1,H+10,Z1+3],text:'788 FT',textAt:.5},
       {type:'dim',a:[wrX0,0,CZ+wrHalf+2],b:[wrX0,TOP,CZ+wrHalf+2],text:'153 FT',textAt:.55},
       {type:'label',p:[wrMid,TOP,CZ],slot:'top',title:'PENNSYLVANIA STATION',sub:['OPENED NOV 27, 1910 · MCKIM, MEAD & WHITE']},
-      {type:'label',p:[(coX0+coX1)/2,coY+rise,CZ],slot:'low',small:true,title:'TORN DOWN 1963–66',sub:['MADISON SQUARE GARDEN OPENED','ON THIS SITE IN 1968']}]}
+      {type:'label',p:[(coX0+coX1)/2,coY+rise,CZ],slot:'low',small:true,title:'TORN DOWN 1963–66',sub:['MADISON SQUARE GARDEN OPENED','ON THIS SITE IN 1968']}]},
+    {key:'dig',name:'The dig',era:'1906',items:[
+      {type:'outline',pts:[[bx[0],Z0],[X1,Z0],[X1,Z1],[bx[0],Z1]],y:.3},
+      {type:'dim',a:[X1-6,0,Z1-4],b:[X1-6,pitF+.6,Z1-4],text:'39–58 FT',textAt:.5},
+      {type:'label',p:[40,pitF+.5,CZ],slot:'top',title:'DIGGING PENN STATION',sub:['ABOUT 500 BUILDINGS CLEARED','TRACKS 39 TO 58 FT BELOW THE STREET']}]}
   ]);
 });
 })();
