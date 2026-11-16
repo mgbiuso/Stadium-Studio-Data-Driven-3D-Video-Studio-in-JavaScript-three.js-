@@ -27,6 +27,22 @@ function buildMSG(){
   const edge=L.P.map((p,i)=>{const n=L.NR[i],pn=p[0]*n[0]+p[1]*n[1],pp=p[0]*p[0]+p[1]*p[1]; return -pn+Math.sqrt(pn*pn-pp+Ri*Ri);});
   const yC=r=>HT-10.5+6.4*Math.pow(Math.min(r,Ri)/Ri,1.4);   // ceiling: sags toward the center ring, like the real cable roof
   V.yC=yC;
+  // design layer sets (engine/layer.js). Sizes come from the city data above; feet = meters x 3.28084
+  {const FT=m=>Math.round(m*3.28084), cap=D&&D.facts.capacity?D.facts.capacity:19812;
+    const day=opened?opened.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}).toUpperCase():'FEB 11, 1968';
+    const TY=-22;   // the model's track level under the arena
+    V.layers=[
+      {key:'facts',name:'Facts',items:[
+        {type:'outline',circle:[0,0,R],y:HT+.3},
+        {type:'span',c:[0,HT+34,0],r:R,text:`${FT(R*2)} FT ACROSS`},
+        {type:'height',c:[0,0],r:R,y0:0,y1:HT,text:`${FT(HT)} FT`},
+        {type:'label',p:[0,HT,0],slot:'top',title:'MADISON SQUARE GARDEN',sub:[`OPENED ${day} · ${cap.toLocaleString('en-US')} SEATS`]}]},
+      {key:'under',name:'Underneath',items:[
+        ...[-36,-18,0,18,36].map((z,k)=>({type:'path',pts:[[-150,TY,z],[220,TY,z]],flow:true,color:k%2?'gold':'cyan',dir:k%2?-1:1,phase:k*9})),
+        {type:'drop',a:[-75,0,0],b:[-75,TY+3,0]},{type:'drop',a:[62,0,-30],b:[62,TY+3,-15]},{type:'drop',a:[30,0,64],b:[30,TY+3,32]},
+        // MTA hourly subway ridership (data.ny.gov 5wq4-mkjj), both 34 St-Penn Station complexes, Nov 1-14, 2026
+        {type:'label',p:[150,TY,36],slot:'low',small:true,title:'TRAINS UNDER THE ARENA',sub:['34 ST–PENN: 563,795 SUBWAY ENTRIES','NOV 1–14 · MTA DATA']}]}
+    ];}
   const roofMat=std({vertexColors:true,flatShading:true,side:THREE.FrontSide});   // one-sided: roof seen from above, ceiling from below
 
   // ---------------------------------------------------------------- textures

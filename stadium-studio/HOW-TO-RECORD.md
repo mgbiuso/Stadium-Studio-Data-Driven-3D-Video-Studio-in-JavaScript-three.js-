@@ -1,7 +1,7 @@
 # How to record a video from Stadium Studio
 
 Every video comes out as a vertical **1080 × 1920, 30 fps MP4**, ready for TikTok, Reels and Shorts.
-Only the 3D picture is recorded. Panels, labels and the dashed guides never appear in the video.
+Only the 3D picture, plus the design layer if you pick one, is recorded. Panels, the style labels and the dashed guides never appear in the video.
 
 ## Before you start
 
@@ -15,6 +15,7 @@ Only the 3D picture is recorded. Panels, labels and the dashed guides never appe
 1. Click **Record** (top bar, next to Reset view). The recorder panel opens and the picture shrinks to a tall 9:16 frame.
 2. The dashed areas show where TikTok, Reels and Shorts put their buttons and captions. Keep the important part of the shot out of them.
 3. Optional: click **Hide panels** to clear the title and style cards off the picture while you frame the shot.
+4. Optional: pick a **Design layer** (for example **Facts**, **Underneath**, **Field** or **4 train**). Outlines, measurements, labels and glowing train lines appear on the picture and draw themselves on. They are recorded too, and they draw on again at the start of every clip. Pick **Off** for a clean picture.
 
 ## 2a. Planned move (smooth, recommended for final videos)
 
@@ -48,3 +49,4 @@ Live takes can stutter when the scene is heavy (Night game, Daylight aerial with
 - **Recording from the claude.ai link.** Downloads are blocked there. Use the copy on your Mac.
 - **Important stuff under the dashed areas.** The app's buttons will cover it once you post.
 - **Long live takes.** Several short clips are easier to edit in CapCut than one long one.
+- **Captions in the design layer.** The layer has no caption words on purpose. Add captions in CapCut, where they sync to your voice and stay editable.

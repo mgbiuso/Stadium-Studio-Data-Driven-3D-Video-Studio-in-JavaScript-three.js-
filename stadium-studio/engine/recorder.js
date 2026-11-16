@@ -11,8 +11,13 @@ const W=1080,H=1920,FPS=30;
 const ui={open:$('rec-open'),panel:$('rec'),vert:$('rec-vert'),clean:$('rec-clean'),live:$('rec-live'),time:$('rec-time'),
   a:$('rec-a'),b:$('rec-b'),move:$('rec-move'),len:$('rec-len'),prev:$('rec-prev'),render:$('rec-render'),prog:$('rec-prog'),msg:$('rec-msg'),safe:$('safe')};
 const say=t=>{ui.msg.textContent=t;};
-const canLive=!!(window.MediaRecorder&&HTMLCanvasElement.prototype.captureStream);
-const canRender=!!(window.VideoEncoder&&window.VideoFrame&&window.Mp4Muxer);
+// a short pause that browsers don't slow down in background tabs (timers there can drop to once a second or less)
+const yieldNow=()=>new Promise(r=>{const ch=new MessageChannel(); ch.port1.onmessage=()=>r(); ch.port2.postMessage(0);});
+// inside the claude.ai link the page sits in a locked frame that can't save files, so recording only works from the Mac copy
+const framed=(()=>{try{return window.self!==window.top;}catch(e){return true;}})();
+const FRAMED_MSG='This shared link can\'t save files. To record, open stadium-studio/index.html from your Mac in Chrome. You can still frame shots and try the design layers here.';
+const canLive=!framed&&!!(window.MediaRecorder&&HTMLCanvasElement.prototype.captureStream);
+const canRender=!framed&&!!(window.VideoEncoder&&window.VideoFrame&&window.Mp4Muxer);
 ui.open.hidden=false;
 
 /* ---------- the video picture: the style's backdrop, then the 3D canvas on top ---------- */
@@ -48,11 +53,13 @@ function backdrop(key,studio){
   return bgCache[id]=c;
 }
 const FILTER={isoInk:'contrast(1.06) saturate(1.12)',isoCel:'saturate(1.06)'};   // the same CSS filters the page puts on these styles
-function composite(){
+// t = seconds since the recording started, so the design layer draws itself on at the start of every clip
+function composite(t){
   const s=ST.style(), src=ST.canvas;
   if(!s.post) cx.drawImage(backdrop(s.bg,s.studioBg),0,0);   // realistic styles paint their own sky, so the 3D picture is already opaque
   cx.filter=FILTER[s.key]||'none'; cx.imageSmoothingEnabled=!s.S.pixel;   // pixel art is drawn small, then scaled up with hard edges
   cx.drawImage(src,0,0,src.width,src.height,0,0,W,H); cx.filter='none';
+  if(SS.layer&&SS.layer.active()){cx.imageSmoothingEnabled=true; SS.layer.draw(cx,W,H,t||0);}
 }
 
 /* ---------- saving ---------- */
@@ -72,7 +79,7 @@ function setBusy(on){busy=on; [ui.vert,ui.a,ui.b,ui.move,ui.len,ui.prev,ui.rende
 ui.open.addEventListener('click',()=>{
   const open=ui.panel.hidden; ui.panel.hidden=!open; ui.open.setAttribute('aria-pressed',String(open));
   if(open){setVertical(ui.vert.getAttribute('aria-pressed')==='true'); syncStyle(ST.style().S);
-    if(!ui.msg.textContent) say('Frame your shot inside the 9:16 box. The dashed areas are where the apps put their buttons and captions.');}
+    if(framed) say(FRAMED_MSG); else if(!ui.msg.textContent) say('Frame your shot inside the 9:16 box. The dashed areas are where the apps put their buttons and captions.');}
   else {if(mr) stopLive(); app.classList.remove('vertical','clean'); ui.safe.hidden=true; ui.clean.setAttribute('aria-pressed','false'); ST.refit();}   // keeps the Vertical frame choice for next time
 });
 ui.vert.addEventListener('click',()=>setVertical(!app.classList.contains('vertical')));
@@ -90,14 +97,16 @@ function syncStyle(S){
   if(!canLive) ui.live.disabled=true;
   if(!canRender) ui.render.disabled=true;
 }
-ST.onStyle=syncStyle;
+{const prev=ST.onStyle; ST.onStyle=S=>{if(prev) prev(S); syncStyle(S);};}   // keep the design layer's hook too
 
 /* ---------- live take ---------- */
 let chunks=[], t0=0, timer=null;
 ui.live.addEventListener('click',()=>mr?stopLive():startLive());
 function startLive(){
   if(busy||!canLive) return;
-  ensureVertical(); ST.setSize(W,H); app.classList.add('recording'); composite(); ST.onFrame=composite;
+  ensureVertical(); ST.setSize(W,H); app.classList.add('recording');
+  const start=performance.now(); if(SS.layer) SS.layer.restart();
+  const live=()=>composite((performance.now()-start)/1000); live(); ST.onFrame=live;
   const mime=['video/mp4;codecs=avc1.640028','video/mp4;codecs=avc1','video/mp4','video/webm;codecs=vp9','video/webm'].find(m=>MediaRecorder.isTypeSupported(m))||'';
   try{mr=new MediaRecorder(comp.captureStream(FPS),mime?{mimeType:mime,videoBitsPerSecond:12e6}:{videoBitsPerSecond:12e6});}
   catch(e){endLive(); say('This browser could not start recording: '+e.message); return;}
@@ -143,6 +152,7 @@ ui.prev.addEventListener('click',()=>{
   ST.REC.driver=dt=>{t+=dt/p.sec; ST.setView(p.at(Math.min(1,t))); if(t>=1){ST.REC.driver=null; ST.setControls(true); setBusy(false); syncStyle(ST.style().S); say('Preview done. Press Render MP4 to save it.');}};
 });
 ui.render.addEventListener('click',renderMove);
+if(framed){ui.live.title=ui.render.title='Recording works from the copy on your Mac';}
 async function renderMove(){
   if(busy) return; if(!canRender){say('Planned moves need a browser with a video encoder: use Google Chrome.'); return;}
   const p=plan(); if(!p) return;
@@ -156,17 +166,17 @@ async function renderMove(){
   const muxer=new Mp4Muxer.Muxer({target:new Mp4Muxer.ArrayBufferTarget(),video:{codec:'avc',width:W,height:H,frameRate:FPS},fastStart:'in-memory'});
   let encErr=null; const enc=new VideoEncoder({output:(chunk,meta)=>muxer.addVideoChunk(chunk,meta),error:e=>{encErr=e;}}); enc.configure(cfg);
   const N=Math.round(p.sec*FPS), back=ST.view();
-  ST.REC.paused=true; ST.setControls(false); ST.setSize(W,H); ST.REC.clock=Date.now()/1000;
+  ST.REC.paused=true; ST.setControls(false); ST.setSize(W,H); ST.REC.clock=Date.now()/1000; if(SS.layer) SS.layer.restart();
   try{
     for(let i=0;i<N;i++){
       const e=p.loop?i/N:(N>1?i/(N-1):1);   // a 360 orbit stops one frame short of the start, so the video loops without a stutter
       ST.REC.driver=()=>ST.setView(p.at(e));
-      ST.step(1/FPS); ST.REC.clock+=1/FPS; composite();
+      ST.step(1/FPS); ST.REC.clock+=1/FPS; composite(i/FPS);
       const vf=new VideoFrame(comp,{timestamp:Math.round(i*1e6/FPS),duration:Math.round(1e6/FPS)});
       enc.encode(vf,{keyFrame:i%(FPS*2)===0}); vf.close();
       if(encErr) throw encErr;
-      while(enc.encodeQueueSize>6) await new Promise(r=>setTimeout(r,5));
-      if(i%5===0){ui.prog.value=i/N; say(`Rendering frame ${i+1} of ${N}…`); await new Promise(r=>setTimeout(r,0));}
+      while(enc.encodeQueueSize>6) await yieldNow();
+      if(i%5===0){ui.prog.value=i/N; say(`Rendering frame ${i+1} of ${N}…`); await yieldNow();}
     }
     await enc.flush(); if(encErr) throw encErr; muxer.finalize();
     ui.prog.value=1; save(new Blob([muxer.target.buffer],{type:'video/mp4'}),'mp4',p.kind);
@@ -177,5 +187,5 @@ async function renderMove(){
     ui.prog.hidden=true; setBusy(false); syncStyle(ST.style().S);
   }
 }
-if(!canLive&&!canRender) say('This browser can\'t record video. Open Stadium Studio in Google Chrome.');
+if(framed) say(FRAMED_MSG); else if(!canLive&&!canRender) say('This browser can\'t record video. Open Stadium Studio in Google Chrome.');
 })();

@@ -546,6 +546,8 @@ SS.studio={
     layoutCache=null;
   },
   refit(){resize();},
+  // a point in the scene to screen position (-1 to 1 across and up), using the camera of the last drawn frame
+  project(v){return v.project(cam);},
   setControls(on){if(controls) controls.enabled=on&&!STYLES[current].sheet;}
 };
 frame();

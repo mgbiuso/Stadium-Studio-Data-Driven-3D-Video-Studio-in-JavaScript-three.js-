@@ -178,7 +178,7 @@ button:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 
 /* Recorder: a 9:16 frame in the middle of the window, guides for where the apps put their buttons, and the recorder panel. */
 #app.vertical{background:#0b0d10}
-#app.vertical #stage,#app.vertical #scene,#app.vertical #labels,#app.vertical #safe{
+#app.vertical #stage,#app.vertical #scene,#app.vertical #labels,#app.vertical #safe,#app.vertical #layer{
   inset:auto;top:50%;left:50%;transform:translate(-50%,-50%);
   width:min(100%,calc(100dvh * 9 / 16));height:auto;aspect-ratio:9/16}
 #app.recording #scene{outline:3px solid #e0403a;outline-offset:-3px}
@@ -208,3 +208,4 @@ button:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 .rec progress{width:100%;height:6px;accent-color:#c0352f}
 .rec-msg{font-size:13px;line-height:1.4;color:var(--ink);min-height:1.4em}
 .rec select:focus-visible,.rec button:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+#layer{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}

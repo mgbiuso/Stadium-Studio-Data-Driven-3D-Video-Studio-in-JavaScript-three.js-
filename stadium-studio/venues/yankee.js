@@ -132,7 +132,7 @@ function buildYankee(){
    const fr=new THREE.Mesh(fg,mats.frieze); fr.position.set(0,40.6,1.25); sb.add(fr); V.G.base.add(sb);}
   for(let i=infield[0]+6;i<infield[1]-4;i+=16){const m=new THREE.Mesh(new THREE.BoxGeometry(6,3,.7),mats.lights),q=L.pos(i,54,50.4); m.position.set(...q); m.rotation.set(.45,yawIn(i),0,'YXZ'); m.castShadow=true; V.G.crown.add(m); V.edgeTargets.push(m);}
   const outline=range(0,N-1).map(i=>{const q=L.pos(i,plinthOff[i],0); return [q[0],q[2]];});
-  addGrounds(V,outline);
+  addGrounds(V,outline); V.outline=outline;
   const spots=[]; for(let i=0;i<N;i+=6){if(Math.abs(L.PHI[i])<16) continue; const o=fo[i]+7+((i/6)%2)*6; if(o>plinthOff[i]-4) continue; const q=L.pos(i,o,0); spots.push([q[0],q[2],.8+.45*Math.abs(Math.sin(i*12.9898))]);}
   addTrees(V,spots);
   V.road=new THREE.Mesh(genRing(L,closedIdx(L),i=>fo[i]+5,i=>fo[i]+16,.09,24),mats.road); V.road.receiveShadow=true; V.G.base.add(V.road);
@@ -165,6 +165,7 @@ function buildYankee(){
       const old=V.trees; SS.buildCity(V,D,V.city,{box:D.box}); if(old&&old!==V.trees) old.parent.remove(old);
       // the 4 train on its elevated track over River Avenue, running to the real evening schedule
       const el=SS.buildEl(V,D,V.city,{y:10});
+      if(el){V.elLine=[]; for(let s=0;s<=el.L;s+=10){const q=el.at(s); V.elLine.push([q.x,el.y+2.5,q.z]);}}   // for the design layer
       const T=(D.transit||[])[0];
       if(el&&el.station!=null&&T){
         const moves=T.moves.filter(m=>m.line==='4'), tm=std({map:trainTex('#3a3f47','#00933c'),roughness:.4}), endM=std({color:lin('#9da3ab')});
@@ -187,6 +188,25 @@ function buildYankee(){
   const iS=L.idxAtPhi(-36); V.skipStyles=['cutaway']; V.camOv.iso={size:150,tgt:[0,6,0]}; V.camOv.bowl={abs:true,pos:L.pos(iS,13,2.5+(12/31)*8.5+1.3),tgt:[34,14,-46],fov:58};
   V.camOv.bowlUp={abs:true,pos:[0,1.8,5],tgt:[0,9,-120],fov:68};   // from home plate, looking out to the bleachers
   V.bowlOpts=[['seat','Seats'],['up','Home plate, look out']];
+  // design layer sets (engine/layer.js). Home plate is at 0,0 and center field points toward -z;
+  // the outfield distances are the posted ones (LF 318 ft, CF 408 ft, RF 314 ft), laid along the foul lines
+  {const M=ft=>ft/3.28084, d45=Math.SQRT1_2, back=V.outline.reduce((a,q)=>q[1]>a[1]?q:a,V.outline[0]);
+    const lf=[-M(318)*d45,1,-M(318)*d45], cf=[0,1,-M(408)], rf=[M(314)*d45,1,-M(314)*d45];
+    V.layers=[
+      {key:'facts',name:'Facts',items:[
+        {type:'outline',pts:V.outline,y:.6},
+        {type:'label',p:[back[0],30,back[1]],slot:'top',title:'YANKEE STADIUM',sub:['OPENED 2009 · BUILT FOR $2.3 BILLION']}]},
+      {key:'field',name:'Field',items:[
+        {type:'dim',a:[0,1,0],b:lf,text:'318 FT'},
+        {type:'dim',a:[0,1,0],b:cf,text:'408 FT'},
+        {type:'dim',a:[0,1,0],b:rf,text:'314 FT'},
+        {type:'label',p:rf,slot:'low',small:true,title:'THE SHORT PORCH',sub:['RIGHT FIELD LINE: 314 FT','LEFT FIELD LINE: 318 FT']}]}
+    ];
+    if(V.elLine&&V.elLine.length>1){const mid=V.elLine[Math.floor(V.elLine.length/2)];
+      V.layers.push({key:'train',name:'4 train',items:[
+        {type:'path',pts:V.elLine,space:'world',flow:true},
+        {type:'label',p:mid,space:'world',slot:'top',small:true,title:'THE 4 TRAIN',sub:['ELEVATED OVER RIVER AVENUE','161 ST–YANKEE STADIUM STATION']}]});}
+  }
   V.pointPos.night=[[-75,75,-5],[75,75,-5],[-55,75,-95],[55,75,-95]];
   return V;
 }
