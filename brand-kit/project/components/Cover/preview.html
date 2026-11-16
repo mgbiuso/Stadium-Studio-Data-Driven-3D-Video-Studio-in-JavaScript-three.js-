@@ -1,0 +1,43 @@
+<!-- @dsCard height=288 -->
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=Barlow:wght@400&display=swap">
+<style>
+  html,body{margin:0;height:288px}
+  body{background:var(--night-900,#0b1220);position:relative;overflow:hidden;width:960px}
+  svg{position:absolute;left:0;top:0;width:960px;height:288px}
+  .navy{fill:var(--navy,#1f3e70)} .cyan{fill:var(--glow-cyan,#7ff6ff)} .gold{fill:var(--glow-gold,#ffd36b)}
+  .granite{fill:var(--granite,#d9c2b0)} .raised{fill:var(--line,#2a3346)}
+  .blk{rx:var(--radius-md,8px)}
+  .plus{stroke:var(--night-900,#0b1220);stroke-width:2;stroke-linecap:square}
+  .txt{position:absolute;left:40px;bottom:32px;max-width:440px}
+  .name{margin:0;font:700 96px/.95 "Barlow Condensed","Arial Narrow",Arial,sans-serif;color:var(--ink,#eef1f6);letter-spacing:.01em}
+  .tag{margin:12px 0 0;font:400 14px/1.4 "Barlow",system-ui,sans-serif;color:var(--muted,#9ba4b6)}
+</style></head>
+<body>
+<svg viewBox="0 0 960 288" aria-hidden="true">
+  <!-- blocks: navy slab 224 x full height (space-8 x 7), glow-cyan 240 x 128, glow-gold 128 x 64, granite 96 x 144, night-800 128 x 64; corners radius-md
+       arrangement: one tall slab with satellites, bleeding off the top, right and bottom, like a drafting sheet with its legend boxes
+       pattern: a plus grid cut out of the navy slab, because the brand is a blueprint (measured, technical, mono numerals)
+       steps and radii: grid pitch space-8 (32px), gaps space-4 (16px), corners radius-md -->
+  <rect class="navy blk" x="480" y="-8" width="224" height="304"/>
+  <rect class="cyan blk" x="720" y="-8" width="248" height="136"/>
+  <rect class="gold blk" x="720" y="144" width="128" height="64"/>
+  <rect class="raised blk" x="720" y="224" width="128" height="72"/>
+  <rect class="granite blk" x="864" y="144" width="104" height="152"/>
+  <g class="plus">
+    <path d="M508 32h8M512 28v8 M540 32h8M544 28v8 M572 32h8M576 28v8 M604 32h8M608 28v8 M636 32h8M640 28v8 M668 32h8M672 28v8"/>
+    <path d="M508 64h8M512 60v8 M540 64h8M544 60v8 M572 64h8M576 60v8 M604 64h8M608 60v8 M636 64h8M640 60v8 M668 64h8M672 60v8"/>
+    <path d="M508 96h8M512 92v8 M540 96h8M544 92v8 M572 96h8M576 92v8 M604 96h8M608 92v8 M636 96h8M640 92v8 M668 96h8M672 92v8"/>
+    <path d="M508 128h8M512 124v8 M540 128h8M544 124v8 M572 128h8M576 124v8 M604 128h8M608 124v8 M636 128h8M640 124v8 M668 128h8M672 124v8"/>
+    <path d="M508 160h8M512 156v8 M540 160h8M544 156v8 M572 160h8M576 156v8 M604 160h8M608 156v8 M636 160h8M640 156v8 M668 160h8M672 156v8"/>
+    <path d="M508 192h8M512 188v8 M540 192h8M544 188v8 M572 192h8M576 188v8 M604 192h8M608 188v8 M636 192h8M640 188v8 M668 192h8M672 188v8"/>
+    <path d="M508 224h8M512 220v8 M540 224h8M544 220v8 M572 224h8M576 220v8 M604 224h8M608 220v8 M636 224h8M640 220v8 M668 224h8M672 220v8"/>
+    <path d="M508 256h8M512 252v8 M540 256h8M544 252v8 M572 256h8M576 252v8 M604 256h8M608 252v8 M636 256h8M640 252v8 M668 256h8M672 252v8"/>
+  </g>
+</svg>
+<div class="txt">
+  <h1 class="name">Stadium<br>Studio</h1>
+  <p class="tag">Real places, real data, drawn to scale.</p>
+</div>
+</body></html>
