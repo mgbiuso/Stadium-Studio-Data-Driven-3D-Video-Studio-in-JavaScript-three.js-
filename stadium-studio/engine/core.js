@@ -371,6 +371,23 @@ function solids3d(V,list,group,mat){
   if(kbT.p.length) kbT.mesh(V,group);
 }
 
+// painted textures for the ground's cut faces, 8 m by 8 m per tile: schist, weathered rock, soil and till, urban fill
+const STRATA=(()=>{
+  const T=(base,draw)=>{const c=mk(512,512),x=c.getContext('2d'); x.fillStyle=base; x.fillRect(0,0,512,512); let sd=7; const r=()=>((sd=(sd*16807)%2147483647)/2147483647); draw(x,r); return tex(c,true,true);};
+  return {
+    schist:T('#4a5059',(x,r)=>{ // Manhattan schist: slanted foliation, darker seams, mica glints
+      x.save(); x.translate(256,256); x.rotate(-.32); for(let i=0;i<70;i++){x.fillStyle=r()<.5?'rgba(255,255,255,.06)':'rgba(0,0,0,.14)'; x.fillRect(-420,-420+i*12+r()*6,840,2+r()*5);} x.restore();
+      for(let i=0;i<260;i++){x.fillStyle=`rgba(230,235,240,${.15+r()*.35})`; x.fillRect(r()*512,r()*512,1.5,1.5);}
+      for(let i=0;i<9;i++){x.strokeStyle='rgba(20,22,26,.5)'; x.lineWidth=1.5; x.beginPath(); let px=r()*512,py=r()*512; x.moveTo(px,py); for(let k=0;k<5;k++){px+=r()*60-30; py+=r()*40; x.lineTo(px,py);} x.stroke();}}),
+    weathered:T('#6e675b',(x,r)=>{for(let i=0;i<420;i++){x.fillStyle=r()<.5?'rgba(255,240,220,.08)':'rgba(0,0,0,.12)'; x.fillRect(r()*512,r()*512,3+r()*14,2+r()*6);}
+      for(let i=0;i<14;i++){x.strokeStyle='rgba(30,25,20,.45)'; x.beginPath(); x.moveTo(r()*512,r()*512); x.lineTo(r()*512,r()*512); x.stroke();}}),
+    soil:T('#8a6a48',(x,r)=>{for(let i=0;i<900;i++){x.fillStyle=r()<.5?'rgba(255,230,190,.07)':'rgba(40,25,10,.1)'; x.fillRect(r()*512,r()*512,2,2);}
+      for(let i=0;i<70;i++){x.fillStyle=['#a58a6a','#6b5440','#9a9184','#7a6a5a'][Math.floor(r()*4)]; x.beginPath(); x.ellipse(r()*512,r()*512,4+r()*16,3+r()*9,r()*3,0,7); x.fill();}}),
+    fill:T('#77695c',(x,r)=>{for(let i=0;i<140;i++){x.fillStyle=['#8b4a3a','#3a3530','#9a8f80','#5c534a'][Math.floor(r()*4)]; x.save(); x.translate(r()*512,r()*512); x.rotate(r()*3); x.fillRect(-6-r()*10,-3-r()*5,12+r()*20,6+r()*10); x.restore();}
+      for(let i=0;i<700;i++){x.fillStyle='rgba(20,18,16,.25)'; x.fillRect(r()*512,r()*512,1.5,1.5);}})
+  };
+})();
+
 // ---------------------------------------------------------------- the ground under a venue (shared by every venue with D.ground)
 // Bedrock from real boreholes as a solid surface; soil above it as a see-through layer; cuts where trenches and tunnels go;
 // a marker at each boring. o.cut(x,z) -> the deepest point (meters, below the street) dug out there, or null.
@@ -378,32 +395,48 @@ function solids3d(V,list,group,mat){
 function buildGround(V,D,parent,o){
   const Gd=D&&D.ground; if(!Gd) return null; o=o||{};
   const g=new THREE.Group(); parent.add(g);
-  const {cell,x0,z0,nx,nz,rock}=Gd, bot=o.bottom||-32, cut=o.cut||(()=>null);
-  const RY=(i,j)=>{const x=x0+i*cell,z=z0+j*cell; let y=Math.min(-.4,rock[j*nx+i]); const c=cut(x,z); if(c!=null) y=Math.min(y,c); return Math.max(bot+1,y);};
-  const H=[]; for(let j=0;j<nz;j++) for(let i=0;i<nx;i++) H.push(RY(i,j));
-  const P=(i,j)=>[x0+i*cell,H[j*nx+i],z0+j*cell];
+  const G0=Gd, bot=o.bottom||-32, cut=o.cut||(()=>null);
+  // rock surface anywhere: bilinear between the data grid's points
+  const rockAt=(x,z)=>{const fx=Math.max(0,Math.min(G0.nx-1.001,(x-G0.x0)/G0.cell)), fz=Math.max(0,Math.min(G0.nz-1.001,(z-G0.z0)/G0.cell)), i=Math.floor(fx), j=Math.floor(fz), u=fx-i, v=fz-j, R=(a,b)=>G0.rock[b*G0.nx+a];
+    return R(i,j)*(1-u)*(1-v)+R(i+1,j)*u*(1-v)+R(i,j+1)*(1-u)*v+R(i+1,j+1)*u*v;};
+  // o.box [x0, x1, z0, z1] builds just that block (for the floating block cutout); otherwise the whole data grid
+  const BXG=o.box||[G0.x0,G0.x0+(G0.nx-1)*G0.cell,G0.z0,G0.z0+(G0.nz-1)*G0.cell];
+  const nx=Math.max(2,Math.round((BXG[1]-BXG[0])/G0.cell)+1), nz=Math.max(2,Math.round((BXG[3]-BXG[2])/G0.cell)+1), cell=(BXG[1]-BXG[0])/(nx-1), cellz=(BXG[3]-BXG[2])/(nz-1), x0=BXG[0], z0=BXG[2];
+  const RY=(i,j)=>{const x=x0+i*cell,z=z0+j*cellz; let y=Math.min(-.4,rockAt(x,z)); const c=cut(x,z); if(c!=null) y=Math.min(y,c); return Math.max(bot+1,y);};
+  const H=[], CUT=[]; for(let j=0;j<nz;j++) for(let i=0;i<nx;i++){H.push(RY(i,j)); CUT.push(cut(x0+i*cell,z0+j*cellz)!=null);}
+  const P=(i,j)=>[x0+i*cell,H[j*nx+i],z0+j*cellz];
   // bedrock: top surface, then the four outer walls down to the bottom
   const kr=new KB();
   for(let j=0;j<nz-1;j++) for(let i=0;i<nx-1;i++){kr.triF(P(i,j),P(i,j+1),P(i+1,j+1),K.schist,[0,1,0]); kr.triF(P(i,j),P(i+1,j+1),P(i+1,j),K.schist,[0,1,0]);}
-  const side=(pts,n)=>{for(let k=0;k<pts.length-1;k++){const a=pts[k],b=pts[k+1]; kr.quadF([a[0],bot,a[2]],[b[0],bot,b[2]],b,a,K.schist,n);}};
-  side([...Array(nx).keys()].map(i=>P(i,0)),[0,0,-1]); side([...Array(nx).keys()].map(i=>P(i,nz-1)),[0,0,1]);
-  side([...Array(nz).keys()].map(j=>P(0,j)),[-1,0,0]); side([...Array(nz).keys()].map(j=>P(nx-1,j)),[1,0,0]);
+  // the four cut faces, painted in real depth bands: urban fill (top 2 m), soil and till down to the rock, a weathered band, then schist
+  const faces={fill:[],soil:[],weathered:[],schist:[]};
+  const band=(key,a,b,ya0,ya1,yb0,yb1,u0,u1)=>{if(ya1-ya0<.02&&yb1-yb0<.02) return; const L=faces[key];
+    [[a,ya0,u0],[b,yb0,u1],[b,yb1,u1],[a,ya0,u0],[b,yb1,u1],[a,ya1,u0]].forEach(([q,y,u])=>L.push(q[0],y,q[2],u/8,y/8));};
+  // o.open: where a trench or tunnel reaches the face, leave it open above the rock so you can look in
+  const face=(pts,cs)=>{let u=0; for(let k=0;k<pts.length-1;k++){const a=pts[k],b=pts[k+1],len=Math.hypot(b[0]-a[0],b[2]-a[2]), ra=a[1], rb=b[1];
+      const fa=Math.max(ra,-2), fb=Math.max(rb,-2), open=o.open&&cs[k]&&cs[k+1];
+      band('schist',a,b,bot,ra-1.5,bot,rb-1.5,u,u+len); band('weathered',a,b,ra-1.5,ra,rb-1.5,rb,u,u+len);
+      if(!open){band('soil',a,b,ra,fa,rb,fb,u,u+len); band('fill',a,b,fa,0,fb,0,u,u+len);} u+=len;}};
+  const I=[...Array(nx).keys()], J=[...Array(nz).keys()];
+  face(I.map(i=>P(i,0)),I.map(i=>CUT[i])); face(I.map(i=>P(i,nz-1)),I.map(i=>CUT[(nz-1)*nx+i]));
+  face(J.map(j=>P(0,j)),J.map(j=>CUT[j*nx])); face(J.map(j=>P(nx-1,j)),J.map(j=>CUT[j*nx+nx-1]));
   const rockMat=std({vertexColors:true,flatShading:true,roughness:.95},'under'); V.groundMats=[rockMat];
   kr.mesh(V,g,rockMat);
+  Object.keys(faces).forEach(key=>{const a=faces[key]; if(!a.length) return; const pos=[],uv=[]; for(let i=0;i<a.length;i+=5){pos.push(a[i],a[i+1],a[i+2]); uv.push(a[i+3],a[i+4]);}
+    const geo=new THREE.BufferGeometry(); geo.setAttribute('position',new THREE.Float32BufferAttribute(pos,3)); geo.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2)); geo.computeVertexNormals();
+    const m=std({map:STRATA[key],roughness:.97,side:THREE.DoubleSide},'under'); V.groundMats.push(m); const mesh=new THREE.Mesh(geo,m); mesh.receiveShadow=true; g.add(mesh);});
   // soil and fill between the street and the rock: see-through, so the rock, trenches and tunnels show inside it
-  const ks=new KB(), T=(i,j)=>{const x=x0+i*cell,z=z0+j*cell, c=cut(x,z); return [x,c!=null?Math.min(-.05,c):-.05,z];};
+  const ks=new KB(), T=(i,j)=>{const x=x0+i*cell,z=z0+j*cellz, c=cut(x,z); return [x,c!=null?Math.min(-.05,c):-.05,z];};
   const wall=(n,a,b,ya,yb)=>ks.quadF([a[0],ya,a[2]],[b[0],yb,b[2]],[b[0],-.05,b[2]],[a[0],-.05,a[2]],K.soil,n);
-  for(let i=0;i<nx-1;i++){wall([0,0,-1],P(i,0),P(i+1,0),P(i,0)[1],P(i+1,0)[1]); wall([0,0,1],P(i,nz-1),P(i+1,nz-1),P(i,nz-1)[1],P(i+1,nz-1)[1]);}
-  for(let j=0;j<nz-1;j++){wall([-1,0,0],P(0,j),P(0,j+1),P(0,j)[1],P(0,j+1)[1]); wall([1,0,0],P(nx-1,j),P(nx-1,j+1),P(nx-1,j)[1],P(nx-1,j+1)[1]);}
-  for(let j=0;j<nz-1;j++) for(let i=0;i<nx-1;i++) if(cut(x0+i*cell+cell/2,z0+j*cell+cell/2)==null) ks.quadF(T(i,j),T(i+1,j),T(i+1,j+1),T(i,j+1),K.soil,[0,1,0]);
+  for(let j=0;j<nz-1;j++) for(let i=0;i<nx-1;i++) if(cut(x0+i*cell+cell/2,z0+j*cellz+cellz/2)==null) ks.quadF(T(i,j),T(i+1,j),T(i+1,j+1),T(i,j+1),K.soil,[0,1,0]);
   const soilMat=std({vertexColors:true,transparent:true,opacity:.26,depthWrite:false,side:THREE.DoubleSide,roughness:1},'under'); V.groundMats.push(soilMat);
   const sm=ks.mesh(V,g,soilMat); sm.castShadow=false; sm.receiveShadow=false;
   // a thin marker at every real boring, from the street down to where it hit rock
-  const pts=(Gd.points||[]).filter(p=>p[2]<0);
+  const pts=(Gd.points||[]).filter(p=>p[2]<0&&p[0]>=BXG[0]&&p[0]<=BXG[1]&&p[1]>=BXG[2]&&p[1]<=BXG[3]);
   if(pts.length){const bm=std({color:lin('#f2c14e'),emissive:lin('#f2c14e'),emissiveIntensity:.35,roughness:.6},'under'); V.groundMats.push(bm);
     const inst=new THREE.InstancedMesh(new THREE.CylinderGeometry(.35,.35,1,8),bm,pts.length), M=new THREE.Matrix4();
-    pts.forEach(([x,z,y],k)=>{M.compose(new THREE.Vector3(x,y/2,z),new THREE.Quaternion(),new THREE.Vector3(1,-y,1)); inst.setMatrixAt(k,M);}); g.add(inst); V.borings=inst;}
-  V.ground=g; return g;
+    pts.forEach(([x,z,y],k)=>{M.compose(new THREE.Vector3(x,y/2,z),new THREE.Quaternion(),new THREE.Vector3(1,-y,1)); inst.setMatrixAt(k,M);}); g.add(inst); if(!o.box) V.borings=inst;}
+  if(!o.box) V.ground=g; return g;
 }
 // open-topped tunnel shells (floor and two walls) along a line at depth y, so you can look in from above
 function tunnelShell(kb,pts,y,w,h,k){
@@ -512,6 +545,23 @@ Object.assign(SS,{$,app,stage,canvas,loading,labelsEl,renderer,maxAniso,reduceMo
 function tierProfile(L,i,T){const f=v=>typeof v==='function'?v(i):v, o0=f(T.o0),o1=f(T.o1),S=T.steps,dO=(o1-o0)/S,dH=(T.h1-T.h0)/(S-1),fb=T.soffit?T.h0-T.fascia:0,pts=[L.pos(i,o0,fb)];
   for(let s=0;s<S;s++){const y=T.h0+s*dH; pts.push(L.pos(i,o0+s*dO,y),L.pos(i,o0+(s+1)*dO,y));}
   pts.push(L.pos(i,o1,T.soffit?T.sb:0)); if(T.soffit) pts.push(L.pos(i,o0,fb)); return pts;}
-Object.assign(SS,{blocks,pip,centroid,polyArea,FACADE,buildCity,buildEl,tierProfile,waterTanks,buildGround,tunnelShell});
+// where the sun is at a moment (ms since 1970, UTC) seen from lat, lon. Low-precision formula from the Astronomical Almanac,
+// good to about a degree. Returns the altitude in degrees and a direction in model space (gridDeg = how the venue's grid is turned)
+function sunDir(ms,lat,lon,gridDeg){
+  const r=Math.PI/180, d=(ms-946728000000)/86400000, g=(357.529+.98560028*d)*r, q=280.459+.98564736*d;
+  const L=(q+1.915*Math.sin(g)+.02*Math.sin(2*g))*r, e=(23.439-.00000036*d)*r, ra=Math.atan2(Math.cos(e)*Math.sin(L),Math.cos(L)), dec=Math.asin(Math.sin(e)*Math.sin(L));
+  const H=(((18.697374558+24.06570982441908*d)%24)*15+lon)*r-ra, f=lat*r;
+  const alt=Math.asin(Math.sin(f)*Math.sin(dec)+Math.cos(f)*Math.cos(dec)*Math.cos(H)), az=Math.atan2(-Math.sin(H),Math.tan(dec)*Math.cos(f)-Math.sin(f)*Math.cos(H));
+  const E=Math.cos(alt)*Math.sin(az), Nn=Math.cos(alt)*Math.cos(az), U=Math.sin(alt), gd=(gridDeg==null?-29:gridDeg)*r, ex=[Math.cos(gd),Math.sin(gd)], nx=[-ex[1],ex[0]];
+  return {alt:alt/r, dir:[E*ex[0]+Nn*ex[1],U,-(E*nx[0]+Nn*nx[1])]};
+}
+// New York clock time to UTC: daylight saving from the 2nd Sunday of March to the 1st Sunday of November (2007 on);
+// before 1918 the city had no daylight saving, and in between this keeps it simple (standard time all year)
+function nyUTC(y,mo,d,hours){
+  let off=5; if(y>=2007){const sun=(m,n)=>{const f=new Date(Date.UTC(y,m,1)).getUTCDay(); return 1+((7-f)%7)+7*(n-1);};
+    const a=Date.UTC(y,2,sun(2,2),7), b=Date.UTC(y,10,sun(10,1),6), t=Date.UTC(y,mo-1,d,12); if(t>=a&&t<b) off=4;}
+  return Date.UTC(y,mo-1,d)+(hours+off)*3600000;
+}
+Object.assign(SS,{blocks,pip,centroid,polyArea,FACADE,buildCity,buildEl,tierProfile,waterTanks,buildGround,tunnelShell,sunDir,nyUTC});
 SS.ok=true;
 })();

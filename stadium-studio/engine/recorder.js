@@ -28,6 +28,7 @@ const R4=[.5,.4,1.2,.95];
 const BGS={
   day:{r:[.5,.32,1.2,.95],s:[[0,'#f5f7f9'],[.55,'#dfe5ec'],[1,'#c6ced8']]},
   night:{r:[.5,.38,1.1,.8],s:[[0,'#1c2a46'],[.55,'#0c1322'],[1,'#04060b']],stars:true},
+  void:{r:R4,s:[[0,'#17223a'],[.6,'#0b1220'],[1,'#05080f']]},
   drawing:{l:[[0,'#b9bcc0'],[1,'#a3a7ac']]},
   wire:{l:[[0,'#4b4f56'],[.6,'#33363b'],[1,'#26282c']]},
   toy:{l:[[0,'#bfe0f7'],[.58,'#e2f0fb'],[1,'#f5f9fd']]},
@@ -61,6 +62,9 @@ function composite(t){
   cx.drawImage(src,0,0,src.width,src.height,0,0,W,H); cx.filter='none';
   if(SS.layer&&SS.layer.active()){cx.imageSmoothingEnabled=true; SS.layer.draw(cx,W,H,t||0);}
 }
+
+// a single full-size frame as a JPEG (for checking a shot before recording it); t = seconds into the draw-on animation
+SS.recorder={still(t){ST.setSize(W,H); ST.step(0); composite(t==null?6:t); const url=comp.toDataURL('image/jpeg',.88); ST.setSize(null); return url;}};
 
 /* ---------- saving ---------- */
 function save(blob,ext,kind){

@@ -44,6 +44,7 @@ function skyTex(bg){
   const c=mk(512,512),x=c.getContext('2d'), rad=(stops,cy)=>{const g=x.createRadialGradient(256,cy,0,256,cy,420); stops.forEach(([o,col])=>g.addColorStop(o,col)); x.fillStyle=g; x.fillRect(0,0,512,512);};
   if(bg==='night'){rad([[0,'#1c2a46'],[.55,'#0c1322'],[1,'#04060b']],190); let s=5; const r=()=>((s=(s*16807)%2147483647)/2147483647); for(let i=0;i<140;i++){x.fillStyle=`rgba(255,255,255,${.3+r()*.5})`; x.fillRect(r()*512,r()*300,1.2,1.2);}}
   else if(bg==='drawing'){const g=x.createLinearGradient(0,0,0,512); g.addColorStop(0,'#b9bcc0'); g.addColorStop(1,'#a3a7ac'); x.fillStyle=g; x.fillRect(0,0,512,512);}
+  else if(bg==='void') rad([[0,'#17223a'],[.6,'#0b1220'],[1,'#05080f']],200);
   else if(bg==='white') rad([[0,'#ffffff'],[.7,'#f4f3f0'],[1,'#e9e7e2']],205);
   else rad([[0,'#f5f7f9'],[.55,'#dfe5ec'],[1,'#c6ced8']],165);
   const t=tex(c); return SKY[bg]=t;
@@ -103,6 +104,7 @@ PAL.ink=isoPal({roof:'#7d7466',roofTop:'#756a5b',unit:'#d8d0c0',pier:'#e6cfa8',r
   {facade:'#e7c79f',lotTop:'#c9bfa9',lotSide:'#7f735f',lotEdge:'#ddd3bd',crown:'#3d7d38',trunk:'#5b4330'});
 const LIGHTS={
   day:{hs:'#e3ecf7',hg:'#7f7666',hi:.8,sc:'#fff1dc',si:1.7,sp:[150,240,110],pl:0,cat:.18,glow:'screens'},
+  cutout:{hs:'#e3ecf7',hg:'#6a7180',hi:1.3,sc:'#fff1dc',si:1.7,sp:[-170,230,150],pl:0,cat:0,glow:'screens'},   // sun over the viewer's shoulder so the cut faces are lit
   night:{hs:'#3a4a6e',hg:'#07090d',hi:.3,sc:'#9fb4dd',si:.26,sp:[-120,220,-40],pl:.75,cat:0,glow:'night'},
   arena:{hs:'#fff1de',hg:'#3a3328',hi:.75,sc:'#ffffff',si:.15,sp:[60,240,40],pl:1.5,cat:0,glow:'arena'},
   afternoon:{hs:'#e6eef8',hg:'#7a705f',hi:.72,sc:'#ffe0b8',si:1.9,sp:[-170,125,125],pl:0,cat:.22,glow:'screens'},
@@ -117,32 +119,26 @@ const LIGHTS={
 };
 const STYLES={
   aerial:{name:'Daylight aerial',refs:'Refs 1 · 2 · 4 · 19 · 21',desc:'The hero shot. Full color and sun shadows, with the real neighborhood where city data exists.',pal:'day',light:'day',bg:'day',real:true,haze:'day'},
-  corner:{name:'Street corner',refs:'New ref · corner view',desc:'A low corner view across the intersection in warm afternoon light, with the real streets and neighboring buildings where city data exists.',pal:'day',light:'afternoon',bg:'day',real:true,haze:'afternoon'},
   night:{name:'Night game',refs:'Ref 6',desc:'Lights on. Windows, screens and signage glow against a night sky.',pal:'day',light:'night',bg:'night',real:true,env:false,haze:'night',exposure:1.25,glow:true},
-  bowl:{name:'Inside the bowl',refs:'Refs 5 · 8 · 13 · 14 · arena photos',desc:'From the seats, looking across the playing surface toward the upper decks, the ceiling and the banners.',pal:'day',light:V=>V.indoor?'arena':'day',bg:V=>V.indoor?'night':'day',flyIn:true,real:true,exposure:1.55,glow:true,
-    opts:[['seat','Seats'],['up','Second view']],optsWhen:V=>!!V.camOv.bowlUp,optFx:{up:{cam:'bowlUp'}}},
   overhead:{name:'Overhead',refs:'Ref 3',desc:'Straight down from above, like a drone shot. In Explore, scroll to zoom straight through the roof into the bowl.',pal:'day',light:'day',bg:'day',flyIn:true,real:true,haze:'day'},
   exploded:{name:'Exploded',refs:'Refs 9 · 10 · 22',desc:'Just the arena, its levels lifted apart and labeled: station, event level and 100s, 200s, bridges and scoreboard, ceiling, roof.',pal:'day',light:'day',bg:'drawing',explode:true,edges:'ink',station:true,real:true,
     shell:false,annex:false,plinth:false,clipUnder:'box',labels:'exploded'},
   wire:{name:'Wireframe',refs:'Ref 11',desc:'The raw model in a 3D-software viewport look, with live triangle and vertex counts. In Explore, zoom through the roof.',pal:'wire',light:'wire',bg:'wire',edges:'wire',stats:true,flyIn:true},
-  isoCel:{name:'Iso · cel',refs:'Iso ref 4',desc:'The venue as a map icon: the real building, roof on, in flat cel-shaded color like an animated film.',pal:'cel',light:'iso',bg:'cel',edges:'cel',iso:true,
-    opts:[['lot','On a lot'],['float','Floating']]},
-  isoPixel:{name:'Iso · pixel',refs:'Iso refs 1 · 2',desc:'The venue as a map icon in dense, crisp pixel art, like a city-builder game.',pal:'pixel',light:'iso',bg:'pixel',edges:'pixel',iso:true,pixel:.42,
-    opts:[['lot','On a lot'],['float','Floating']]},
-  isoInk:{name:'Iso · ink',refs:'Iso ref 5',desc:'The venue as a map icon with bold ink outlines and painted color, like an illustrated poster.',pal:'ink',light:'afternoon',bg:'ink',edges:'inkbold',iso:true,
-    opts:[['lot','On a lot'],['float','Floating']]},
-  studio:{name:'Color studio',refs:'Ref 16',desc:'A white model on one bold floor color, with only the team colors picked out.',pal:'studio',light:'studio',bg:'studio',plinth:false,trees:false},
+  isoCel:{name:'Iso · cel',refs:'Iso ref 4',desc:'The venue as a map icon: the real building, roof on, in flat cel-shaded color like an animated film.',pal:'cel',light:'iso',bg:'cel',edges:'cel',iso:true},
+  isoInk:{name:'Iso · ink',refs:'Iso ref 5',desc:'The venue as a map icon with bold ink outlines and painted color, like an illustrated poster.',pal:'ink',light:'afternoon',bg:'ink',edges:'inkbold',iso:true},
   cutaway:{name:'Cutaway',refs:'Refs 20 · 23',desc:'The real building sliced in half to show every layer, from the roof down to the trains, with sightlines from the seats.',pal:'day',light:'day',bg:'white',station:true,edges:'soft',plinth:false,real:true,
     clip:'half',soil:'half',sight:true,labels:'section',cam:'section'},
   underground:{name:'Underground',refs:'City, MTA and USGS data',desc:'Everything above the sidewalk lifted away: the station levels, subway and rail tunnels, soil and the bedrock underneath, from real borings.',
     pal:'day',light:'day',bg:'drawing',real:true,station:true,under:true,clip:'ground',plinth:false,trees:false,labels:'under',cam:'underground'},
+  cutout:{name:'Block cutout',refs:'New ref · floating block',desc:'The Garden\'s block lifted out of the city on a dark stage: buildings on top, then soil, bedrock and the station inside, with glowing edges.',
+    pal:'day',light:'cutout',bg:'void',real:true,station:true,under:true,clip:'block',plinth:false,trees:false,labels:'under',cam:'cutout'},
   xray:{name:'X-ray city',refs:'City, MTA and USGS data',desc:'The buildings turn to glass so you can see what runs underneath them: station, tunnels and rock.',
     pal:'day',light:'day',bg:'drawing',station:true,under:true,xray:true,edges:'xray',plinth:false,trees:false,labels:'under',cam:'underground'},
   blueprint:{name:'Blueprint sheet',refs:'New ref · blueprint',desc:'A flat drawing sheet: an elevation on top and the floor plan below, drawn as white lines from the real outline and heights. A still drawing, so Explore is off.',pal:'bpsheet',light:'sheet',bg:'bpsheet',edges:'chalk',plinth:false,trees:false,city:false,sheet:true}
 };
-const ORDER=['aerial','corner','night','bowl','overhead','underground','xray','exploded','wire','isoCel','isoPixel','isoInk','studio','cutaway','blueprint'];
+const ORDER=['aerial','night','overhead','underground','cutout','xray','exploded','wire','isoCel','isoInk','cutaway','blueprint'];
 // views that show the real neighborhood around the venue
-const CITY=new Set(['aerial','corner','night','overhead','wire','underground','xray']);
+const CITY=new Set(['aerial','night','overhead','wire','underground','cutout','xray']);
 const CAMS={
   aerial:{off:[-200,169,257],tgt:[0,-4,-2],fov:34},
   corner:{off:[-235,62,250],tgt:[0,8,0],fov:40},
@@ -157,10 +153,11 @@ const CAMS={
   pastel:{ortho:true,dir:[-1,1.1,1],tgt:[0,-8,0],size:150},
   cutaway:{ortho:true,dir:[1,.95,1],tgt:[0,-16,0],size:168},
   section:{ortho:true,dir:'section',tgt:[0,6,0],size:96},
-  underground:{off:[-150,175,235],tgt:[0,-10,0],fov:36}
+  underground:{off:[-150,175,235],tgt:[0,-10,0],fov:36},
+  cutout:{off:[-440,145,106],tgt:[0,-10,0],fov:34,pull:.3}
 };
 
-let V=null, current='aerial', exploded=false;
+let V=null, current='aerial', exploded=false, SUNOV=null;
 const resolve=(v)=>typeof v==='function'?v(V):v;
 
 function recolor(kc){
@@ -186,6 +183,8 @@ function setClip(modeC,underC){
   if(modeC==='quad'){above=[new THREE.Plane(new THREE.Vector3(-1,0,0),V.cut.x),new THREE.Plane(new THREE.Vector3(0,0,-1),V.cut.z)]; inter=true;}
   // hide everything above the sidewalk: set on the renderer itself, so the shading and shadow passes skip it too
   renderer.clippingPlanes=modeC==='ground'?[new THREE.Plane(new THREE.Vector3(0,-1,0),0)]:[];
+  // the block cutout: keep only what sits inside the block's four sides (1 m outside its rock faces)
+  if(modeC==='block'&&V.cutBox){const [a,b,c,d]=V.cutBox, m=1; renderer.clippingPlanes=[[1,0,-(a-m)],[-1,0,b+m],[0,1,-(c-m)],[0,-1,d+m]].map(([x,z,k])=>new THREE.Plane(new THREE.Vector3(x,0,z),k));}
   if(modeC==='half'){const s=V.section,p=new THREE.Plane(s.axis==='x'?new THREE.Vector3(-1,0,0):new THREE.Vector3(0,0,-1),s.c); above=[p]; under=[p];}
   // exploded: keep only the part of the station right under the arena (hidden if outside any of the four walls)
   if(underC==='box'){const r=V.boxR||80; under=[[-1,0,r],[1,0,r],[0,-1,r],[0,1,r]].map(([x,z,c])=>new THREE.Plane(new THREE.Vector3(x,0,z),c));}
@@ -237,7 +236,7 @@ function applyStyle(key,instant){
   (V.trainMats||[]).filter(m=>!m.userData.plain).forEach(m=>setMat(m,pal.trainMap===false?'#c9cdd2':'#ffffff',pal.trainMap===false?null:m.userData.map));
 
   // what is visible
-  const city=CITY.has(key)&&S.city!==false, lotOn=!!S.iso&&optOf(key)==='lot';
+  const city=CITY.has(key)&&S.city!==false, lotOn=!!S.iso;   // iso icons always sit on their lot (Floating was removed)
   V.plinth.visible=S.plinth!==false && !S.wood && !S.square && !(S.iso&&(V.lot||!lotOn)) && !(city&&V.hidePlinthInCity);
   if(V.lot) V.lot.visible=lotOn;
   if(V.shell) V.shell.visible=S.shell!==false; if(V.annex) V.annex.visible=S.annex!==false;
@@ -254,7 +253,8 @@ function applyStyle(key,instant){
   V.letters.visible=pal.letters; clouds.visible=!!S.clouds;
   $('tilt-top').hidden=$('tilt-bot').hidden=$('vignette').hidden=!S.tilt;
   setEdges(S.edges||null); setClip(S.clip||null,S.clipUnder||null); setXray(!!S.xray);
-  if(V.ground) V.ground.visible=!!(S.under||S.clip==='half');   // the soil and bedrock block shows in the underground views and the cutaway
+  if(V.ground) V.ground.visible=!!(S.under||S.clip==='half')&&S.clip!=='block';
+  if(V.cutHolder) V.cutHolder.visible=S.clip==='block';   // the soil and bedrock block shows in the underground views and the cutaway
   // map-icon looks: pixel art is drawn small and scaled up without smoothing
   const pr=S.pixel||(REC.size?1:Math.min(window.devicePixelRatio||1,2)); if(renderer.getPixelRatio()!==pr){renderer.setPixelRatio(pr); renderer.setSize(Wd,Ht,false); if(POST.comp){POST.comp.setPixelRatio(pr); POST.comp.setSize(Wd,Ht);}}
   canvas.style.imageRendering=S.pixel?'pixelated':'';
@@ -406,7 +406,7 @@ function preset(key){
   if(c.abs) return {type:'p',pos:new THREE.Vector3(...c.pos),tgt:new THREE.Vector3(...c.tgt),fov:c.fov};
   const s=V.scale, tgt=new THREE.Vector3(V.center.x+c.tgt[0]*s,c.tgt[1],V.center.z+c.tgt[2]*s);
   if(c.ortho){const dir=c.dir==='section'?(V.section.axis==='x'?[1,.14,.25]:[.25,.14,1]):c.dir; return {type:'o',pos:new THREE.Vector3(...dir).normalize().multiplyScalar(700).add(tgt),tgt,size:c.size*s};}
-  const p=new THREE.Vector3(...c.off).multiplyScalar(s); p.multiplyScalar(aspectPull()).add(tgt);
+  const p=new THREE.Vector3(...c.off).multiplyScalar(s); p.multiplyScalar(c.pull!=null?Math.pow(aspectPull(),c.pull):aspectPull()).add(tgt);   // pull: how much a tall frame backs the camera off (1 = fully)
   return {type:'p',pos:p,tgt,fov:c.fov};
 }
 function updateOrtho(){const aspect=Wd/Ht,halfH=aspect<1.25?orthoSize*1.25/aspect:orthoSize; ortho.left=-halfH*aspect; ortho.right=halfH*aspect; ortho.top=halfH; ortho.bottom=-halfH; ortho.updateProjectionMatrix();}
@@ -428,7 +428,7 @@ function expOf(k){const v=exploded?V.EXP[k]:0; return Array.isArray(v)?new THREE
 let LBL=[], lblMode=null;
 function buildLabels(){
   labelsEl.textContent=''; lblMode=curStyle().labels||null;
-  LBL=lblMode?V.labels[lblMode].map(L=>{const el=document.createElement('div'); el.className='label'; el.innerHTML='<span class="txt"></span><span class="lead"></span><span class="dot"></span>'; el.querySelector('.txt').textContent=L.t; labelsEl.appendChild(el); return Object.assign({el,v:new THREE.Vector3()},L);}):[];
+  LBL=lblMode?(V.labels[lblMode]||[]).map(L=>{const el=document.createElement('div'); el.className='label'; el.innerHTML='<span class="txt"></span><span class="lead"></span><span class="dot"></span>'; el.querySelector('.txt').textContent=L.t; labelsEl.appendChild(el); return Object.assign({el,v:new THREE.Vector3()},L);}):[];
 }
 function updateLabels(){
   let show=!!lblMode && !tw && !REC.size;
@@ -462,7 +462,7 @@ bReset.addEventListener('click',()=>goTo(preset(viewKey())));
    The venue swaps its own buildings; the engine shows the switch, the title and the styles that era supports. */
 const erasBox=$('eras');
 const eraInfo=()=>(V.eras&&V.eras.info[V.era])||{};
-const skipped=k=>(V.skipStyles||[]).includes(k)||(eraInfo().skip||[]).includes(k);
+const skipped=k=>(V.skipStyles||[]).includes(k)||(STYLES[k]&&STYLES[k].clip==='block'&&!V.cutBox)||(eraInfo().skip||[]).includes(k);
 function renderTitle(){
   const e=eraInfo(); $('v-eyebrow').textContent=e.eyebrow||V.eyebrow; $('v-name').textContent=e.name||V.name;
   const sp=$('v-spec'); sp.textContent=''; (e.spec||V.spec).forEach(t=>{const s=document.createElement('span'); s.textContent=t; sp.appendChild(s);});
@@ -564,6 +564,7 @@ function step(dt){
 SS.studio={
   REC, step, canvas, renderer,
   onFrame:null, onStyle:null,
+  venue:()=>V,
   style:()=>({key:current,S:curStyle(),bg:resolve(curStyle().bg),post:POST.on,venue:V.key,studioBg:V.studio.bg}),
   view:()=>({o:cam===ortho,pos:cam.position.clone(),tgt:target.clone(),fov:persp.fov,zoom:cam.zoom,size:orthoSize}),
   setView(v){
@@ -583,6 +584,13 @@ SS.studio={
   setEra(k,instant){setEra(k,instant);},
   // a point in the scene to screen position (-1 to 1 across and up), using the camera of the last drawn frame
   project(v){return v.project(cam);},
+  // the shadow clock moves the sun: o = {dir:[x,y,z], alt} from SS.sunDir, or null to go back to the style's own light
+  sunAt(o){
+    if(!o){if(SUNOV){SUNOV=null; setLights(resolve(STYLES[current].light));} return;}
+    SUNOV=o; const Lt=LIGHTS[resolve(STYLES[current].light)], k=Math.max(0,Math.min(1,o.alt/14)), lo=new THREE.Color(lin('#ffb36b')), hi=lin(Lt.sc);
+    sun.color.copy(lo.lerp(hi,k)); sun.intensity=Lt.si*Math.pow(k,.7); hemi.intensity=Lt.hi*(scene.environment?.55:1)*(.45+.55*Math.max(0,Math.min(1,(o.alt+6)/20)));
+    sun.position.set(V.center.x+o.dir[0]*260,Math.max(4,o.dir[1]*260),V.center.z+o.dir[2]*260); sun.target.position.copy(V.center);
+  },
   setControls(on){if(controls) controls.enabled=on&&!STYLES[current].sheet;}
 };
 frame();

@@ -42,6 +42,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--font-body);overflow
   radial-gradient(1px 1px at 86% 26%,rgba(255,255,255,.5),transparent 60%),
   radial-gradient(1px 1px at 52% 6%,rgba(255,255,255,.5),transparent 60%),
   radial-gradient(110% 80% at 50% 38%,#1c2a46 0%,#0c1322 55%,#04060b 100%)}
+#stage[data-bg="void"]{background:radial-gradient(120% 95% at 50% 40%,#17223a 0%,#0b1220 60%,#05080f 100%)}
 #stage[data-bg="drawing"]{background:linear-gradient(180deg,#b9bcc0 0%,#a3a7ac 100%)}
 #stage[data-bg="wire"]{background:linear-gradient(180deg,#4b4f56 0%,#33363b 60%,#26282c 100%)}
 #stage[data-bg="toy"]{background:linear-gradient(180deg,#bfe0f7 0%,#e2f0fb 58%,#f5f9fd 100%)}

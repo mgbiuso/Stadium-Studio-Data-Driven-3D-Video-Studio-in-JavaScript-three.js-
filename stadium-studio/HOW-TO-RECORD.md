@@ -43,6 +43,9 @@ Live takes can stutter when the scene is heavy (Night game, Daylight aerial with
 - Switching venue clears your saved start and end views.
 - Start and end must use the same camera type. The flat Iso styles and Cutaway use a different camera from the others.
 - The trains under MSG and Yankee Stadium keep running in the video, on the same clock as the page.
+- **Block cutout** (MSG only for now) lifts the Garden's block out of the city onto a dark stage. Pair it with the **Block outline** design layer for the glowing box and red arrows. It works in all three eras.
+- **Shadow clock** moves the real sun from sunrise to sunset in about 9 seconds. Today uses Dec 21 (the shortest day); 1910 uses opening day. Record at least 10 seconds to catch the whole day.
+- **Weather** shows a real NOAA day. Rain or snow only appears if that day had it. In the 1910 era, **Weather · 1963** is the day demolition began (rain). Today's card is the Garden's opening night in 1968.
 
 ## Beginner mistakes to avoid
 

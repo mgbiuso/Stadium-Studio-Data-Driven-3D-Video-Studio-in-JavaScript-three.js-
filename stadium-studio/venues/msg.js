@@ -401,6 +401,25 @@ function buildMSG(){
       if(nearRail(x,z)) return DP.slab-.6;                                   // the river tunnels leaving the station
       return null;};
     SS.buildGround(V,D,V.G.under,{cut,bottom:-30});
+    // the floating block cutout: the Garden's block alone (7th to 8th Avenue, 31st to 33rd Street, to the middle of each street),
+    // with its own rock and soil faces and glowing edges, like a museum model lifted out of the city
+    {const BB=[gr.x_lo-8,gr.x_hi+8,gr.z_lo-6,gr.z_hi+6]; V.cutBox=BB;
+      const holder=new THREE.Group(); V.G.under.parent.add(holder); holder.visible=false;   // outside V.G.under so it still shows during the dig
+      V.groundBlock=SS.buildGround(V,D,holder,{cut,bottom:-30,box:BB,open:true});
+      V.groundBlock.traverse(m=>{if(m.isMesh&&m.material.map) m.material.color.setScalar(1.7);});   // lighter rock faces, so they read against the dark stage
+      V.cutHolder=holder;
+      // design layer set: the block's edges and the station box draw themselves on in glowing lines, with red arrows to what matters
+      // one line that runs along all 12 edges of a box (one edge twice), so the whole box draws itself on in one stroke
+      const top=0, bot=-30, ft=y=>Math.round(-y/.3048), box=(x0,x1,y0,y1,z0,z1,color,width)=>{const c=[[x0,z0],[x1,z0],[x1,z1],[x0,z1]], B=i=>[c[i][0],y0,c[i][1]], T=i=>[c[i][0],y1,c[i][1]];
+          return [{type:'path',pts:[B(0),B(1),B(2),B(3),B(0),T(0),T(1),B(1),T(1),T(2),B(2),T(2),T(3),B(3),T(3),T(0)],color,width}];};
+      const sx=BB[0]+30, sz=(Z33+Z31)/2;   // the arrow lands on the tracks near the 8th Avenue end, where the open face shows them
+      V.layers.push({key:'cutout',name:'Block outline',items:[
+        ...box(BB[0],BB[1],bot,top,BB[2],BB[3],'cyan',2.4),
+        ...box(BB[0]+.6,X7,DP.slab-.6,DP.upper+1,Z33,Z31,'gold',2),
+        {type:'drop',a:[sx,45,sz],b:[sx,DP.rail+1,sz],color:'#ff4d4d'},
+        {type:'label',p:[sx,DP.rail,sz],slot:'low',title:`21 TRACKS · ${ft(DP.rail)} FT DOWN`,sub:['UNDER THE GARDEN SINCE 1910']},
+        {type:'drop',a:[BB[0]+3,20,BB[3]-10],b:[BB[0]+3,-22,BB[3]-10],color:'#ff4d4d'},
+        {type:'label',p:[BB[0]+3,-22,BB[3]-10],slot:'mid',small:true,title:'BEDROCK · MANHATTAN SCHIST',sub:['USGS BORINGS']}]});}
     if(V.ground&&V.soilHalf){V.soilHalf.visible=false; V.soilHalf=new THREE.Group();}   // the new ground replaces the old cutaway soil
     // tunnel shells: subway tunnels (today only: they opened in 1917 and 1932) and the railroad's river tunnels (1910)
     {const kt=new KB(), kr=new KB();
@@ -411,6 +430,44 @@ function buildMSG(){
     {const has=new Set(D.basements||[]), list=D.buildings.filter(b=>has.has(String(b.bin))&&!(SS.centroid(b.pts)[0]<X7&&SS.centroid(b.pts)[1]>Z33&&SS.centroid(b.pts)[1]<Z31))
         .map(b=>({pts:b.pts,h:-.06,minh:-3.5,k:K.lining,kt:K.lining}));
       if(list.length) SS.blocks(V,list,V.underNew,underMat); V.basementCount=list.length;}
+    // ---- design layer sets built on the underground data
+    {const Gd=D.ground, face=BOX[3], gx=40, street=(Gd&&Gd.street_ft)||34;
+      const rockAt=(x)=>{if(!Gd) return -6; const i=Math.max(0,Math.min(Gd.nx-1,Math.round((x-Gd.x0)/Gd.cell))); return Gd.rock[(Gd.nz-1)*Gd.nx+i];};
+      const mhw=(1.96-street)*.3048;   // NOAA mean high water at the Battery (1.96 ft NAVD88) against the street's 34 ft
+      const ft=y=>Math.round(-y/.3048);
+      V.layers.push({key:'depth',name:'Depth gauge',items:[
+        {type:'path',pts:[[BOX[0],mhw,face],[BOX[1],mhw,face]],color:'tide',width:2},
+        {type:'gauge',at:[gx,face+.5],y1:-30,marks:[
+          {y:0,text:'STREET'},{y:DP.lower,text:`LIRR CONCOURSE · ${ft(DP.lower)} FT`},
+          {y:mhw,text:`HIGH TIDE LEVEL · ${ft(mhw)} FT (NOAA)`,color:'tide'},
+          {y:DP.rail,text:'TRACKS · 42 FT (ASCE 1910)',color:'gold'},
+          {y:rockAt(gx),text:`BEDROCK HERE · ${ft(rockAt(gx))} FT (USGS)`,color:'#d6dbe2'}]},
+        {type:'label',p:[gx,DP.rail,face],slot:'low',small:true,title:'THE TRACKS SIT BELOW HIGH TIDE',sub:['7 TO 10 FT BELOW MEAN HIGH WATER','ASCE TRANSACTIONS, 1910']}]});
+      // the two subway lines in their official colors, with route bullets (today only: they opened in 1917 and 1932)
+      const irt=D.rails.filter(r=>r.subway&&r.layer!=='-2'), ind=D.rails.filter(r=>r.subway&&r.layer==='-2');
+      const mid=rs=>{const r=rs.find(r=>r.pts.length>1); if(!r) return null; const q=r.pts[Math.floor(r.pts.length/2)]; return q;};
+      const bullets=(rs,letters,color,y)=>{const q=mid(rs); return q?letters.map((t,k)=>({type:'badge',p:[q[0]+12,y+4,q[1]+(k-1)*9],text:t,color})):[];};
+      V.layers.push({key:'routes',name:'Subway lines',era:'today',items:[
+        ...irt.map(r=>({type:'path',pts:r.pts.map(q=>[q[0],DP.irt-1.1,q[1]]),color:'#EE352E',width:3.4})),
+        ...ind.map(r=>({type:'path',pts:r.pts.map(q=>[q[0],DP.ind-1.1,q[1]]),color:'#0039A6',width:3.4})),
+        ...bullets(irt,['1','2','3'],'#EE352E',DP.irt), ...bullets(ind,['A','C','E'],'#0039A6',DP.ind),
+        {type:'label',p:[gr.x_hi,DP.irt,Z31-30],slot:'top',small:true,title:'TWO SUBWAY LINES',sub:['1 2 3 UNDER 7TH AVE · OPENED 1917','A C E UNDER 8TH AVE · OPENED 1932']}]});
+      // shadow clock: the real sun from sunrise to sunset over the Garden. Today: the shortest day of the year
+      const ar=D.meta.area||[40.7476,-73.9975,40.7534,-73.9893], here={lat:(ar[0]+ar[2])/2,lon:(ar[1]+ar[3])/2,grid:D.meta.grid_deg};
+      V.sunClock=here;
+      // recorded weather days (NOAA daily summaries), shaped for the weather card
+      V.weatherDay=k=>{const d=((D.history&&D.history.days)||[]).find(x=>x.date===k); if(!d||!d.weather) return null; const w=d.weather;
+        return {date:d.date,label:d.label,hi:+w.TMAX,lo:+w.TMIN,prcp:(+w.PRCP).toFixed(2),snow:(+w.SNOW).toFixed(1)};};
+      {const w68=V.weatherDay('1968-02-11'); if(w68) V.layers.push({key:'weather',name:'Weather',era:'today',items:[{type:'weather',day:w68}]});}
+      V.layers.push({key:'shadow',name:'Shadow clock',era:'today',items:[
+        Object.assign({type:'sunclock',date:[2026,12,21],from:7.3,to:16.6,secs:9,peak:26,note:'SUN POSITION · ASTRONOMICAL ALMANAC FORMULA'},here)]});
+      // big numbers from the data, counting up
+      const lirr=(D.trains&&D.trains.moves||[]).length, lm=D.history&&D.history.landmarks;
+      V.layers.push({key:'numbers',name:'Numbers',era:'today',items:[
+        {type:'counter',slot:'top',value:563795,text:'SUBWAY ENTRIES IN TWO WEEKS',sub:'34 ST–PENN · NOV 1–14, 2026 · MTA'},
+        ...(lirr?[{type:'counter',slot:'mid',value:lirr,text:'LIRR TRAINS, 5 TO 6 PM',sub:`TIMETABLE FOR ${D.trains.date} · MTA`}]:[]),
+        ...(lm?[{type:'counter',slot:'low',value:lm.individual_landmarks,text:'CITY LANDMARKS SINCE PENN FELL',sub:'FIRST DESIGNATED OCT 14, 1965 · NYC LPC'}]:[])]});
+    }
     V.labels.under=[{p:[20,DP.upper+.3,Z33+8],t:'Penn Station concourses'},{p:[60,DP.plat+.3,0],t:'21 tracks · 42 ft down'},
       {p:[gr.x_hi,DP.irt-1,Z31-20],t:'1 2 3 · 7th Avenue'},{p:[gr.x_lo,DP.ind-1,Z31-20],t:'A C E · 8th Avenue'},
       {p:[60,-12,Z31+40],t:'Bedrock · Manhattan schist'},{p:[150,-2,Z31+60],t:'Soil and fill'},{p:[-230,DP.plat+.3,0],t:'Tracks under Moynihan Train Hall'}];
@@ -468,6 +525,7 @@ function buildMSG(){
   V.camOv.bowlUp={abs:true,pos:row(T1,2,L.idxAtPhi(12)),tgt:[0,30,-10],fov:84};
   V.camOv.shots={abs:true,pos:[0,62,40],tgt:[0,0,1],fov:46};
   V.camOv.aerial={off:[-175,150,210],tgt:[12,2,0]}; V.camOv.pastel={size:122,tgt:[14,-8,0]}; V.camOv.night={off:[-210,150,195],tgt:[0,14,0]}; V.camOv.road={off:[260,240,300]};
+  if(V.cutBox){const B=V.cutBox; V.camOv.cutout={tgt:[((B[0]+B[1])/2-V.center.x)/V.scale,-10,((B[2]+B[3])/2-V.center.z)/V.scale]};}   // aim at the middle of the block
   V.camOv.studio={off:[-260,215,320]}; V.camOv.exploded={tgt:[0,26,0],off:[-300,185,345]}; V.camOv.overhead={off:[0,520,3],tgt:[0,0,0]};
   V.camOv.corner={off:[-104,6,108],tgt:[-4,20,0],fov:50}; V.camOv.wire={off:[-200,235,245],tgt:[0,0,0]};
   V.pointPos.night=[[84,12,0],[0,12,84],[-84,12,0],[0,12,-84]];

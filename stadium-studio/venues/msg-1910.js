@@ -190,14 +190,7 @@ SS.builders.push(function buildPenn1910(){
   const ground1910=holed([X0,X1,Z0,Z1],[bx[0]-1,g.x_lo-15.2+1.2,g.z_lo+9.1-1.2,g.z_hi-9.1+1.2]), groundDig=holed([bx[0]-1,X1+1.4,Z0-1.4,Z1+1.4]);   // 1910: the station and the open track cut west of 8th Avenue
 
   // ---- opening-day sun: where the sun stood over Manhattan on November 27, 1910, at 2 pm (time chosen; the date is real)
-  function sunScene(ms,lat,lon){
-    const r=Math.PI/180, d=(ms-946728000000)/86400000, g=(357.529+.98560028*d)*r, q=280.459+.98564736*d;
-    const L=(q+1.915*Math.sin(g)+.02*Math.sin(2*g))*r, e=(23.439-.00000036*d)*r, ra=Math.atan2(Math.cos(e)*Math.sin(L),Math.cos(L)), dec=Math.asin(Math.sin(e)*Math.sin(L));
-    const H=(((18.697374558+24.06570982441908*d)%24)*15+lon)*r-ra, f=lat*r;
-    const alt=Math.asin(Math.sin(f)*Math.sin(dec)+Math.cos(f)*Math.cos(dec)*Math.cos(H)), az=Math.atan2(-Math.sin(H),Math.tan(dec)*Math.cos(f)-Math.sin(f)*Math.cos(H));
-    const E=Math.cos(alt)*Math.sin(az), Nn=Math.cos(alt)*Math.cos(az), U=Math.sin(alt), gd=((D&&D.meta.grid_deg)||-29)*r, ex=[Math.cos(gd),Math.sin(gd)], nx=[-ex[1],ex[0]];
-    return {alt:alt/r, dir:[E*ex[0]+Nn*ex[1],U,-(E*nx[0]+Nn*nx[1])]};
-  }
+  const sunScene=(ms,lat,lon)=>SS.sunDir(ms,lat,lon,D&&D.meta.grid_deg);
   const area=D&&D.meta.area?D.meta.area:[40.7476,-73.9975,40.7534,-73.9893], sun1910=sunScene(Date.UTC(1910,10,27,19,0),(area[0]+area[2])/2,(area[1]+area[3])/2);
   const day=k=>((D&&D.history&&D.history.days)||[]).find(d=>d.date===k), w10=day('1910-11-27');
 
@@ -251,6 +244,28 @@ SS.builders.push(function buildPenn1910(){
       {type:'dim',a:[wrX0,0,CZ+wrHalf+2],b:[wrX0,TOP,CZ+wrHalf+2],text:'153 FT',textAt:.55},
       {type:'label',p:[wrMid,TOP,CZ],slot:'top',title:'PENNSYLVANIA STATION',sub:['OPENED NOV 27, 1910 · MCKIM, MEAD & WHITE']},
       {type:'label',p:[(coX0+coX1)/2,coY+rise,CZ],slot:'low',small:true,title:'TORN DOWN 1963–66',sub:['MADISON SQUARE GARDEN OPENED','ON THIS SITE IN 1968']}]},
+    // then vs. now: the same key in every era, so the labels swap when the era switches
+    {key:'thenNow',name:'Then vs. now',era:'today',items:[
+      {type:'label',p:[0,44,0],slot:'top',title:'TODAY: MADISON SQUARE GARDEN',sub:['IN 1910: PENNSYLVANIA STATION','TORN DOWN 1963–66']},
+      ...(V.moynihan?[{type:'label',p:[V.moynihan.cx,V.moynihan.top,V.moynihan.cz],slot:'low',small:true,title:'TODAY: MOYNIHAN TRAIN HALL',sub:['IN 1910: OPEN RAILROAD TRACKS']}]:[])]},
+    {key:'thenNow',name:'Then vs. now',era:'1910',items:[
+      {type:'label',p:[wrMid,TOP,CZ],slot:'top',title:'IN 1910: PENNSYLVANIA STATION',sub:['TODAY: MADISON SQUARE GARDEN']},
+      ...(V.moynihan?[{type:'label',p:[V.moynihan.cx,0,V.moynihan.cz],slot:'low',small:true,title:'IN 1910: OPEN TRACKS',sub:['TODAY: MOYNIHAN TRAIN HALL']}]:[])]},
+    {key:'thenNow',name:'Then vs. now',era:'1906',items:[
+      {type:'label',p:[40,pitF+.5,CZ],slot:'top',title:'BEFORE 1910: THE DIG',sub:['TODAY: PENN STATION, 42 FT DOWN']}]},
+    // shadow clock on opening day (same key as Today's, so it carries across an era switch)
+    ...(V.sunClock?[{key:'shadow',name:'Shadow clock',era:'1910',items:[Object.assign({type:'sunclock',date:[1910,11,27],from:7.2,to:16.5,secs:9,peak:30,
+      note:'OPENING DAY · SUN: ASTRONOMICAL ALMANAC FORMULA'},V.sunClock)]}]:[]),
+    // weather on two real days the station stood through: opening day (dry) and the day demolition began (rain)
+    ...(V.weatherDay&&V.weatherDay('1910-11-27')?[{key:'weather',name:'Weather',era:'1910',items:[{type:'weather',day:V.weatherDay('1910-11-27')}]}]:[]),
+    ...(V.weatherDay&&V.weatherDay('1963-10-28')?[{key:'weather63',name:'Weather · 1963',era:'1910',items:[{type:'weather',day:V.weatherDay('1963-10-28')}]}]:[]),
+    {key:'numbers',name:'Numbers',era:'1910',items:[
+      {type:'counter',slot:'top',value:21,text:'TRACKS UNDER THE STATION',sub:'11 PLATFORMS · ASCE TRANSACTIONS, 1910'},
+      {type:'counter',slot:'mid',value:153,suffix:' FT',text:'TALLEST POINT',sub:'THE MAIN WAITING ROOM ROOF · ASCE 1910'},
+      ...(w10&&w10.weather?[{type:'counter',slot:'low',value:+w10.weather.TMAX,suffix:'°F',text:'OPENING DAY, NOV 27, 1910',sub:'DRY · CENTRAL PARK · NOAA'}]:[])]},
+    {key:'numbers',name:'Numbers',era:'1906',items:[
+      {type:'counter',slot:'top',value:500,text:'BUILDINGS CLEARED',sub:'ABOUT 500 · WIKIPEDIA, PENNSYLVANIA STATION'},
+      {type:'counter',slot:'mid',value:58,suffix:' FT',text:'DEEPEST CUT TO THE TRACKS',sub:'39 TO 58 FT BELOW THE STREET · ASCE 1910'}]},
     {key:'dig',name:'The dig',era:'1906',items:[
       {type:'outline',pts:[[bx[0],Z0],[X1,Z0],[X1,Z1],[bx[0],Z1]],y:.3},
       {type:'dim',a:[X1-6,0,Z1-4],b:[X1-6,pitF+.6,Z1-4],text:'39–58 FT',textAt:.5},
