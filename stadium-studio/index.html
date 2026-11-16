@@ -6,13 +6,15 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="engine/studio.css">
 
-<div id="app" data-mode="showcase" data-style="aerial">
+<div id="app" data-mode="explore" data-style="aerial">
   <div id="stage" data-bg="day"></div>
   <canvas id="scene" role="img" aria-label="3D stadium model"></canvas>
   <div class="tilt top" id="tilt-top" hidden></div>
   <div class="tilt bot" id="tilt-bot" hidden></div>
   <div class="vignette" id="vignette" hidden></div>
   <div id="labels" aria-hidden="true"></div>
+  <!-- vertical frame guides: where TikTok, Reels and Shorts put their buttons and captions (never recorded) -->
+  <div id="safe" aria-hidden="true" hidden><span class="safe-top"></span><span class="safe-side"></span><span class="safe-bot"></span></div>
   <div id="sheet" hidden>
     <div class="sh-frame" id="sh-frame"></div>
     <svg class="sh-lines" id="sh-lines" aria-hidden="true"></svg>
@@ -34,19 +36,59 @@
       <p id="stats" class="stats" hidden></p>
     </header>
     <div class="mode card" role="group" aria-label="Camera mode">
-      <button id="m-show" type="button" aria-pressed="true">Showcase</button>
-      <button id="m-explore" type="button" aria-pressed="false">Explore</button>
       <button id="m-shots" type="button" aria-pressed="false" class="data" hidden>Shot map</button>
-      <button id="reset" type="button" class="reset" hidden>Reset view</button>
+      <button id="reset" type="button">Reset view</button>
+      <button id="rec-open" type="button" aria-pressed="false" aria-controls="rec" class="rec-open" hidden>Record</button>
     </div>
     <div class="mode card" id="opts" role="group" aria-label="Style option" hidden></div>
+    <section class="card rec" id="rec" aria-label="Recorder" hidden>
+      <p class="rec-head"><strong>Record</strong><span>1080 × 1920 · 30 fps · MP4</span></p>
+      <div class="rec-row">
+        <button id="rec-vert" type="button" aria-pressed="true">Vertical frame</button>
+        <button id="rec-clean" type="button" aria-pressed="false">Hide panels</button>
+      </div>
+      <p class="rec-lab">Live take <span>records what you do, in real time</span></p>
+      <div class="rec-row">
+        <button id="rec-live" type="button" class="rec-go">● Start recording</button>
+        <span id="rec-time" class="rec-time">0:00</span>
+      </div>
+      <p class="rec-lab">Planned move <span>always smooth, built frame by frame</span></p>
+      <div class="rec-row">
+        <button id="rec-a" type="button" aria-pressed="false">Set start</button>
+        <button id="rec-b" type="button" aria-pressed="false">Set end</button>
+      </div>
+      <div class="rec-row">
+        <label for="rec-move">Move</label>
+        <select id="rec-move">
+          <option value="ab">Start to end</option>
+          <option value="o90">Orbit 90° right</option>
+          <option value="o-90">Orbit 90° left</option>
+          <option value="o180">Orbit 180°</option>
+          <option value="o360">Orbit 360° (loops)</option>
+        </select>
+        <label for="rec-len">Length</label>
+        <select id="rec-len">
+          <option value="4">4 s</option>
+          <option value="6" selected>6 s</option>
+          <option value="8">8 s</option>
+          <option value="10">10 s</option>
+          <option value="15">15 s</option>
+        </select>
+      </div>
+      <div class="rec-row">
+        <button id="rec-prev" type="button">Preview</button>
+        <button id="rec-render" type="button" class="rec-go">Render MP4</button>
+      </div>
+      <progress id="rec-prog" max="1" value="0" hidden></progress>
+      <p id="rec-msg" class="rec-msg" role="status" aria-live="polite"></p>
+    </section>
   </div>
 
   <div class="bottom">
     <aside class="card note" aria-live="polite">
       <p class="note-head"><strong id="n-name"></strong><span id="n-refs"></span></p>
       <p id="n-desc"></p>
-      <p id="hint" class="hint" hidden>Drag to orbit · Pinch or scroll to zoom · Right-drag or two fingers to pan · Zoom through the roof to go inside</p>
+      <p id="hint" class="hint">Drag to turn · Scroll or pinch to zoom · Right-drag to slide · In Wireframe and Overhead, zoom through the roof</p>
       <p id="n-data" class="hint data-note" hidden></p>
     </aside>
     <nav class="styles" aria-label="Visual style"><div class="styles-row" id="styles"></div></nav>
@@ -75,3 +117,6 @@
 <script src="venues/yankee.js"></script>
 <script src="venues/msg.js"></script>
 <script src="engine/app.js"></script>
+<!-- recorder: mp4-muxer packs encoded frames into an .mp4 file (free, no account) -->
+<script src="https://cdn.jsdelivr.net/npm/mp4-muxer@5.2.1/build/mp4-muxer.js"></script>
+<script src="engine/recorder.js"></script>

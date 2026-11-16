@@ -1,0 +1,251 @@
+<title>Stadium Series Timeline</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a subway strip map. Phases are stations on one line, top to bottom; the line color shows how far the project has traveled. */
+:root{
+  --bg:#f2f3ef; --panel:#ffffff; --ink:#17201b; --muted:#5b6660; --rule:rgba(23,32,27,.12);
+  --line:#00933c; --line-soft:rgba(0,147,60,.14); --now:#d98a00; --now-soft:rgba(217,138,0,.14); --later:#9aa39d;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif; --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#101512; --panel:#171e1a; --ink:#e8eee9; --muted:#9aa8a0; --rule:rgba(232,238,233,.13);
+  --line:#2fbf6a; --line-soft:rgba(47,191,106,.16); --now:#f2b13a; --now-soft:rgba(242,177,58,.16); --later:#5d6862; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#101512; --panel:#171e1a; --ink:#e8eee9; --muted:#9aa8a0; --rule:rgba(232,238,233,.13);
+  --line:#2fbf6a; --line-soft:rgba(47,191,106,.16); --now:#f2b13a; --now-soft:rgba(242,177,58,.16); --later:#5d6862; color-scheme:dark;}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:980px;margin:0 auto;padding-block:40px 64px;display:flex;flex-direction:column;gap:40px}
+
+/* header */
+header{display:flex;flex-direction:column;gap:10px}
+.eyebrow{font:500 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+h1{margin:0;font:700 clamp(36px,6vw,58px)/.95 var(--display);letter-spacing:.01em;text-transform:uppercase;text-wrap:balance}
+.lede{margin:0;max-width:62ch;color:var(--muted);font-size:17px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:6px;font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+
+/* status dots, shared by the overview strip and the stations */
+.dot{width:14px;height:14px;border-radius:50%;flex:none;border:3px solid var(--line);background:var(--panel)}
+.dot.done{background:var(--line)}
+.dot.now{border-color:var(--now);background:var(--now);box-shadow:0 0 0 4px var(--now-soft)}
+.dot.later{border-color:var(--later)}
+
+/* overview strip: the whole line at a glance */
+.strip{background:var(--panel);border:1px solid var(--rule);border-radius:14px;padding:22px 20px 18px;overflow-x:auto}
+.strip ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(7,minmax(104px,1fr));min-width:728px;position:relative}
+.strip ol::before{content:"";position:absolute;left:52px;right:52px;top:6px;height:4px;border-radius:2px;background:var(--later)}
+.strip li{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;padding:0 4px}
+.strip li .dot{position:relative;z-index:1}
+.strip b{font:600 15px/1.15 var(--display);letter-spacing:.03em;text-transform:uppercase}
+.strip small{font:500 11px var(--mono);color:var(--muted);letter-spacing:.06em}
+
+/* the stations */
+.line{list-style:none;margin:0;padding:0;position:relative}
+.line::before{content:"";position:absolute;left:15px;top:10px;bottom:10px;width:4px;border-radius:2px;background:var(--later)}
+.line::after{content:"";position:absolute;left:15px;top:10px;height:var(--progress,120px);width:4px;border-radius:2px;background:var(--line)}
+.stop{position:relative;display:grid;grid-template-columns:34px minmax(0,1fr);gap:0 18px;padding-bottom:34px}
+.stop:last-child{padding-bottom:0}
+.stop .dot{margin:7px 0 0 10px;position:relative;z-index:1;width:18px;height:18px}
+.head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.num{font:500 12px var(--mono);color:var(--muted);letter-spacing:.08em}
+h2{margin:0;font:700 clamp(24px,3.4vw,30px)/1.05 var(--display);letter-spacing:.02em;text-transform:uppercase;text-wrap:balance}
+.chip{font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:999px;border:1px solid var(--rule);color:var(--muted)}
+.chip.now{border-color:transparent;background:var(--now-soft);color:var(--ink)}
+.chip.done{border-color:transparent;background:var(--line-soft);color:var(--ink)}
+.date{font:500 11px var(--mono);color:var(--muted);letter-spacing:.06em}
+.goal{margin:6px 0 12px;max-width:62ch;color:var(--muted)}
+.body{min-width:0}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px 28px}
+.list h3{margin:0 0 6px;font:600 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.list ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.list li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px;align-items:baseline}
+.list li::before{content:"";width:10px;height:10px;border-radius:3px;border:2px solid var(--later);transform:translateY(1px)}
+.list li.ok::before{background:var(--line);border-color:var(--line)}
+.list li.ok{color:var(--muted)}
+.exit{margin-top:12px;padding:10px 14px;border-left:3px solid var(--line);background:var(--line-soft);border-radius:0 8px 8px 0;max-width:70ch;font-size:15px}
+.exit b{font:600 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-right:6px}
+
+/* parked ideas */
+.parked{background:var(--panel);border:1px solid var(--rule);border-radius:14px;padding:20px 22px}
+.parked h2{font-size:24px;margin-bottom:10px}
+.parked ul{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px 28px}
+.parked li{min-width:0}
+.parked li b{display:block;font:600 15px var(--body)}
+.parked li span{color:var(--muted);font-size:14.5px}
+footer{font:500 12px var(--mono);color:var(--muted);letter-spacing:.04em}
+@media (max-width:560px){ .stop{grid-template-columns:28px minmax(0,1fr);gap:0 12px} .line::before,.line::after{left:12px} .stop .dot{margin-left:7px} }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Visual Design Project · 3D stadium videos</p>
+    <h1>Stadium Series Timeline</h1>
+    <p class="lede">The road from the two models we are perfecting now to posting videos and, later, the map site. Dates are TBD; the order is the plan. Each stop says what is next and how we will know it is done.</p>
+    <div class="legend" aria-label="Legend">
+      <span><i class="dot done"></i>Done</span><span><i class="dot now"></i>Now</span><span><i class="dot"></i>Next</span><span><i class="dot later"></i>Later</span>
+    </div>
+  </header>
+
+  <nav class="strip" aria-label="All phases at a glance">
+    <ol>
+      <li><i class="dot now"></i><b>Model foundations</b><small>Now · TBD</small></li>
+      <li><i class="dot"></i><b>Visual identity</b><small>Next · TBD</small></li>
+      <li><i class="dot"></i><b>Content direction</b><small>Next · TBD</small></li>
+      <li><i class="dot later"></i><b>Production pipeline</b><small>Later · TBD</small></li>
+      <li><i class="dot later"></i><b>Launch</b><small>Later · TBD</small></li>
+      <li><i class="dot later"></i><b>Scale up</b><small>Later · TBD</small></li>
+      <li><i class="dot later"></i><b>Map site</b><small>Later · TBD</small></li>
+    </ol>
+  </nav>
+
+  <ol class="line" style="--progress:18px">
+    <li class="stop">
+      <i class="dot now"></i>
+      <div class="body">
+        <div class="head"><span class="num">STOP 1</span><h2>Model foundations</h2><span class="chip now">Now</span><span class="date">Target: TBD</span></div>
+        <p class="goal">Yankee Stadium and Madison Square Garden look good enough to put on camera, and they are solid templates so the next venue takes a fraction of the time.</p>
+        <div class="cols">
+          <div class="list"><h3>Done so far</h3><ul>
+            <li class="ok">Reusable engine: one shared core, one recipe per venue</li>
+            <li class="ok">Data recipe for any NYC venue (city data, OpenStreetMap, transit)</li>
+            <li class="ok">MSG rebuilt from data and photos, inside and out</li>
+            <li class="ok">Yankee Stadium placed in its real neighborhood</li>
+            <li class="ok">Realistic lighting, corner shading, night glow</li>
+            <li class="ok">Stage 2 city: facades by age, water tanks, trees, curbs</li>
+            <li class="ok">Four iso icon looks, blueprint poster, cutaway</li>
+            <li class="ok">Real train timetables and the live MTA helper</li>
+          </ul></div>
+          <div class="list"><h3>Next steps</h3><ul>
+            <li>You review every view on both venues and list what still looks off</li>
+            <li>Yankee details from the photos: frieze, flags, Monument Park, Great Hall</li>
+            <li>Fill in the Yankee Stadium notes file</li>
+            <li>Check the fly-through and camera glides on your Mac</li>
+            <li>Street life: cars, cabs and people (the last Stage 2 item)</li>
+            <li>Lock both venues in as the template</li>
+          </ul></div>
+        </div>
+        <p class="exit"><b>Done when</b>you would happily use any view of either venue in a video, and a new venue can be added in under a day.</p>
+      </div>
+    </li>
+
+    <li class="stop">
+      <i class="dot"></i>
+      <div class="body">
+        <div class="head"><span class="num">STOP 2</span><h2>Visual identity</h2><span class="chip">Next</span><span class="date">Target: TBD</span></div>
+        <p class="goal">Decide what makes a video recognizably yours at a glance.</p>
+        <div class="cols">
+          <div class="list"><h3>Next steps</h3><ul>
+            <li>Pick 2 or 3 signature looks to use in every video</li>
+            <li>Choose the title and caption type style</li>
+            <li>Set a small color palette for on-screen text</li>
+            <li>Make a short intro and ending card with your handle</li>
+          </ul></div>
+        </div>
+        <p class="exit"><b>Done when</b>a frame from any video could only be yours.</p>
+      </div>
+    </li>
+
+    <li class="stop">
+      <i class="dot"></i>
+      <div class="body">
+        <div class="head"><span class="num">STOP 3</span><h2>Content direction</h2><span class="chip">Next</span><span class="date">Target: TBD</span></div>
+        <p class="goal">Choose the lane and the repeatable formats, then write the first batch.</p>
+        <div class="cols">
+          <div class="list"><h3>Next steps</h3><ul>
+            <li>Settle the lane (starting idea: the hidden stories of places, stadiums first)</li>
+            <li>Pick 2 or 3 series formats, such as "what is underneath" and "then vs now"</li>
+            <li>Write the first 5 scripts (the MSG and Penn Station draft is ready)</li>
+            <li>Build the 1910 Penn Station model for the then-vs-now video</li>
+            <li>Decide how the NHL shot data comes back as a story</li>
+          </ul></div>
+        </div>
+        <p class="exit"><b>Done when</b>five scripts are written and you know what the next twenty are about.</p>
+      </div>
+    </li>
+
+    <li class="stop">
+      <i class="dot later"></i>
+      <div class="body">
+        <div class="head"><span class="num">STOP 4</span><h2>Production pipeline</h2><span class="chip">Later</span><span class="date">Target: TBD</span></div>
+        <p class="goal">Make one video take hours, not days.</p>
+        <div class="cols">
+          <div class="list"><h3>Next steps</h3><ul>
+            <li>Record button in Stadium Studio that saves clean vertical clips</li>
+            <li>Saved camera paths for each signature shot</li>
+            <li>Voice workflow: your mic, then Adobe Enhance Speech</li>
+            <li>A CapCut project template with captions and music set up</li>
+            <li>Test Blender for one or two hero shots</li>
+          </ul></div>
+        </div>
+        <p class="exit"><b>Done when</b>a full video goes from script to export in one sitting.</p>
+      </div>
+    </li>
+
+    <li class="stop">
+      <i class="dot later"></i>
+      <div class="body">
+        <div class="head"><span class="num">STOP 5</span><h2>Launch</h2><span class="chip">Later</span><span class="date">Target: TBD</span></div>
+        <p class="goal">Start posting on TikTok, Instagram Reels and YouTube Shorts, and learn from every video.</p>
+        <div class="cols">
+          <div class="list"><h3>Next steps</h3><ul>
+            <li>Set up the three accounts with one handle (steps in the video guide)</li>
+            <li>Post the first batch of 3 to 5 videos</li>
+            <li>Reply to comments in the first hour</li>
+            <li>Read each video's retention chart after 48 hours and fix one thing</li>
+          </ul></div>
+        </div>
+        <p class="exit"><b>Done when</b>you are posting on a steady rhythm, 2 or 3 a week.</p>
+      </div>
+    </li>
+
+    <li class="stop">
+      <i class="dot later"></i>
+      <div class="body">
+        <div class="head"><span class="num">STOP 6</span><h2>Scale up</h2><span class="chip">Later</span><span class="date">Target: TBD</span></div>
+        <p class="goal">Use the template to add venues and landmarks quickly.</p>
+        <div class="cols">
+          <div class="list"><h3>Next steps</h3><ul>
+            <li>Next venues from the template (NYC first: Citi Field, MetLife, Barclays)</li>
+            <li>NYC landmarks with the same data recipe</li>
+            <li>Data packs for other cities</li>
+            <li>Sports data modules beyond hockey (MLB, NBA)</li>
+          </ul></div>
+        </div>
+        <p class="exit"><b>Done when</b>new venues arrive faster than you can post them.</p>
+      </div>
+    </li>
+
+    <li class="stop">
+      <i class="dot later"></i>
+      <div class="body">
+        <div class="head"><span class="num">STOP 7</span><h2>Map site</h2><span class="chip">Later</span><span class="date">Target: TBD</span></div>
+        <p class="goal">The home base every bio links to: an interactive map of venues as iso icons.</p>
+        <div class="cols">
+          <div class="list"><h3>Next steps</h3><ul>
+            <li>Pick the iso icon look for the map</li>
+            <li>Map of the US first, then the world</li>
+            <li>Each icon opens the venue's 3D model and its videos</li>
+            <li>Link to it from every social bio</li>
+          </ul></div>
+        </div>
+        <p class="exit"><b>Done when</b>a viewer can go from a video to exploring the venue themselves.</p>
+      </div>
+    </li>
+  </ol>
+
+  <section class="parked" aria-labelledby="parked-h">
+    <h2 id="parked-h">Parked for later</h2>
+    <ul>
+      <li><b>Photoreal Google Earth view</b><span>Needs a Google key with billing; works on your Mac only.</span></li>
+      <li><b>NHL shot map</b><span>The Rangers shot data is saved; come back with a story to tell.</span></li>
+      <li><b>Phone performance</b><span>Test on phones and add a quality setting when the map site needs it.</span></li>
+      <li><b>Other cities</b><span>Chicago, LA and others have open building data ready to plug in.</span></li>
+    </ul>
+  </section>
+
+  <footer>Made November 15, 2026. Dates are TBD; update this page as stops are completed.</footer>
+</div>

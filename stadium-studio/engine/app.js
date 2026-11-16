@@ -12,7 +12,10 @@ sun.castShadow=true; sun.shadow.mapSize.set(4096,4096);
 // Stage 1 realism: a soft studio sky for reflections, film-style color response, and haze (realistic views only)
 const envMap=THREE.RoomEnvironment?new THREE.PMREMGenerator(renderer).fromScene(new THREE.RoomEnvironment(),.04).texture:null;
 const HAZE={day:['#d9e0e8',420,1700],night:['#0b1220',380,1500],afternoon:['#e6e3dc',420,1700]};
-let realKey='';
+let realKey='', fogBase=null;
+// tall frames (like 9:16 video) pull the camera back to fit the width, so the haze starts farther away by the same amount
+const aspectPull=()=>Math.max(1,Math.pow(1.55/(Wd/Ht),.8));
+function fitFog(){if(scene.fog&&fogBase){const k=aspectPull(); scene.fog.near=fogBase[0]*k; scene.fog.far=fogBase[1]*k;}}
 /* Stage 1b, realistic views only: soft shading where surfaces meet (SAO), glow around bright lights (bloom),
    then film-style color and screen color in one final step. Needs an opaque sky, so the style's backdrop is painted into the scene. */
 const POST={on:false};
@@ -60,7 +63,7 @@ const ortho=new THREE.OrthographicCamera(-1,1,1,-1,-2000,6000);
 let cam=persp, orthoSize=150, Wd=1, Ht=1, tw=null, mode='showcase';
 const target=new THREE.Vector3();
 const controls=THREE.OrbitControls?new THREE.OrbitControls(persp,canvas):null;
-if(controls){controls.enableDamping=true; controls.dampingFactor=.08; controls.enabled=false; controls.maxPolarAngle=Math.PI*.495; controls.minDistance=12; controls.maxDistance=1200; controls.screenSpacePanning=true; controls.addEventListener('start',()=>{tw=null;});}
+if(controls){controls.enableDamping=true; controls.dampingFactor=.08; controls.enabled=true; controls.maxPolarAngle=Math.PI*.495; controls.minDistance=12; controls.maxDistance=1200; controls.screenSpacePanning=true; controls.addEventListener('start',()=>{tw=null;});}
 
 /* =====================================================================
    Styles
@@ -239,7 +242,7 @@ function applyStyle(key,instant){
   $('tilt-top').hidden=$('tilt-bot').hidden=$('vignette').hidden=!S.tilt;
   setEdges(S.edges||null); setClip(S.clip||null,S.clipUnder||null);
   // map-icon looks: pixel art is drawn small and scaled up without smoothing
-  const pr=S.pixel||Math.min(window.devicePixelRatio||1,2); if(renderer.getPixelRatio()!==pr){renderer.setPixelRatio(pr); renderer.setSize(Wd,Ht,false); if(POST.comp){POST.comp.setPixelRatio(pr); POST.comp.setSize(Wd,Ht);}}
+  const pr=S.pixel||(REC.size?1:Math.min(window.devicePixelRatio||1,2)); if(renderer.getPixelRatio()!==pr){renderer.setPixelRatio(pr); renderer.setSize(Wd,Ht,false); if(POST.comp){POST.comp.setPixelRatio(pr); POST.comp.setSize(Wd,Ht);}}
   canvas.style.imageRendering=S.pixel?'pixelated':'';
   // fly-in: only some views let Explore pass through the roof; the rest stop outside the walls
   if(controls){controls.minDistance=(S.flyIn||shotsOn||!V.indoor)?12:(V.flyGuard||12); controls.zoomSpeed=S.flyIn?1.6:1;}
@@ -252,7 +255,7 @@ function applyStyle(key,instant){
     renderer.toneMapping=S.real&&!POST.on?THREE.ACESFilmicToneMapping:THREE.NoToneMapping; renderer.toneMappingExposure=S.exposure||.95;
 
     scene.environment=S.real&&S.env!==false?envMap:null;
-    const hz=S.haze&&HAZE[S.haze]; scene.fog=hz?new THREE.Fog(lin(hz[0]),hz[1],hz[2]):null;
+    const hz=S.haze&&HAZE[S.haze]; scene.fog=hz?new THREE.Fog(lin(hz[0]),hz[1],hz[2]):null; fogBase=hz?[hz[1],hz[2]]:null; fitFog();
     scene.traverse(o=>{if(o.material) (Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{m.needsUpdate=true; if('envMapIntensity' in m) m.envMapIntensity=m.metalness>.3?1:.28;});});}
   if(V.mats.glassWall){V.mats.glassWall.metalness=S.real?.55:0; V.mats.glassWall.roughness=S.real?.16:.8;}
   if(V.mats.field){V.mats.field.roughness=S.real?.28:1;}
@@ -274,11 +277,13 @@ function applyStyle(key,instant){
   document.querySelectorAll('.style-btn').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.key===key)));
   buildLabels(); renderOpts(key);
   $('sheet').hidden=!S.sheet; if(S.sheet) fillSheet();
-  bExp.hidden=!controls||!!S.sheet; bShots.hidden=!V.shots||!!S.sheet; bShots.setAttribute('aria-pressed',String(shotsOn));
-  if(S.sheet && mode!=='showcase'){mode='showcase'; app.dataset.mode=mode; bShow.setAttribute('aria-pressed','true'); bExp.setAttribute('aria-pressed','false'); bReset.hidden=hint.hidden=true; if(controls) controls.enabled=false;}
+  bShots.hidden=!V.shots||!!S.sheet; bShots.setAttribute('aria-pressed',String(shotsOn));
+  // one camera mode: each style glides the camera into place, and you can always drag and zoom (except on the still blueprint)
+  bReset.hidden=hint.hidden=!controls||!!S.sheet; if(controls) controls.enabled=!S.sheet; userMoved=false;
   updateDataNote(); layoutCache=null;
   for(const k in V.G) if(instant||reduceMotion){V.G[k].position.copy(expOf(k));}
-  if(mode==='showcase'||instant) goTo(preset(viewKey()),instant); else if((preset(viewKey()).type==='o')!==(cam===ortho)) goTo(preset(viewKey()),true);
+  goTo(preset(viewKey()),instant);
+  if(SS.studio&&SS.studio.onStyle) SS.studio.onStyle(S);
 }
 /* style options: a small two-way switch some styles carry (cutaway cut, bowl seat, iso base) */
 const OPT={};
@@ -386,7 +391,7 @@ function preset(key){
   if(c.abs) return {type:'p',pos:new THREE.Vector3(...c.pos),tgt:new THREE.Vector3(...c.tgt),fov:c.fov};
   const s=V.scale, tgt=new THREE.Vector3(V.center.x+c.tgt[0]*s,c.tgt[1],V.center.z+c.tgt[2]*s);
   if(c.ortho){const dir=c.dir==='section'?(V.section.axis==='x'?[1,.14,.25]:[.25,.14,1]):c.dir; return {type:'o',pos:new THREE.Vector3(...dir).normalize().multiplyScalar(700).add(tgt),tgt,size:c.size*s};}
-  const p=new THREE.Vector3(...c.off).multiplyScalar(s); const k=Math.max(1,Math.pow(1.55/aspect,.8)); p.multiplyScalar(k).add(tgt);
+  const p=new THREE.Vector3(...c.off).multiplyScalar(s); p.multiplyScalar(aspectPull()).add(tgt);
   return {type:'p',pos:p,tgt,fov:c.fov};
 }
 function updateOrtho(){const aspect=Wd/Ht,halfH=aspect<1.25?orthoSize*1.25/aspect:orthoSize; ortho.left=-halfH*aspect; ortho.right=halfH*aspect; ortho.top=halfH; ortho.bottom=-halfH; ortho.updateProjectionMatrix();}
@@ -411,7 +416,7 @@ function buildLabels(){
   LBL=lblMode?V.labels[lblMode].map(L=>{const el=document.createElement('div'); el.className='label'; el.innerHTML='<span class="txt"></span><span class="lead"></span><span class="dot"></span>'; el.querySelector('.txt').textContent=L.t; labelsEl.appendChild(el); return Object.assign({el,v:new THREE.Vector3()},L);}):[];
 }
 function updateLabels(){
-  let show=!!lblMode && !tw;
+  let show=!!lblMode && !tw && !REC.size;
   if(lblMode==='exploded') show=show && V.G.crown.position.distanceTo(expOf('crown'))<10;
   labelsEl.hidden=!show; if(!show) return;
   LBL.forEach(L=>{
@@ -432,19 +437,11 @@ ORDER.forEach(k=>{
   b.innerHTML='<span class="s-name"></span><span class="s-ref"></span>'; b.querySelector('.s-name').textContent=STYLES[k].name; b.querySelector('.s-ref').textContent=STYLES[k].refs;
   b.addEventListener('click',()=>applyStyle(k)); row.appendChild(b);
 });
-const bShow=$('m-show'),bExp=$('m-explore'),bReset=$('reset'),hint=$('hint'),bShots=$('m-shots');
-if(!controls) bExp.hidden=true;
-function setMode(m){
-  mode=m; app.dataset.mode=m;
-  bShow.setAttribute('aria-pressed',String(m==='showcase')); bExp.setAttribute('aria-pressed',String(m==='explore'));
-  bReset.hidden=m!=='explore'; hint.hidden=m!=='explore';
-  if(controls){controls.enabled=m==='explore'; controls.target.copy(target);}
-  if(m==='showcase') goTo(preset(viewKey()));
-}
+const bReset=$('reset'),hint=$('hint'),bShots=$('m-shots');
+let userMoved=false;
+if(controls) controls.addEventListener('start',()=>{userMoved=true;});
 const viewKey=()=>shotsOn&&V.shots&&!STYLES[current].sheet?'shots':(curStyle().cam||current);
 bShots.addEventListener('click',()=>{shotsOn=!shotsOn; applyStyle(current);});
-bShow.addEventListener('click',()=>setMode('showcase'));
-bExp.addEventListener('click',()=>setMode('explore'));
 bReset.addEventListener('click',()=>goTo(preset(viewKey())));
 function setVenue(key){
   if(V) V.root.visible=false;
@@ -469,22 +466,43 @@ SS.builders.forEach(b=>b()); makeVenueButtons();
 const vertCount=v=>{let n=0; v.root.traverse(o=>{if(o.isMesh&&o.geometry) n+=o.geometry.attributes.position.count*(o.isInstancedMesh?o.count:1);}); return n;};
 Object.values(VENUES).forEach(v=>v.verts=vertCount(v));
 
+/* recording: the recorder (engine/recorder.js) can fix the drawing size, pause the loop, set a clock and drive the camera */
+const REC={size:null,paused:false,clock:null,driver:null};
 function resize(){
-  Wd=Math.max(1,app.clientWidth); Ht=Math.max(1,app.clientHeight);
+  if(REC.size) return;   // while recording, the video size wins over the window size
+  Wd=Math.max(1,canvas.clientWidth||app.clientWidth); Ht=Math.max(1,canvas.clientHeight||app.clientHeight);
   renderer.setSize(Wd,Ht,false); persp.aspect=Wd/Ht; persp.updateProjectionMatrix(); updateOrtho(); layoutCache=null;
   if(POST.comp){POST.comp.setPixelRatio(renderer.getPixelRatio()); POST.comp.setSize(Wd,Ht);}
-  if(V && mode==='showcase' && !tw) goTo(preset(viewKey()),true);
+  fitFog();
+  if(V && !tw && !userMoved) goTo(preset(viewKey()),true);
+}
+/* the depth range follows the camera: a far-away camera (tall video frames, big zoom-outs) gets a deeper near plane,
+   which keeps the corner shading clean instead of drawing dark outlines. Close views keep the tuned 6 to 2400. */
+function fitDepth(){
+  if(cam!==persp) return; const d=persp.position.distanceTo(target), n=Math.max(6,d/61), f=Math.max(2400,d*6.5);
+  if(Math.abs(persp.near-n)>.05||Math.abs(persp.far-f)>1){persp.near=n; persp.far=f; persp.updateProjectionMatrix();
+    if(POST.sao) POST.sao.params.saoScale=2*f/2400;}   // the shading divides its scale by the far distance, so keep that ratio fixed
 }
 new ResizeObserver(resize).observe(app); resize();
 setVenue('yankee');
 
 const clock=new THREE.Clock(); let fT=0,fN=0,first=true,simT=0,simMin=-1;
 const fmt=n=>n.toLocaleString('en-US');
+const nowSec=()=>REC.clock!==null?REC.clock:Date.now()/1000;
 function frame(){
   requestAnimationFrame(frame);
   const dt=Math.min(clock.getDelta(),.1);
+  if(REC.paused) return;   // the recorder is stepping frames itself
+  step(dt);
+  fT+=dt; fN++; if(fT>.5){const fps=Math.round(fN/fT); fT=0; fN=0;
+    if(STYLES[current].stats) $('stats').textContent=`[Perspective] [Edged faces]  Tris ${fmt(renderer.info.render.triangles)}  ·  Verts ${fmt(V.verts)}  ·  ${fps} fps`;}
+  if(first){first=false; loading.hidden=true;}
+}
+/* one frame: move things on by dt seconds, then draw */
+function step(dt){
   for(const k in V.G){const want=expOf(k),g=V.G[k]; if(reduceMotion) g.position.copy(want); else g.position.lerp(want,Math.min(1,dt*4));}
-  if(tw){
+  if(REC.driver){REC.driver(dt); if(controls) controls.target.copy(target);}
+  else if(tw){
     tw.t+=dt/tw.dur; const e=tw.t>=1?1:ease(tw.t);
     cam.position.lerpVectors(tw.p0,tw.p1,e); cam.position.y+=Math.sin(Math.PI*e)*tw.bump; target.lerpVectors(tw.t0,tw.t1,e);
     if(cam===persp) persp.fov=tw.f0+(tw.f1-tw.f0)*e; cam.zoom=tw.z0+(1-tw.z0)*e; cam.updateProjectionMatrix(); cam.lookAt(target);
@@ -494,19 +512,41 @@ function frame(){
   if(clouds.visible) clouds.children.forEach((c,k)=>{c.position.x+=Math.sin(clock.elapsedTime*.2+k)*.02;});
   // trains under MSG: one real-schedule minute per second, looping 5 to 6 pm
   if(V.trainAt && (V.trainShown?V.trainShown():V.G.under.visible)){
-    let tm; if(V.liveTrains){tm=(Date.now()/1000-V.liveBase)/60;} else {simT=(simT+(reduceMotion?0:dt))%60; tm=simT;}
+    let tm; if(V.liveTrains){tm=(nowSec()-V.liveBase)/60;} else {simT=(simT+(reduceMotion?0:dt))%60; tm=simT;}
     V.trainAt(tm); const mm=Math.floor(tm*(V.liveTrains?4:1));
     if(mm!==simMin){simMin=mm; lastClock=V.drawBoard(tm,V.liveTrains?new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}):null); updateDataNote(lastClock);}}
   // Explore: once the camera passes under the roof, switch to the arena's own lighting
-  if(V.indoor && mode==='explore' && !tw){const r=Math.hypot(cam.position.x-V.center.x,cam.position.z-V.center.z), inside=r<V.Ri && cam.position.y>0 && cam.position.y<V.yC(r);
+  if(V.indoor && ((controls && controls.enabled && !tw) || REC.driver)){const r=Math.hypot(cam.position.x-V.center.x,cam.position.z-V.center.z), inside=r<V.Ri && cam.position.y>0 && cam.position.y<V.yC(r);
     if(inside!==!!V.inside){V.inside=inside; setLights(inside?'arena':resolve(STYLES[current].light)); stage.dataset.bg=inside?'night':resolve(STYLES[current].bg);}}
+  fitDepth();
   if(STYLES[current].sheet) renderSheet();
   else if(POST.on){POST.render.camera=cam; POST.sao.enabled=cam===persp; if(POST.sao.enabled) POST.sao.camera=persp; POST.comp.render(dt);}
   else {renderer.setClearColor(0x000000,0); renderer.render(scene,cam);}
+  if(SS.studio.onFrame) SS.studio.onFrame();   // the recorder copies the frame here, while the picture is still in the canvas
   updateLabels();
-  fT+=dt; fN++; if(fT>.5){const fps=Math.round(fN/fT); fT=0; fN=0;
-    if(STYLES[current].stats) $('stats').textContent=`[Perspective] [Edged faces]  Tris ${fmt(renderer.info.render.triangles)}  ·  Verts ${fmt(V.verts)}  ·  ${fps} fps`;}
-  if(first){first=false; loading.hidden=true;}
 }
+
+/* the small set of controls the recorder needs */
+SS.studio={
+  REC, step, canvas, renderer,
+  onFrame:null, onStyle:null,
+  style:()=>({key:current,S:curStyle(),bg:resolve(curStyle().bg),post:POST.on,venue:V.key,studioBg:V.studio.bg}),
+  view:()=>({o:cam===ortho,pos:cam.position.clone(),tgt:target.clone(),fov:persp.fov,zoom:cam.zoom,size:orthoSize}),
+  setView(v){
+    const want=v.o?ortho:persp; if(cam!==want){cam=want; if(controls) controls.object=cam;}
+    if(v.o){orthoSize=v.size; updateOrtho();} else persp.fov=v.fov;
+    cam.position.copy(v.pos); target.copy(v.tgt); cam.zoom=v.zoom; cam.updateProjectionMatrix(); cam.lookAt(target);
+    if(controls) controls.target.copy(target); tw=null;
+  },
+  // draw at an exact video size (or back to the window when w is null)
+  setSize(w,h){
+    if(w){REC.size=[w,h]; const pr=curStyle().pixel||1; renderer.setPixelRatio(pr); renderer.setSize(w,h,false); Wd=w; Ht=h;
+      persp.aspect=w/h; persp.updateProjectionMatrix(); updateOrtho(); if(POST.comp){POST.comp.setPixelRatio(pr); POST.comp.setSize(w,h);} fitFog();}
+    else {REC.size=null; const pr=curStyle().pixel||Math.min(window.devicePixelRatio||1,2); renderer.setPixelRatio(pr); resize();}
+    layoutCache=null;
+  },
+  refit(){resize();},
+  setControls(on){if(controls) controls.enabled=on&&!STYLES[current].sheet;}
+};
 frame();
 })();

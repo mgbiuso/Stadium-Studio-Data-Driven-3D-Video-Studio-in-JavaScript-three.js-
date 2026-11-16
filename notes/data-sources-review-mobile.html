@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data Sources Review</title>
+<style>
+  @page { size: 100mm 200mm; margin: 7mm 6mm 8mm; }
+  :root { --ink:#1b1f24; --mute:#5b6470; --line:#e2e5ea; --accent:#1f5fbf; --good:#1d7a46; --warn:#a15c00; --bad:#b3261e; --card:#f6f7f9; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:10.5pt/1.45 -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif; color:var(--ink); background:#fff; }
+  h1 { font-size:17pt; line-height:1.15; margin:0 0 2mm; }
+  .sub { color:var(--mute); font-size:9pt; margin:0 0 5mm; }
+  h2 { font-size:13pt; margin:6mm 0 2.5mm; padding-top:2mm; border-top:2px solid var(--accent); color:var(--accent); break-after:avoid; }
+  h3 { font-size:11pt; margin:5mm 0 2mm; break-after:avoid; }
+  p { margin:0 0 2.5mm; }
+  ul, ol { margin:0 0 3mm; padding-left:5mm; }
+  li { margin:0 0 1.5mm; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:2.5mm; padding:2.5mm 3mm; margin:0 0 2.5mm; break-inside:avoid; }
+  .card .t { font-weight:700; }
+  .num { display:inline-block; min-width:7mm; margin-right:1.5mm; color:var(--mute); font-weight:600; font-size:9pt; }
+  .card .w { margin-top:1mm; }
+  .v { margin-top:1mm; font-size:9.5pt; }
+  .tag { display:inline-block; font-size:7.5pt; font-weight:700; text-transform:uppercase; letter-spacing:.04em; padding:.3mm 1.6mm; border-radius:1.2mm; margin-right:1mm; vertical-align:1px; }
+  .best { background:#dff3e7; color:var(--good); }
+  .ok { background:#e5edfa; color:var(--accent); }
+  .care { background:#fdf0dc; color:var(--warn); }
+  .no { background:#fbe3e1; color:var(--bad); }
+  .tip { border-left:3px solid var(--warn); background:#fffaf1; padding:2.5mm 3mm; margin:0 0 3mm; break-inside:avoid; }
+  .top li { margin-bottom:2mm; }
+  .foot { color:var(--mute); font-size:8.5pt; margin-top:6mm; border-top:1px solid var(--line); padding-top:2mm; }
+</style>
+</head>
+<body>
+
+<h1>Data Sources Review</h1>
+<p class="sub">Your picks plus all 125 links, tested November 15, 2026. Numbers match your list.</p>
+
+<h2>Your picks</h2>
+<p><b>The pattern:</b> 6 of your 8 favorite video ideas are "then vs. now" or "to scale." My pick for the first pillar is <b>Then vs. now</b>:</p>
+<ul>
+  <li>"The palace they tore down" is the strongest story on the list.</li>
+  <li>Three of your favorites fit under it.</li>
+  <li>The old Penn Station model is already planned.</li>
+</ul>
+
+<h3>Things to know before using some of your picks</h3>
+<div class="card">
+  <div class="t">MLB Stats API and Statcast (#12)</div>
+  <div class="w">MLB's terms allow personal, non-commercial use only.</div>
+  <ul style="margin-top:1mm">
+    <li><b>Fine:</b> stating facts like "a 314-foot porch," with credit.</li>
+    <li><b>Not fine:</b> pulling their data in bulk for monetized videos.</li>
+    <li><b>Fallback for history:</b> Retrosheet is safer, but it requires its credit line.</li>
+  </ul>
+</div>
+<div class="card">
+  <div class="t">Ticket and transit sign-ups (#11)</div>
+  <ul style="margin-top:1mm">
+    <li><b>MTA Bus Time and NJ Transit:</b> simple free keys.</li>
+    <li><b>Ticketmaster and SeatGeek:</b> free, but ticket sellers limit how their data can be shown, so read their terms first.</li>
+  </ul>
+</div>
+<div class="card">
+  <div class="t">Traffic cameras (#9)</div>
+  <div class="w">Works, and a new find below makes it easier. Check NYC DOT's terms before you show camera images on screen.</div>
+</div>
+<div class="card">
+  <div class="t">StatsBomb (#13)</div>
+  <div class="w">Free, but they require their credit on screen.</div>
+</div>
+<div class="card">
+  <div class="t">"Every building on this block in 1940"</div>
+  <div class="w">It's on both of your lists. The 1940s tax photos exist, but I still haven't confirmed their license.</div>
+</div>
+<div class="card">
+  <div class="t">Old-map overlays and pedestrian counts</div>
+  <div class="w">NYPL Map Warper was down the last time I checked. Pedestrian counts still have no confirmed counter near MSG.</div>
+</div>
+
+<h2>The 125 links: what works</h2>
+<div class="tip">
+  <b>A beginner tip about sources:</b> many links are brand-new GitHub copies of government data, made to promote a small website. You can spot them because they were created in 2026 and have 0 to 15 stars. They aren't fake, but for accurate stories, always credit and check the <b>original</b> source, like HUD for rents or NTSB for plane crashes, not the copy. These are marked <span class="tag care">Copy</span> below.
+</div>
+
+<h3>1. Places, buildings and maps (most useful for us)</h3>
+
+<div class="card"><div class="t"><span class="num">#44</span>awesome-citygml (a list of free 3D city models)</div>
+<div class="w">It led me to the <b>NYC 3D Building Model</b>: every building in the city from a 2014 aerial survey, about 100 famous ones with detailed roofs. It's a 916 MB download.</div>
+<div class="v"><span class="tag best">Best find</span>It could replace our boxy neighbor buildings with real shapes. The catch: anything built after 2014 is missing.</div></div>
+
+<div class="card"><div class="t"><span class="num">#62</span>NYU shadow maps</div>
+<div class="w">Precomputed building shadows for NYC, Chicago, LA, DC and Boston.</div>
+<div class="v"><span class="tag ok">Useful</span>Great for a "how much sun hits the Garden's plaza" video, or alongside Manhattanhenge. No license is listed, so we'd ask first.</div></div>
+
+<div class="card"><div class="t"><span class="num">#65 #47 #51</span>Detourmap, Castle Map, Movie Scene Map</div>
+<div class="w">39,832 famous places, 9,902 castles, and every known filming location, all built from Wikidata (free to use).</div>
+<div class="v"><span class="tag best">Useful</span><b>Movie Scene Map plus film permits (#10)</b> = "every movie filmed at MSG." Castles are a ready-made future series.</div></div>
+
+<div class="card"><div class="t"><span class="num">#55</span>Wikimedia's OpenStreetMap + Wikidata dataset</div>
+<div class="w">Links map shapes to Wikipedia facts.</div>
+<div class="v"><span class="tag ok">Useful</span>Speeds up the fact-finding step for each new venue.</div></div>
+
+<div class="card"><div class="t"><span class="num">#58</span>Natural Earth</div>
+<div class="w">Free world maps, no credit needed.</div>
+<div class="v"><span class="tag ok">Useful</span>Ideal for the zoom from a globe down to a city, and for the map site.</div></div>
+
+<div class="card"><div class="t"><span class="num">#4</span>dataportals.org</div>
+<div class="w">A list of every city's open-data website.</div>
+<div class="v"><span class="tag ok">Useful</span>This is how we'd find a "NYC pack" for any new city.</div></div>
+
+<div class="card"><div class="t"><span class="num">#60</span>Pleiades</div>
+<div class="w">Mapped places of the ancient world.</div>
+<div class="v"><span class="tag ok">Future</span>Landmark videos, like Rome's Colosseum.</div></div>
+
+<div class="card"><div class="t"><span class="num">#66 #56</span>Country data (mledoze), location-data</div>
+<div class="w">Countries, regions, 1.6 million towns.</div>
+<div class="v"><span class="tag ok">Future</span>Reliable building blocks for the map site.</div></div>
+
+<div class="card"><div class="t"><span class="num">#59 #46 #63</span>OpenAddresses, ArcGIS Hub, Free GIS list</div>
+<div class="w">Addresses and huge catalogs of map data.</div>
+<div class="v"><span class="tag ok">Search tool</span>Good for searching. Not story material on their own.</div></div>
+
+<div class="card"><div class="t"><span class="num">#126</span>Train Router Atlas</div>
+<div class="w">Famous train routes as map lines.</div>
+<div class="v"><span class="tag care">Copy</span>Fun for "legendary trains" videos.</div></div>
+
+<div class="card"><div class="t"><span class="num">#49 #37</span>DataCenterData, DC Hub</div>
+<div class="w">Data centers and substations.</div>
+<div class="v"><span class="tag ok">Future</span>A "the internet's buildings" theme.</div></div>
+
+<div class="card"><div class="t"><span class="num">#73</span>Park Atlas</div>
+<div class="w">US national parks.</div>
+<div class="v"><span class="tag care">Copy</span>Of National Park Service data; use the original.</div></div>
+
+<div class="card"><div class="t"><span class="num">#54</span>HIFLD</div>
+<div class="w">US infrastructure maps.</div>
+<div class="v"><span class="tag care">Unclear</span>The page loads, but what I got back looked like generic ArcGIS listings, not infrastructure data. Treat it as unreliable.</div></div>
+
+<div class="card"><div class="t"><span class="num">#48 #67 #68</span>Crusader Atlas, MAP-VERSE, Strange Places</div>
+<div class="v"><span class="tag no">Skip</span>No download found, unclear, or no license.</div></div>
+
+<h3>2. Sports</h3>
+
+<div class="card"><div class="t"><span class="num">#1</span>SportsDataverse</div>
+<div class="w">Free tools for NBA, WNBA, college football and hockey data. One of them, <b>sportyR</b>, draws regulation fields, rinks and courts to exact size.</div>
+<div class="v"><span class="tag best">Best for blueprints</span>Lay the rink over the baseball diamond for "MSG vs. Yankee Stadium to scale."</div></div>
+
+<div class="card"><div class="t"><span class="num">#2</span>TheSportsDB</div>
+<div class="w">Teams, venues, logos and schedules from around the world.</div>
+<div class="v"><span class="tag care">Use with care</span>Works with the free test key. Crowd-sourced, so double-check facts. Logos are trademarks, so don't show them.</div></div>
+
+<div class="card"><div class="t"><span class="num">#114</span>Equity in Athletics (US Dept. of Education)</div>
+<div class="w">How much money each college spends on and earns from sports.</div>
+<div class="v"><span class="tag ok">Future</span>Great for a "college stadiums" series.</div></div>
+
+<div class="card"><div class="t"><span class="num">#116</span>Sports skills list</div>
+<div class="v"><span class="tag no">Skip</span>Copy, weak.</div></div>
+
+<h3>3. History and archives</h3>
+
+<div class="card"><div class="t"><span class="num">#43</span>Rights Atlas: entering the public domain in 2027</div>
+<div class="w">Works from 1931 become free to use in the US on January 1, 2027.</div>
+<div class="v"><span class="tag best">Useful</span>Old film clips, photos and music you can legally use in then-vs-now videos. Confirm each item with an official source.</div></div>
+
+<div class="card"><div class="t"><span class="num">#78</span>Library of Congress Newspaper Navigator</div>
+<div class="w">Photos from historic newspapers.</div>
+<div class="v"><span class="tag care">Partly retired</span>The search app was retired in 2025. The Library of Congress collection itself still works.</div></div>
+
+<div class="card"><div class="t"><span class="num">#93 #92</span>Internet Archive, Archive-It</div>
+<div class="w">Huge archives of old web pages and media.</div>
+<div class="v"><span class="tag ok">Useful</span>Good for finding then-vs-now material.</div></div>
+
+<div class="card"><div class="t"><span class="num">#81</span>Minneapolis Institute of Art</div>
+<div class="w">Museum collection data, free to use.</div>
+<div class="v"><span class="tag no">Off-topic</span>Fine, but not for this project.</div></div>
+
+<div class="card"><div class="t"><span class="num">#79</span>Open Images</div>
+<div class="w">9 million tagged photos.</div>
+<div class="v"><span class="tag no">Skip</span>Generic, not place-specific.</div></div>
+
+<div class="card"><div class="t"><span class="num">#80</span>IMDb datasets</div>
+<div class="w">Movies and ratings.</div>
+<div class="v"><span class="tag no">Non-commercial only</span>Use Movie Scene Map instead.</div></div>
+
+<div class="card"><div class="t"><span class="num">#28</span>What Led To</div>
+<div class="w">Historical timelines.</div>
+<div class="v"><span class="tag care">Check terms</span>The terms aren't clear. Check them before relying on it.</div></div>
+
+<h3>4. Weather, water, earth and space</h3>
+
+<div class="card"><div class="t"><span class="num">#110</span>WorldPop</div>
+<div class="w">How many people live in any area.</div>
+<div class="v"><span class="tag best">Useful</span>"How many people live within a 10-minute walk of the Garden." Free with credit.</div></div>
+
+<div class="card"><div class="t"><span class="num">#5 #57</span>NOAA weather models, NWS map data</div>
+<div class="w">Forecast archives, storm warnings as map shapes.</div>
+<div class="v"><span class="tag ok">Useful</span>Good for "the storm that hit on game night."</div></div>
+
+<div class="card"><div class="t"><span class="num">#86</span>Launches and satellites, 1957 to 2026 (Zenodo)</div>
+<div class="w">All 7,633 launches since Sputnik.</div>
+<div class="v"><span class="tag ok">Future</span>Off-topic, but a strong future series.</div></div>
+
+<div class="card"><div class="t"><span class="num">#87 #88 #89</span>NASA exoplanets, NASA data center, Sloan sky survey</div>
+<div class="w">Real space science data.</div>
+<div class="v"><span class="tag ok">Future</span>A space theme.</div></div>
+
+<div class="card"><div class="t"><span class="num">#41</span>WRI Global Power Plant Database</div>
+<div class="w">Every power plant in the world.</div>
+<div class="v"><span class="tag care">Check date</span>Free with credit. It's an older release, so check the date.</div></div>
+
+<div class="card"><div class="t"><span class="num">#75 #76 #9 #8</span>US disasters, water quality, hard water</div>
+<div class="v"><span class="tag care">Copy</span>Use NTSB, NOAA, USGS and EPA directly.</div></div>
+
+<div class="card"><div class="t"><span class="num">#7 #6</span>British ocean data, earthmodels.org</div>
+<div class="v"><span class="tag no">Skip for now</span>Fine but niche.</div></div>
+
+<h3>5. Transport and movement</h3>
+
+<div class="card"><div class="t"><span class="num">#125</span>Traffic camera sources</div>
+<div class="w">A list of every official US traffic camera feed, with locations and uptime.</div>
+<div class="v"><span class="tag best">Useful</span>Directly helps your traffic camera idea (#9).</div></div>
+
+<div class="card"><div class="t"><span class="num">#120 #117</span>OpenFlights, Airport Miles</div>
+<div class="w">Airports and routes.</div>
+<div class="v"><span class="tag ok">Useful</span>Fine for maps. The OpenFlights route data is old.</div></div>
+
+<div class="card"><div class="t"><span class="num">#124</span>FHWA freight data</div>
+<div class="w">How goods move across the US.</div>
+<div class="v"><span class="tag ok">Future</span>A "how stuff gets to the stadium" angle.</div></div>
+
+<div class="card"><div class="t"><span class="num">#119</span>GraphHopper traffic list</div>
+<div class="w">A list of open traffic data sources.</div>
+<div class="v"><span class="tag ok">Search tool</span>Good for searching.</div></div>
+
+<div class="card"><div class="t"><span class="num">#123</span>Bureau of Transportation Statistics</div>
+<div class="w">Official US transport numbers.</div>
+<div class="v"><span class="tag ok">Official</span>Blocked my script, but should work in a normal browser.</div></div>
+
+<div class="card"><div class="t"><span class="num">#121 #122</span>Plane crash database and its copy</div>
+<div class="v"><span class="tag no">Skip</span>The original site is copyrighted. Use NTSB instead.</div></div>
+
+<div class="card"><div class="t"><span class="num">#42</span>OpenVan travel data</div>
+<div class="w">Fuel prices by country.</div>
+<div class="v"><span class="tag no">Off-topic</span></div></div>
+
+<div class="card"><div class="t"><span class="num">#118</span>Microsoft GeoLife</div>
+<div class="w">GPS traces from Beijing, 2007 to 2012.</div>
+<div class="v"><span class="tag no">Skip</span>Old.</div></div>
+
+<h3>6. Society and economy (future channels, not this one)</h3>
+<p><b>Solid official sources:</b> UN Data (#74), UNESCO (#71), the UN Human Development Report (#22), the World Inequality Database (#109), Harvard's dataverse (#14, which I believe is its trade "Atlas," but the page needs a browser to confirm), WIOD trade tables (#29), OpenCorporates (#18), Pew (#106, needs a free account) and NYC trash tonnage (#70).</p>
+<p><b>Fun angle from the trash data:</b> "how many tons of trash Midtown makes."</p>
+<p><b>Have limits:</b> ACLED conflict data (#101) needs registration. OpenSanctions (#105) and Is It Safe To Travel (#102) are non-commercial only.</p>
+
+<h3>7. Skip for this project</h3>
+<ul>
+  <li><b>AI tool pricing:</b> #10, #11, #12, #13 and #32/#33.</li>
+  <li><b>Jobs, salaries and rent copies:</b> #16, #19, #23, #24, #25, #26, #27, #30 and #31.</li>
+  <li><b>Rankings and stats sites:</b> #20, #21, #34, #104, #108 and #112.</li>
+  <li><b>Neuroscience:</b> #82 to #85 and #91.</li>
+  <li><b>Social network research:</b> #3, #96 to #100 and #103.</li>
+  <li><b>Other:</b> #15, #35, #36, #38, #39, #40, #77 and #115.</li>
+  <li><b>A list, not a data source:</b> Reddit r/datasets (#94).</li>
+  <li><b>Do not use:</b> #107 (sex offender registry) and #111 (ranking of real people). Both are about private or named individuals, so they're too risky.</li>
+  <li><b>Ignore:</b> #113 is a list of tools for unofficial access to apps, which can break their terms.</li>
+</ul>
+
+<h3>Didn't work</h3>
+<ul>
+  <li><b>#17:</b> server error.</li>
+  <li><b>#50:</b> page not found.</li>
+  <li><b>#53:</b> 404.</li>
+  <li><b>#100:</b> now requires a Google sign-in.</li>
+  <li><b>#95:</b> an old archive copy.</li>
+  <li><b>#61:</b> not updated since 2015.</li>
+  <li><b>#64:</b> abandoned.</li>
+  <li><b>#33:</b> duplicate of #32.</li>
+</ul>
+
+<h2>My top 5 adds for this project</h2>
+<ol class="top">
+  <li><b>The NYC 3D Building Model:</b> real neighbor buildings around MSG and Yankee Stadium.</li>
+  <li><b>sportyR:</b> exact rinks, courts and diamonds for the blueprint pillar.</li>
+  <li><b>Movie Scene Map plus film permits:</b> "Every movie filmed at the Garden."</li>
+  <li><b>The traffic camera list:</b> for your camera idea.</li>
+  <li><b>WorldPop:</b> "how many people live near the Garden."</li>
+</ol>
+
+<p class="foot">Stadium Studio project notes. Links tested November 15, 2026. Licenses can change, so recheck before publishing.</p>
+</body>
+</html>

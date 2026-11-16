@@ -175,3 +175,36 @@ button:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 #app[data-style="isoInk"] #scene{filter:contrast(1.06) saturate(1.12)}
 #app[data-style="isoCel"] #scene{filter:saturate(1.06)}
 #opts button{font-size:13px;padding:6px 10px}
+
+/* Recorder: a 9:16 frame in the middle of the window, guides for where the apps put their buttons, and the recorder panel. */
+#app.vertical{background:#0b0d10}
+#app.vertical #stage,#app.vertical #scene,#app.vertical #labels,#app.vertical #safe{
+  inset:auto;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:min(100%,calc(100dvh * 9 / 16));height:auto;aspect-ratio:9/16}
+#app.recording #scene{outline:3px solid #e0403a;outline-offset:-3px}
+#safe{position:absolute;pointer-events:none}
+#safe span{position:absolute;border:1px dashed rgba(255,255,255,.55);background:rgba(255,255,255,.07)}
+#safe .safe-top{left:0;right:0;top:0;height:8%;border-top:0;border-left:0;border-right:0}
+#safe .safe-side{right:0;top:36%;height:44%;width:15%;border-right:0}
+#safe .safe-bot{left:0;right:0;bottom:0;height:20%;border-bottom:0;border-left:0;border-right:0}
+#app.clean .title,#app.clean .bottom,#app.clean #opts{visibility:hidden}
+.mode .rec-open{color:#c0352f}
+.mode .rec-open[aria-pressed="true"]{background:#c0352f;color:#fff}
+.rec{padding:12px 14px;width:300px;max-width:100%;display:flex;flex-direction:column;gap:8px}
+.rec p{margin:0}
+.rec-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.rec-head strong{font-family:var(--font-display);font-weight:700;font-size:19px;letter-spacing:.02em;text-transform:uppercase}
+.rec-head span,.rec-lab span{font-family:var(--font-mono);font-size:10.5px;color:var(--muted)}
+.rec-lab{font-family:var(--font-display);font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin-top:4px!important;display:flex;flex-direction:column;gap:1px}
+.rec-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.rec-row label{font-family:var(--font-mono);font-size:11px;color:var(--muted)}
+.rec button,.rec select{font:inherit;font-family:var(--font-display);font-weight:600;font-size:14px;letter-spacing:.03em;color:var(--ink);
+  background:transparent;border:1px solid var(--line);border-radius:8px;padding:6px 10px;cursor:pointer}
+.rec button[aria-pressed="true"]{background:var(--navy);color:var(--navy-ink);border-color:transparent}
+.rec button:disabled{opacity:.45;cursor:not-allowed}
+.rec .rec-go{background:#c0352f;color:#fff;border-color:transparent}
+.rec .rec-go.stop{background:#1b1f26;color:#fff}
+.rec-time{font-family:var(--font-mono);font-size:13px;font-variant-numeric:tabular-nums;color:var(--muted)}
+.rec progress{width:100%;height:6px;accent-color:#c0352f}
+.rec-msg{font-size:13px;line-height:1.4;color:var(--ink);min-height:1.4em}
+.rec select:focus-visible,.rec button:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
