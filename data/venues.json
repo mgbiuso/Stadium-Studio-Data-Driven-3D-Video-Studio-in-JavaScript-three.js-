@@ -87,6 +87,15 @@
     },
     "bedrock": {
       "zip": "geology/raw/Bedrock_Points_Shapefile_v3.zip"
+    },
+    "skyline": {
+      "box": [
+        -1600,
+        2200,
+        -900,
+        820
+      ],
+      "note": "river to river, about 23rd to 42nd Street"
     }
   },
   "yankee": {

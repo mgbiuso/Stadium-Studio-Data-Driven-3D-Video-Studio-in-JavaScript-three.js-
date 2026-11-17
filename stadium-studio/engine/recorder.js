@@ -64,7 +64,12 @@ function composite(t){
 }
 
 // a single full-size frame as a JPEG (for checking a shot before recording it); t = seconds into the draw-on animation
-SS.recorder={still(t){ST.setSize(W,H); ST.step(0); composite(t==null?6:t); const url=comp.toDataURL('image/jpeg',.88); ST.setSize(null); return url;}};
+SS.recorder={still(t){ST.setSize(W,H); ST.step(0); composite(t==null?6:t); const url=comp.toDataURL('image/jpeg',.88); ST.setSize(null); return url;},
+  // frame-by-frame access for the episode renderer (engine/episode.js): begin, then frame(dt, layerT) per frame, then end
+  W,H,FPS,
+  begin(){ST.REC.paused=true; ST.setControls(false); ST.setSize(W,H); ST.REC.clock=Date.now()/1000; ST.REC.driver=()=>{};},
+  frame(dt,t){ST.step(dt); ST.REC.clock+=dt; composite(t); return comp;},
+  end(){ST.REC.driver=null; ST.REC.clock=null; ST.setSize(null); ST.REC.paused=false; ST.setControls(true);}};
 
 /* ---------- saving ---------- */
 function save(blob,ext,kind){
@@ -77,13 +82,13 @@ function save(blob,ext,kind){
 
 /* ---------- panel and frame ---------- */
 let busy=false, mr=null;
-function setVertical(on){app.classList.toggle('vertical',on); ui.vert.setAttribute('aria-pressed',String(on)); ui.safe.hidden=!on; ST.refit();}
+function setVertical(on){app.classList.toggle('vertical',on); ui.vert.setAttribute('aria-pressed',String(on)); ST.refit();}   // the dashed safe-zone guides stay off (Mike found them distracting)
 function ensureVertical(){if(!app.classList.contains('vertical')) setVertical(true);}
 function setBusy(on){busy=on; [ui.vert,ui.a,ui.b,ui.move,ui.len,ui.prev,ui.render,ui.open].forEach(b=>b.disabled=on); ui.live.disabled=on&&!mr;}
 ui.open.addEventListener('click',()=>{
   const open=ui.panel.hidden; ui.panel.hidden=!open; ui.open.setAttribute('aria-pressed',String(open));
   if(open){setVertical(ui.vert.getAttribute('aria-pressed')==='true'); syncStyle(ST.style().S);
-    if(framed) say(FRAMED_MSG); else if(!ui.msg.textContent) say('Frame your shot inside the 9:16 box. The dashed areas are where the apps put their buttons and captions.');}
+    if(framed) say(FRAMED_MSG); else if(!ui.msg.textContent) say('Frame your shot inside the 9:16 box. Keep the important part away from the top, bottom and right edges, where the apps put their buttons.');}
   else {if(mr) stopLive(); app.classList.remove('vertical','clean'); ui.safe.hidden=true; ui.clean.setAttribute('aria-pressed','false'); ST.refit();}   // keeps the Vertical frame choice for next time
 });
 ui.vert.addEventListener('click',()=>setVertical(!app.classList.contains('vertical')));

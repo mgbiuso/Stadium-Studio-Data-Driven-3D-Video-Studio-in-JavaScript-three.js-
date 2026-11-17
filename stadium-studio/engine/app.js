@@ -104,6 +104,7 @@ PAL.ink=isoPal({roof:'#7d7466',roofTop:'#756a5b',unit:'#d8d0c0',pier:'#e6cfa8',r
   {facade:'#e7c79f',lotTop:'#c9bfa9',lotSide:'#7f735f',lotEdge:'#ddd3bd',crown:'#3d7d38',trunk:'#5b4330'});
 const LIGHTS={
   day:{hs:'#e3ecf7',hg:'#7f7666',hi:.8,sc:'#fff1dc',si:1.7,sp:[150,240,110],pl:0,cat:.18,glow:'screens'},
+  slice:{hs:'#e3ecf7',hg:'#8a8478',hi:1.15,sc:'#fff1dc',si:1.9,sp:[-110,120,320],pl:0,cat:0,glow:'screens'},   // low sun from the south, shining into the cut face
   cutout:{hs:'#e3ecf7',hg:'#6a7180',hi:1.3,sc:'#fff1dc',si:1.7,sp:[-170,230,150],pl:0,cat:0,glow:'screens'},   // sun over the viewer's shoulder so the cut faces are lit
   night:{hs:'#3a4a6e',hg:'#07090d',hi:.3,sc:'#9fb4dd',si:.26,sp:[-120,220,-40],pl:.75,cat:0,glow:'night'},
   arena:{hs:'#fff1de',hg:'#3a3328',hi:.75,sc:'#ffffff',si:.15,sp:[60,240,40],pl:1.5,cat:0,glow:'arena'},
@@ -132,13 +133,15 @@ const STYLES={
     pal:'day',light:'day',bg:'drawing',real:true,station:true,under:true,clip:'ground',plinth:false,trees:false,labels:'under',cam:'underground'},
   cutout:{name:'Block cutout',refs:'New ref · floating block',desc:'The Garden\'s block lifted out of the city on a dark stage: buildings on top, then soil, bedrock and the station inside, with glowing edges.',
     pal:'day',light:'cutout',bg:'void',real:true,station:true,under:true,clip:'block',plinth:false,trees:false,labels:'under',cam:'cutout'},
+  slice:{name:'City section',refs:'New ref · city cut open',desc:'The neighborhood cut open along the tracks: the Garden sliced above the station, the rock layers, and rail tunnels running out toward both rivers.',
+    pal:'day',light:'slice',bg:'day',real:true,haze:'day',station:true,clip:'slice',plinth:false,labels:false,cam:'slice'},
   xray:{name:'X-ray city',refs:'City, MTA and USGS data',desc:'The buildings turn to glass so you can see what runs underneath them: station, tunnels and rock.',
     pal:'day',light:'day',bg:'drawing',station:true,under:true,xray:true,edges:'xray',plinth:false,trees:false,labels:'under',cam:'underground'},
   blueprint:{name:'Blueprint sheet',refs:'New ref · blueprint',desc:'A flat drawing sheet: an elevation on top and the floor plan below, drawn as white lines from the real outline and heights. A still drawing, so Explore is off.',pal:'bpsheet',light:'sheet',bg:'bpsheet',edges:'chalk',plinth:false,trees:false,city:false,sheet:true}
 };
-const ORDER=['aerial','night','overhead','underground','cutout','xray','exploded','wire','isoCel','isoInk','cutaway','blueprint'];
+const ORDER=['aerial','night','overhead','underground','cutout','slice','xray','exploded','wire','isoCel','isoInk','cutaway','blueprint'];
 // views that show the real neighborhood around the venue
-const CITY=new Set(['aerial','night','overhead','wire','underground','cutout','xray']);
+const CITY=new Set(['aerial','night','overhead','wire','underground','cutout','slice','xray']);
 const CAMS={
   aerial:{off:[-200,169,257],tgt:[0,-4,-2],fov:34},
   corner:{off:[-235,62,250],tgt:[0,8,0],fov:40},
@@ -154,7 +157,8 @@ const CAMS={
   cutaway:{ortho:true,dir:[1,.95,1],tgt:[0,-16,0],size:168},
   section:{ortho:true,dir:'section',tgt:[0,6,0],size:96},
   underground:{off:[-150,175,235],tgt:[0,-10,0],fov:36},
-  cutout:{off:[-440,145,106],tgt:[0,-10,0],fov:34,pull:.3}
+  cutout:{off:[-440,145,106],tgt:[0,-10,0],fov:34,pull:.3},
+  slice:{off:[-170,120,330],tgt:[0,-6,0],fov:34,pull:.45}
 };
 
 let V=null, current='aerial', exploded=false, SUNOV=null;
@@ -184,6 +188,7 @@ function setClip(modeC,underC){
   // hide everything above the sidewalk: set on the renderer itself, so the shading and shadow passes skip it too
   renderer.clippingPlanes=modeC==='ground'?[new THREE.Plane(new THREE.Vector3(0,-1,0),0)]:[];
   // the block cutout: keep only what sits inside the block's four sides (1 m outside its rock faces)
+  if(modeC==='slice'&&V.sliceZ!=null) renderer.clippingPlanes=[new THREE.Plane(new THREE.Vector3(0,0,-1),V.sliceZ)];   // keep everything north of the cut line
   if(modeC==='block'&&V.cutBox){const [a,b,c,d]=V.cutBox, m=1; renderer.clippingPlanes=[[1,0,-(a-m)],[-1,0,b+m],[0,1,-(c-m)],[0,-1,d+m]].map(([x,z,k])=>new THREE.Plane(new THREE.Vector3(x,0,z),k));}
   if(modeC==='half'){const s=V.section,p=new THREE.Plane(s.axis==='x'?new THREE.Vector3(-1,0,0):new THREE.Vector3(0,0,-1),s.c); above=[p]; under=[p];}
   // exploded: keep only the part of the station right under the arena (hidden if outside any of the four walls)
@@ -254,7 +259,10 @@ function applyStyle(key,instant){
   $('tilt-top').hidden=$('tilt-bot').hidden=$('vignette').hidden=!S.tilt;
   setEdges(S.edges||null); setClip(S.clip||null,S.clipUnder||null); setXray(!!S.xray);
   if(V.ground) V.ground.visible=!!(S.under||S.clip==='half')&&S.clip!=='block';
-  if(V.cutHolder) V.cutHolder.visible=S.clip==='block';   // the soil and bedrock block shows in the underground views and the cutaway
+  if(V.cutHolder) V.cutHolder.visible=S.clip==='block';
+  if(V.sliceHolder) V.sliceHolder.visible=S.clip==='slice';
+  if(V.skyline){const on=!S.under&&S.clip!=='block'; V.skyline.visible=on; if(V.skylineNew) V.skylineNew.visible=on;}   // the wide city is above-ground only
+  if(V.skyMats) V.skyMats.forEach(m=>m.color.setScalar(resolve(S.light)==='night'?.17:1));   // the wide city goes dark at night   // the soil and bedrock block shows in the underground views and the cutaway
   // map-icon looks: pixel art is drawn small and scaled up without smoothing
   const pr=S.pixel||(REC.size?1:Math.min(window.devicePixelRatio||1,2)); if(renderer.getPixelRatio()!==pr){renderer.setPixelRatio(pr); renderer.setSize(Wd,Ht,false); if(POST.comp){POST.comp.setPixelRatio(pr); POST.comp.setSize(Wd,Ht);}}
   canvas.style.imageRendering=S.pixel?'pixelated':'';
@@ -517,7 +525,7 @@ function fitDepth(){
     if(POST.sao) POST.sao.params.saoScale=2*f/2400;}   // the shading divides its scale by the far distance, so keep that ratio fixed
 }
 new ResizeObserver(resize).observe(app); resize();
-setVenue('yankee');
+{const want=new URLSearchParams(location.search).get('venue'); setVenue(VENUES[want]?want:VENUES.yankee?'yankee':Object.keys(VENUES)[0]);}   // msg.html loads MSG only
 
 const clock=new THREE.Clock(); let fT=0,fN=0,first=true,simT=0,simMin=-1;
 const fmt=n=>n.toLocaleString('en-US');
@@ -534,7 +542,10 @@ function frame(){
 /* one frame: move things on by dt seconds, then draw */
 function step(dt){
   if(V.eras&&V.eras.tick) V.eras.tick(dt);
-  for(const k in V.G){const want=expOf(k),g=V.G[k]; if(reduceMotion) g.position.copy(want); else g.position.lerp(want,Math.min(1,dt*4));}
+  if(V.tick) V.tick(dt);   // venue animations (e.g. trains in the city section's tunnels)
+  for(const k in V.G){const want=expOf(k),g=V.G[k];
+    if(V.buildOff){want.y+=V.buildOff[k]||0; g.position.copy(want); if(V.buildHide&&V.buildHide.has(k)) g.visible=false; else if(k!=='under') g.visible=true; continue;}   // build-up sequence (engine/episode.js)
+    if(reduceMotion) g.position.copy(want); else g.position.lerp(want,Math.min(1,dt*4));}
   if(REC.driver){REC.driver(dt); if(controls) controls.target.copy(target);}
   else if(tw){
     tw.t+=dt/tw.dur; const e=tw.t>=1?1:ease(tw.t);
@@ -565,6 +576,9 @@ SS.studio={
   REC, step, canvas, renderer,
   onFrame:null, onStyle:null,
   venue:()=>V,
+  // the current style's starting camera (what Reset view goes to), for the episode renderer
+  presetView(){const p=preset(viewKey()); return {o:p.type==='o',pos:p.pos.clone(),tgt:p.tgt.clone(),fov:p.fov,size:p.size,zoom:1};},
+  setStyle(k){const b=[...document.querySelectorAll('.style-btn')].find(b=>b.dataset.key===k); if(b) b.click(); return current===k;},
   style:()=>({key:current,S:curStyle(),bg:resolve(curStyle().bg),post:POST.on,venue:V.key,studioBg:V.studio.bg}),
   view:()=>({o:cam===ortho,pos:cam.position.clone(),tgt:target.clone(),fov:persp.fov,zoom:cam.zoom,size:orthoSize}),
   setView(v){

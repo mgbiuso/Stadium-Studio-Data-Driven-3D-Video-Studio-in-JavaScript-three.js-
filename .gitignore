@@ -14,3 +14,12 @@ data/msg/raw/
 _backup_before_changes/
 **/_backup_before_changes/
 data/nyc3d/raw/
+
+# Video work files: renders, clips and audio are big and can be made again from the recipes (cut.js) and the studio.
+# Recipes, scripts and notes in videos/ are still saved.
+videos/**/*.mp4
+videos/**/*.mov
+videos/**/*.wav
+videos/**/*.mp3
+videos/**/*.jpg
+videos/**/*.png

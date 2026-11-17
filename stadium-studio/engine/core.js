@@ -545,6 +545,40 @@ Object.assign(SS,{$,app,stage,canvas,loading,labelsEl,renderer,maxAniso,reduceMo
 function tierProfile(L,i,T){const f=v=>typeof v==='function'?v(i):v, o0=f(T.o0),o1=f(T.o1),S=T.steps,dO=(o1-o0)/S,dH=(T.h1-T.h0)/(S-1),fb=T.soffit?T.h0-T.fascia:0,pts=[L.pos(i,o0,fb)];
   for(let s=0;s<S;s++){const y=T.h0+s*dH; pts.push(L.pos(i,o0+s*dO,y),L.pos(i,o0+(s+1)*dO,y));}
   pts.push(L.pos(i,o1,T.soffit?T.sb:0)); if(T.soffit) pts.push(L.pos(i,o0,fb)); return pts;}
+// the wider city (data/fetch_skyline.py): thousands of simple buildings from river to river, merged into one mesh each
+// for the old (built by 1910) and newer buildings, plus the land they stand on and the rivers around it.
+// Illustrated look: pale walls, a few brick and glass towers, darker at the base like soft shadow.
+function buildSkyline(V,S,parent){
+  if(!S||!S.b) return null; const u=S.unit||.5, g=new THREE.Group(); parent.add(g);
+  const hash=n=>{n=Math.sin(n*12.9898)*43758.5453; return n-Math.floor(n);};
+  const C=h=>lin(h), PALE=['#ece9e3','#e2dfd8','#d8d6d1','#cfd2d6','#dcd4c8'].map(C), BRICK=['#b8705a','#c48a6c','#a9614d'].map(C), GLASS=['#8ea2b7','#7f93a8','#9fb0c0'].map(C), ROOF=C('#c9c4bc');
+  const make=(list,fill)=>{
+    const P=[],N=[],Col=[]; const push=(p,n,c)=>{P.push(p[0],p[1],p[2]); N.push(n[0],n[1],n[2]); Col.push(c.r,c.g,c.b);};
+    list.forEach((b,k)=>{
+      const r=hash(k+b[2]), yr=b[1], pts=[]; for(let i=2;i<b.length;i+=2) pts.push([b[i]*u,b[i+1]*u]); if(pts.length<3) return;
+      const h=fill?12+r*10:b[0]*u;   // fill: a typical walk-up of the 1900s on the same lot (an approximation, like the close-up 1910 neighborhood)
+      const wall=fill?(r<.6?BRICK[Math.floor(r*7)%3]:PALE[4]):(h>75?GLASS[Math.floor(r*3)]:(yr&&yr<1940&&h<45&&r<.45)?BRICK[Math.floor(r*7)%3]:PALE[Math.floor(r*5)]), base=wall.clone().multiplyScalar(.78);
+      const cx=pts.reduce((s,p)=>s+p[0],0)/pts.length, cz=pts.reduce((s,p)=>s+p[1],0)/pts.length;
+      for(let i=0;i<pts.length;i++){const a=pts[i], c=pts[(i+1)%pts.length], dx=c[0]-a[0], dz=c[1]-a[1], L=Math.hypot(dx,dz)||1;
+        let n=[dz/L,0,-dx/L]; if(n[0]*((a[0]+c[0])/2-cx)+n[2]*((a[1]+c[1])/2-cz)<0) n=[-n[0],0,-n[2]];
+        push([a[0],0,a[1]],n,base); push([c[0],0,c[1]],n,base); push([c[0],h,c[1]],n,wall);
+        push([a[0],0,a[1]],n,base); push([c[0],h,c[1]],n,wall); push([a[0],h,a[1]],n,wall);}
+      let tri=THREE.ShapeUtils.triangulateShape(pts.map(p=>new THREE.Vector2(p[0],p[1])),[]);
+      if(!tri.length) tri=pts.slice(2).map((_,i)=>[0,i+1,i+2]);   // odd outlines the triangulator rejects: a simple fan still caps the roof
+      tri.forEach(t=>t.forEach(i=>push([pts[i][0],h,pts[i][1]],[0,1,0],ROOF)));
+    });
+    const geo=new THREE.BufferGeometry(); geo.setAttribute('position',new THREE.Float32BufferAttribute(P,3)); geo.setAttribute('normal',new THREE.Float32BufferAttribute(N,3)); geo.setAttribute('color',new THREE.Float32BufferAttribute(Col,3));
+    const m=new THREE.Mesh(geo,std({vertexColors:true,side:THREE.DoubleSide,roughness:.92})); m.receiveShadow=true; g.add(m); (V.skyMats=V.skyMats||[]).push(m.material); return m;};
+  V.skylineOld=make(S.b.filter(b=>b[1]&&b[1]<=1910)); V.skylineNew=make(S.b.filter(b=>!(b[1]&&b[1]<=1910)));
+  V.skylineFill=make(S.b.filter(b=>!(b[1]&&b[1]<=1910)),true); V.skylineFill.visible=false;   // shown in the past eras instead of the newer buildings
+  // the land: a strip every 40 m from the westernmost to the easternmost building (overlapping boxes, no outline to go wrong)
+  const st=S.strip||40, z0=S.box[2], lgeo=[];
+  S.land.filter(r=>r[2]-r[1]>150).forEach(r=>{const w=r[2]-r[1]+50, gg=new THREE.PlaneGeometry(w,st+2).rotateX(-Math.PI/2); gg.translate((r[1]+r[2])/2,0,z0+r[0]*st+st/2); lgeo.push(gg);});
+  if(lgeo.length&&THREE.BufferGeometryUtils){const lm=new THREE.Mesh(THREE.BufferGeometryUtils.mergeBufferGeometries(lgeo),std({color:lin('#666b72'),roughness:1})); lm.position.y=-.35; lm.receiveShadow=true; g.add(lm); V.skylineLand=lm; V.skyMats.push(lm.material);}
+  else {const lmat=std({color:lin('#666b72'),roughness:1}); V.skyMats.push(lmat); lgeo.forEach(gg=>{const lm=new THREE.Mesh(gg,lmat); lm.position.y=-.35; lm.receiveShadow=true; g.add(lm);});}   // about 40 strips
+  const water=new THREE.Mesh(new THREE.PlaneGeometry(9000,9000).rotateX(-Math.PI/2),std({color:lin('#8fb0c8'),roughness:.35,metalness:.05})); water.position.y=-2.2; g.add(water);
+  V.skyline=g; return g;
+}
 // where the sun is at a moment (ms since 1970, UTC) seen from lat, lon. Low-precision formula from the Astronomical Almanac,
 // good to about a degree. Returns the altitude in degrees and a direction in model space (gridDeg = how the venue's grid is turned)
 function sunDir(ms,lat,lon,gridDeg){
@@ -562,6 +596,6 @@ function nyUTC(y,mo,d,hours){
     const a=Date.UTC(y,2,sun(2,2),7), b=Date.UTC(y,10,sun(10,1),6), t=Date.UTC(y,mo-1,d,12); if(t>=a&&t<b) off=4;}
   return Date.UTC(y,mo-1,d)+(hours+off)*3600000;
 }
-Object.assign(SS,{blocks,pip,centroid,polyArea,FACADE,buildCity,buildEl,tierProfile,waterTanks,buildGround,tunnelShell,sunDir,nyUTC});
+Object.assign(SS,{blocks,pip,centroid,polyArea,FACADE,buildCity,buildEl,tierProfile,waterTanks,buildGround,tunnelShell,sunDir,nyUTC,buildSkyline});
 SS.ok=true;
 })();

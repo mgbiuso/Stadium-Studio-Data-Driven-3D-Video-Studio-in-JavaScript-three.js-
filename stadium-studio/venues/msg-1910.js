@@ -212,7 +212,8 @@ SS.builders.push(function buildPenn1910(){
     if(ground1910) ground1910.visible=w.penn>=.5; if(groundDig) groundDig.visible=w.dig>=.5&&w.penn<.5;
     if(V.G.under) V.G.under.visible=w.dig<.5;                      // no platforms or trains yet during the dig
     if(V.soilHalf&&w.today<.5) V.soilHalf.visible=false;
-    if(V.plinth&&w.today<.5) V.plinth.visible=false;   // the base slab would cover the sunken halls and the dig
+    if(V.plinth&&w.today<.5) V.plinth.visible=false;
+    if(V.skylineFill) V.skylineFill.visible=w.today<.5;   // the wider city as walk-ups before the towers   // the base slab would cover the sunken halls and the dig
   }
   const today={section:V.section,labels:V.labels.section};
   const SEC={'1910':{section:{axis:'z',c:CZ},labels:[

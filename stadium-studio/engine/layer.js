@@ -9,10 +9,10 @@ const ST=window.SS&&SS.studio; if(!ST) return;
 const $=id=>document.getElementById(id), scr=$('layer'), sx=scr.getContext('2d'), panel=$('rec'), box=$('layer-opts');
 const C={cyan:'#7ff6ff',gold:'#ffd36b',white:'#ffffff',tide:'#4fb3ff'};
 const col=c=>C[c||'cyan']||c;   // a named color or any hex, like an official subway line color
-const DISPLAY='"Barlow Condensed","Arial Narrow",Arial,sans-serif', MONO='"IBM Plex Mono",Menlo,monospace';
+const DISPLAY='"Big Shoulders","Barlow Condensed","Arial Narrow",Arial,sans-serif', MONO='"IBM Plex Mono",Menlo,monospace';
 const state={key:'off',t0:performance.now(),venue:null};
 const v3=new THREE.Vector3(), clamp01=x=>Math.max(0,Math.min(1,x));
-if(document.fonts) ['700 30px "Barlow Condensed"','600 17px "Barlow Condensed"','500 14px "IBM Plex Mono"'].forEach(f=>document.fonts.load(f));
+if(document.fonts) ['800 30px "Big Shoulders"','700 30px "Big Shoulders"','700 30px "Barlow Condensed"','600 17px "Barlow Condensed"','500 14px "IBM Plex Mono"'].forEach(f=>document.fonts.load(f));
 
 const venue=()=>SS.VENUES[ST.style().venue];
 const presets=()=>{const V=venue(); return ((V&&V.layers)||[]).filter(p=>!p.era||p.era===(V.era||'today'));};   // some sets belong to one era
@@ -49,8 +49,12 @@ function crisp(ctx,u,width,fn){ctx.save(); ctx.strokeStyle=C.white; ctx.fillStyl
 function words(ctx,u,str,x,y,o){
   ctx.save(); ctx.globalAlpha=o.alpha; ctx.font=o.font; ctx.textAlign=o.align||'left'; ctx.textBaseline='alphabetic';
   if('letterSpacing' in ctx) ctx.letterSpacing=o.spacing||'0px';
+  const w=ctx.measureText(str).width;
+  if(o.plate){   // a dark rounded plate behind the words, so white text reads over the bright model
+    const fs=parseFloat((o.font.match(/([\d.]+)px/)||[0,16])[1]), px=.38*fs, al=o.align||'left', x0=al==='right'?x-w:al==='center'?x-w/2:x;
+    ctx.save(); ctx.globalAlpha=o.alpha*.78; ctx.fillStyle='#0b1220'; ctx.beginPath(); (ctx.roundRect||function(a,b,c,d){this.rect(a,b,c,d);}).call(ctx,x0-px,y-fs*.95,w+2*px,fs*1.3,fs*.22); ctx.fill(); ctx.restore();}
   ctx.lineJoin='round'; ctx.strokeStyle='rgba(10,18,30,.62)'; ctx.lineWidth=(o.stroke||3)*u; ctx.strokeText(str,x,y); ctx.fillStyle=o.color||C.white; ctx.fillText(str,x,y);
-  const w=ctx.measureText(str).width; ctx.restore(); return w;
+  ctx.restore(); return w;
 }
 function ticks(ctx,u,a,b,len){const dx=b[0]-a[0],dy=b[1]-a[1],l=Math.hypot(dx,dy)||1,nx=-dy/l*len*u,ny=dx/l*len*u;
   [a,b].forEach(p=>{ctx.beginPath(); ctx.moveTo(p[0]-nx,p[1]-ny); ctx.lineTo(p[0]+nx,p[1]+ny); ctx.stroke();});}
@@ -116,7 +120,7 @@ const DRAW={
   counter(ctx,it,p,f){
     const SLOT={top:.16,mid:.42,low:.64}, x=f.w*.06, y=f.h*(SLOT[it.slot]||.16), e=1-Math.pow(1-clamp01(p),3), v=Math.round(it.value*e);
     words(ctx,f.u,v.toLocaleString('en-US')+(it.suffix||''),x,y,{font:`700 ${64*f.u}px ${DISPLAY}`,alpha:clamp01(p*3),stroke:5,color:col(it.color||'white')});
-    words(ctx,f.u,it.text,x,y+28*f.u,{font:`700 ${22*f.u}px ${DISPLAY}`,alpha:clamp01(p*2-.4),spacing:'.8px',stroke:4});
+    words(ctx,f.u,it.text,x,y+30*f.u,{font:`800 ${24*f.u}px ${DISPLAY}`,alpha:clamp01(p*2-.4),spacing:'.8px',stroke:4,plate:true});
     if(it.sub) words(ctx,f.u,it.sub,x,y+50*f.u,{font:`500 ${12.5*f.u}px ${MONO}`,alpha:clamp01(p*2-.8),color:'#e8f6ff',spacing:'.4px'});
   },
   // a round route badge (like a subway bullet) at a point: text inside, in the line's color
@@ -169,8 +173,8 @@ const DRAW={
   // a title and fact lines in one of three safe spots on the left (top, mid, low), with a leader line to the point it names
   label(ctx,it,p,f){
     const anchor=px(it.p,f.w,f.h,it.space), SLOT={top:.16,mid:.42,low:.64}, x=f.w*.06, ly=f.h*(SLOT[it.slot]||.16);
-    const tw=words(ctx,f.u,it.title,x,ly-8*f.u,{font:`700 ${(it.small?25:30)*f.u}px ${DISPLAY}`,alpha:clamp01(p*1.8-.8),spacing:'.6px',stroke:4});
-    (it.sub||[]).forEach((s,i)=>words(ctx,f.u,s,x,ly+22*f.u+i*21*f.u,{font:`500 ${13.5*f.u}px ${MONO}`,alpha:clamp01(p*1.8-.9-i*.15),color:'#e8f6ff',spacing:'.4px'}));
+    const tw=words(ctx,f.u,it.title,x,ly-8*f.u,{font:`800 ${(it.small?27:33)*f.u}px ${DISPLAY}`,alpha:clamp01(p*1.8-.8),spacing:'.6px',stroke:4,plate:true});
+    (it.sub||[]).forEach((s,i)=>words(ctx,f.u,s,x,ly+24*f.u+i*23*f.u,{font:`500 ${14*f.u}px ${MONO}`,alpha:clamp01(p*1.8-.9-i*.15),color:'#e8f6ff',spacing:'.4px',plate:true}));
     if(!anchor) return; const ux=x+Math.max(tw,40*f.u), ex=Math.min(Math.max(anchor[0],ux),f.w*.92);
     crisp(ctx,f.u,1.4,()=>{partial(ctx,[anchor,[ex,ly],[x,ly]],clamp01(p*1.4)); ctx.beginPath(); ctx.arc(anchor[0],anchor[1],4*f.u,0,7); ctx.fill();});
   }
@@ -181,7 +185,8 @@ function draw(ctx,w,h,t){
   const P=current(); if(!P||ST.style().S.sheet) return;
   const vw=ST.view(), d=vw.tgt.clone().sub(vw.pos), side=new THREE.Vector3(-d.z,0,d.x).normalize(), toward=new THREE.Vector3(-d.x,0,-d.z).normalize();
   const f={w,h,u:h/960,t,side,toward};
-  P.items.forEach((it,k)=>{const p=clamp01((t-.3-k*.28)/.7); if(p>0&&DRAW[it.type]) DRAW[it.type](ctx,it,p,f);});
+  // items draw on one after another; 'at' sets an exact start time and 'until' draws the item back off (build-up sequences)
+  P.items.forEach((it,k)=>{let p=clamp01((t-(it.at!=null?it.at:.3+k*.28))/.7); if(it.until!=null&&t>it.until) p=Math.min(p,clamp01(1-(t-it.until)/.45)); if(p>0&&DRAW[it.type]) DRAW[it.type](ctx,it,p,f);});
   if(f.sun) ST.sunAt(f.sun);
 }
 
@@ -203,5 +208,5 @@ function tick(){
 }
 requestAnimationFrame(tick);
 
-SS.layer={draw,restart,active:()=>state.key!=='off'&&!!current()};
+SS.layer={draw,restart,active:()=>state.key!=='off'&&!!current(),set:k=>{state.key=k||'off'; buttons();}};
 })();

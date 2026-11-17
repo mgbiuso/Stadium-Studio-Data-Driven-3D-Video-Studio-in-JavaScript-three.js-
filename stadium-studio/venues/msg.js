@@ -298,6 +298,8 @@ function buildMSG(){
     if(!V.cityNew){V.cityNew=new THREE.Group(); V.city.add(V.cityNew);}
     SS.buildCity(V,D,V.city,{skipBins:['1083026'],box:BOX,split:yr=>!yr||yr>1910,splitParent:V.cityNew,
       walkSplit:pts=>{const c=SS.centroid(pts), gr=D.grid; return c[0]<gr.x_hi-14&&c[1]>gr.z_lo+8&&c[1]<gr.z_hi-8;}});   // the Garden's plaza is today-only
+    // the wider city, river to river (data/msg-skyline.js); newer buildings sink away in the 1910 era with the rest of today
+    if(SS.buildSkyline&&window.STADIUM_SKYLINE&&STADIUM_SKYLINE.msg){SS.buildSkyline(V,STADIUM_SKYLINE.msg,V.city); if(V.skylineNew) V.cityNew.add(V.skylineNew);}
   }
   // "Madison Square Garden" letters over the 8th Avenue entrance
   V.letters=new THREE.Mesh(new THREE.PlaneGeometry(30,2.4),V.mats.letters); V.letters.position.set(-R-6.6,21.2,0); V.letters.rotation.y=-Math.PI/2; V.annex.add(V.letters);
@@ -420,6 +422,46 @@ function buildMSG(){
         {type:'label',p:[sx,DP.rail,sz],slot:'low',title:`21 TRACKS · ${ft(DP.rail)} FT DOWN`,sub:['UNDER THE GARDEN SINCE 1910']},
         {type:'drop',a:[BB[0]+3,20,BB[3]-10],b:[BB[0]+3,-22,BB[3]-10],color:'#ff4d4d'},
         {type:'label',p:[BB[0]+3,-22,BB[3]-10],slot:'mid',small:true,title:'BEDROCK · MANHATTAN SCHIST',sub:['USGS BORINGS']}]});}
+    // the city section: the whole neighborhood cut open along the tracks (style 'slice'). The rail lines that leave
+    // the station are carried on straight under the streets to the Hudson (west) and toward the East River (east),
+    // so trains can be seen running out of the station instead of stopping at a wall. Past the model area the
+    // tunnel lines are drawn straight along the street grid: their real curves are not in the data.
+    {const zC=28, XW=-1250, XE=900; V.sliceZ=zC;
+      const ext=D.rails.filter(r=>!r.subway&&r.pts.length>1).map(r=>{const p=r.pts.slice(); if(p[0][0]>p[p.length-1][0]) p.reverse();
+        if(p[0][0]<-300) p.unshift([XW,p[0][1]]); if(p[p.length-1][0]>150) p.push([XE,p[p.length-1][1]]); return p;});
+      const extPts=[]; ext.forEach(p=>{for(let i=0;i<p.length-1;i++){const a=p[i],b=p[i+1],n=Math.ceil(Math.hypot(b[0]-a[0],b[1]-a[1])/6); for(let k=0;k<=n;k++) extPts.push([a[0]+(b[0]-a[0])*k/n,a[1]+(b[1]-a[1])*k/n]);}});
+      const nearExt=(x,z)=>{for(const q of extPts) if(Math.abs(q[0]-x)<6&&Math.abs(q[1]-z)<6) return true; return false;};
+      const cutX=(x,z)=>{if(x<-640||x>X7+20) return nearExt(x,z)?DP.slab-.6:null; return cut(x,z);};   // past 10th Avenue and east of 7th: tunnels only
+      const sh=new THREE.Group(); V.G.under.parent.add(sh); sh.visible=false; V.sliceHolder=sh;
+      V.groundSlice=SS.buildGround(V,D,sh,{cut:cutX,bottom:-110,box:[XW,XE,-260,zC],open:true});
+      V.groundSlice.traverse(m=>{if(m.isMesh&&m.material.map) m.material.color.setScalar(1.35);});
+      {const kt=new KB(); ext.forEach(p=>{const out=p.filter(q=>q[0]<-380||q[0]>260); for(let a=0;a<out.length-1;a++) SS.tunnelShell(kt,[out[a],out[a+1]],DP.rail-.4,5.2,6,K.lining);}); if(kt.p.length) kt.mesh(V,sh,underMat);}
+      // trains running through the tunnels: a few long silver trains, each looping along one line
+      const tm=std({color:lin('#cfd5dc'),roughness:.45,metalness:.25},'under'), cab=std({color:lin('#2b3a55'),roughness:.5},'under');
+      const runs=ext.filter((p,k)=>k%2===0).slice(0,6).map((p,k)=>{const segs=[]; let L=0; for(let i=0;i<p.length-1;i++){const l=Math.hypot(p[i+1][0]-p[i][0],p[i+1][1]-p[i][1]); segs.push([p[i],p[i+1],L,l]); L+=l;}
+        const g=new THREE.Group(); const body=new THREE.Mesh(new THREE.BoxGeometry(180,3.6,3.1),tm); body.position.y=DP.rail+1.9; g.add(body);
+        const stripe=new THREE.Mesh(new THREE.BoxGeometry(180.2,.5,3.15),cab); stripe.position.y=DP.rail+2.6; g.add(stripe); sh.add(g);
+        return {g,segs,L,s:(k*397)%L,v:(k%2?-1:1)*(16+k*2)};});
+      V.tick=dt=>{if(!sh.visible) return; runs.forEach(r=>{r.s=((r.s+r.v*dt)%r.L+r.L)%r.L; const sg=r.segs.find(q=>r.s>=q[2]&&r.s<=q[2]+q[3])||r.segs[0], f=(r.s-sg[2])/sg[3];
+        r.g.position.set(sg[0][0]+(sg[1][0]-sg[0][0])*f,0,sg[0][1]+(sg[1][1]-sg[0][1])*f); r.g.rotation.y=-Math.atan2(sg[1][1]-sg[0][1],sg[1][0]-sg[0][0]);});};
+      V.camOv.slice={tgt:[0,-6,0]};
+      // design layer: the rail lines as moving dashes, carried past the model's edges toward the two river tunnels
+      const ftR=Math.round(-DP.rail/.3048), lines=ext.map((p,k)=>({type:'path',pts:p.map(q=>[q[0],DP.rail+1.6,q[1]]),flow:true,color:k%2?'gold':'cyan',dir:k%2?-1:1,phase:k*7,width:2.4}));
+      const wEnd=ext.reduce((a,p)=>p[0][0]<a[0]?p[0]:a,[1e9,0]), eEnd=ext.reduce((a,p)=>p[p.length-1][0]>a[0]?p[p.length-1]:a,[-1e9,0]);
+      V.layers.push({key:'trackflow',name:'Trains out',items:[...lines,
+        {type:'label',p:[-520,DP.rail,wEnd[1]],slot:'top',small:true,title:'TUNNELS TO NEW JERSEY',sub:['UNDER THE HUDSON RIVER · OPENED 1910']},
+        {type:'label',p:[600,DP.rail,eEnd[1]],slot:'low',small:true,title:'TUNNELS TO QUEENS',sub:[`UNDER THE EAST RIVER · TRACKS ${ftR} FT DOWN AT THE GARDEN`]}]})
+      // build-up sequence (episode renderer 'build' shots): each part drops in with its label. Times in seconds.
+      const B=V.cutBox||[-98,192,-84,84], FTH=Math.round(HT/.3048);
+      V.layers.push({key:'build',name:'Build-up',items:[
+        {type:'label',at:.6,until:3.0,p:[B[0]+3,-22,B[3]-10],slot:'mid',title:'MANHATTAN SCHIST',sub:['THE BEDROCK UNDER MIDTOWN','USGS BORINGS']},
+        {type:'label',at:2.6,until:5.2,p:[-40,DP.rail+2,0],slot:'low',title:'PENN STATION · 1910',sub:[`21 TRACKS, ${ftR} FT DOWN`,'ASCE TRANSACTIONS, 1910']},
+        {type:'label',at:4.8,until:7.4,p:[0,6,R],slot:'top',title:'COLUMNS BETWEEN THE PLATFORMS',sub:['THE ARENA STANDS ON STEEL','THREADED DOWN THROUGH THE STATION']},
+        {type:'label',at:7.0,until:9.6,p:[0,HT*.55,R],slot:'top',title:'THE BOWL · 18,006 SEATS',sub:['FOR HOCKEY · OPENED FEB 11, 1968']},
+        {type:'outline',at:9.3,until:11.8,circle:[0,0,R],y:HT+.4,color:'gold'},
+        {type:'label',at:9.3,until:11.8,p:[0,HT,R],slot:'top',title:'COMPRESSION RING',sub:['48 WELDED STEEL BOX SECTIONS','SEVERUD ASSOCIATES']},
+        {type:'label',at:11.5,until:14.2,p:[0,HT+4,0],slot:'top',title:'48 STEEL CABLES',sub:['404 FT ACROSS, LIKE A BICYCLE WHEEL','TO A 41 FT TENSION RING IN THE MIDDLE']},
+        {type:'label',at:14.4,p:[0,HT,0],slot:'top',title:'MADISON SQUARE GARDEN',sub:[`${FTH} FT TALL · BUILT ON TOP OF A WORKING STATION`]}]});}
     if(V.ground&&V.soilHalf){V.soilHalf.visible=false; V.soilHalf=new THREE.Group();}   // the new ground replaces the old cutaway soil
     // tunnel shells: subway tunnels (today only: they opened in 1917 and 1932) and the railroad's river tunnels (1910)
     {const kt=new KB(), kr=new KB();
