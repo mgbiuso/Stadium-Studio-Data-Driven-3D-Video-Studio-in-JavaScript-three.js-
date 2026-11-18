@@ -26,6 +26,9 @@ SS.builders.push(function buildPenn1910(){
   // ---------------------------------------------------------------- the site: 7th to 8th Avenue, 31st to 33rd Street
   const g=D&&D.grid?D.grid:{x_lo:-89.74,x_hi:183.75,z_lo:-78.91,z_hi:78.01};   // street centerlines (x = grid east, z = grid south)
   const CX=(g.x_lo+g.x_hi)/2, CZ=(g.z_lo+g.z_hi)/2;
+  V.pennCenter=[CX,CZ];   // for centering shots on the 1910 station
+  // camera stops: the Garden centered (today), then the whole 1910 station centered, looking down its length
+  V.shots=Object.assign(V.shots||{},{gardenTop:{tgt:[-10,12,-2],off:[-275,285,440]},pennWide:{tgt:[CX+12,8,CZ+8],off:[-440,395,440]},pennRain:{tgt:[CX+10,6,CZ+6],off:[-405,350,405]}});
   const X0=CX-788*FT/2, X1=CX+788*FT/2, Z0=CZ-432*FT/2, Z1=CZ+432*FT/2;       // the building's frontages
   const H=69*FT, TOP=153*FT, FLOOR=(V.depth&&V.depth.upper)||-4;   // average height, highest point, waiting room and concourse floor (below the street, approximate)
   const COL_H=35*FT, COL_R=4.5*FT/2, STYLO=1;   // Doric columns on a 1 m base
@@ -201,7 +204,8 @@ SS.builders.push(function buildPenn1910(){
     ...V.G.base.children.filter(c=>!keep.has(c))].filter(Boolean);
   const modern=(V.city?V.city.children:[]).filter(c=>c.isInstancedMesh&&(c.material===mats.globe||c.material===mats.dark));   // subway entrances (1917 and later) and traffic signals
   const GROUPS={today:{scaled:todayScaled,swap:[ground,V.trees,...modern].filter(Boolean)},penn:{grow:[P]},extra:{grow:[X10]},hood:{grow:[N]},dig:{grow:[DG]}};
-  const MEMBERS={today:['today'],'1910':['penn','extra','hood'],'1906':['dig','hood']};
+  // 'gone' is a hidden in-between moment for videos (1963 to 1968): the station is torn down, the tracks keep running below
+  const MEMBERS={today:['today'],'1910':['penn','extra','hood'],'1906':['dig','hood'],gone:['hood']};
   const w={today:1,penn:0,extra:0,hood:0,dig:0}, goal=Object.assign({},w);
   const ease=x=>x*x*(3-2*x);
   function show(){

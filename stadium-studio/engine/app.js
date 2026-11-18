@@ -123,7 +123,7 @@ const STYLES={
   night:{name:'Night game',refs:'Ref 6',desc:'Lights on. Windows, screens and signage glow against a night sky.',pal:'day',light:'night',bg:'night',real:true,env:false,haze:'night',exposure:1.25,glow:true},
   overhead:{name:'Overhead',refs:'Ref 3',desc:'Straight down from above, like a drone shot. In Explore, scroll to zoom straight through the roof into the bowl.',pal:'day',light:'day',bg:'day',flyIn:true,real:true,haze:'day'},
   exploded:{name:'Exploded',refs:'Refs 9 · 10 · 22',desc:'Just the arena, its levels lifted apart and labeled: station, event level and 100s, 200s, bridges and scoreboard, ceiling, roof.',pal:'day',light:'day',bg:'drawing',explode:true,edges:'ink',station:true,real:true,
-    shell:false,annex:false,plinth:false,clipUnder:'box',labels:'exploded'},
+    shell:true,annex:false,plinth:false,clipUnder:'box',labels:'exploded'},   // the drum's real columns stay on, lifted with the bowl
   wire:{name:'Wireframe',refs:'Ref 11',desc:'The raw model in a 3D-software viewport look, with live triangle and vertex counts. In Explore, zoom through the roof.',pal:'wire',light:'wire',bg:'wire',edges:'wire',stats:true,flyIn:true},
   isoCel:{name:'Iso · cel',refs:'Iso ref 4',desc:'The venue as a map icon: the real building, roof on, in flat cel-shaded color like an animated film.',pal:'cel',light:'iso',bg:'cel',edges:'cel',iso:true},
   isoInk:{name:'Iso · ink',refs:'Iso ref 5',desc:'The venue as a map icon with bold ink outlines and painted color, like an illustrated poster.',pal:'ink',light:'afternoon',bg:'ink',edges:'inkbold',iso:true},
@@ -157,7 +157,7 @@ const CAMS={
   cutaway:{ortho:true,dir:[1,.95,1],tgt:[0,-16,0],size:168},
   section:{ortho:true,dir:'section',tgt:[0,6,0],size:96},
   underground:{off:[-150,175,235],tgt:[0,-10,0],fov:36},
-  cutout:{off:[-440,145,106],tgt:[0,-10,0],fov:34,pull:.3},
+  cutout:{off:[-120,82,390],tgt:[0,-6,0],fov:34,pull:.3},
   slice:{off:[-170,120,330],tgt:[0,-6,0],fov:34,pull:.45}
 };
 
@@ -188,8 +188,8 @@ function setClip(modeC,underC){
   // hide everything above the sidewalk: set on the renderer itself, so the shading and shadow passes skip it too
   renderer.clippingPlanes=modeC==='ground'?[new THREE.Plane(new THREE.Vector3(0,-1,0),0)]:[];
   // the block cutout: keep only what sits inside the block's four sides (1 m outside its rock faces)
-  if(modeC==='slice'&&V.sliceZ!=null) renderer.clippingPlanes=[new THREE.Plane(new THREE.Vector3(0,0,-1),V.sliceZ)];   // keep everything north of the cut line
-  if(modeC==='block'&&V.cutBox){const [a,b,c,d]=V.cutBox, m=1; renderer.clippingPlanes=[[1,0,-(a-m)],[-1,0,b+m],[0,1,-(c-m)],[0,-1,d+m]].map(([x,z,k])=>new THREE.Plane(new THREE.Vector3(x,0,z),k));}
+  if(modeC==='slice'&&V.sliceZ!=null) renderer.clippingPlanes=[new THREE.Plane(new THREE.Vector3(0,0,-1),V.sliceZ+.4)];   // a little past the rock face: a face lying exactly on the cut flickers like static   // keep everything north of the cut line
+  if(modeC==='block'&&V.cutBox){const [a,b,c]=V.cutBox, d=V.cutFrontZ!=null?V.cutFrontZ:V.cutBox[3], m=1, md=V.cutFrontZ!=null?.4:1; renderer.clippingPlanes=[[1,0,-(a-m)],[-1,0,b+m],[0,1,-(c-m)],[0,-1,d+md]].map(([x,z,k])=>new THREE.Plane(new THREE.Vector3(x,0,z),k));}
   if(modeC==='half'){const s=V.section,p=new THREE.Plane(s.axis==='x'?new THREE.Vector3(-1,0,0):new THREE.Vector3(0,0,-1),s.c); above=[p]; under=[p];}
   // exploded: keep only the part of the station right under the arena (hidden if outside any of the four walls)
   if(underC==='box'){const r=V.boxR||80; under=[[-1,0,r],[1,0,r],[0,-1,r],[0,1,r]].map(([x,z,c])=>new THREE.Plane(new THREE.Vector3(x,0,z),c));}

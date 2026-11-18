@@ -208,5 +208,5 @@ function tick(){
 }
 requestAnimationFrame(tick);
 
-SS.layer={draw,restart,active:()=>state.key!=='off'&&!!current(),set:k=>{state.key=k||'off'; buttons();}};
+SS.layer={draw,restart,active:()=>!state.mute&&state.key!=='off'&&!!current(),set:k=>{state.key=k||'off'; buttons();},mute:on=>{state.mute=!!on;}};   // mute: keep the set but leave it out of the 3D frame (drawn on top later)
 })();

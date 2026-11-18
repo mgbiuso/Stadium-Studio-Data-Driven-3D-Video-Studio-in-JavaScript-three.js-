@@ -28,13 +28,14 @@ const seek=(v,t)=>new Promise(r=>{if(Math.abs(v.currentTime-t)<1e-3) return r();
 /* ---------- camera moves, relative to the style's own starting view ---------- */
 // m = {orbit: degrees around the target, dolly: distance factor, lift: metres up, aim: [x,y,z] shift of target and camera, fov}
 function camAt(P,m){
+  if(m.tgt&&m.off){const t=new THREE.Vector3(...m.tgt); return {o:false,pos:t.clone().add(new THREE.Vector3(...m.off)),tgt:t,fov:m.fov||P.fov,zoom:1};}   // a fixed camera stop from the venue (V.shots)
   const tgt=P.tgt.clone(), pos=P.pos.clone(); if(m.aim){const a=new THREE.Vector3(...m.aim); tgt.add(a); pos.add(a);}
   const off=pos.sub(tgt); if(m.orbit) off.applyAxisAngle(new THREE.Vector3(0,1,0),m.orbit*Math.PI/180);
   if(m.dolly) off.multiplyScalar(m.dolly); if(m.lift) off.y+=m.lift;
   return {o:P.o,pos:tgt.clone().add(off),tgt,fov:m.fov||P.fov,size:P.size&&m.dolly?P.size*m.dolly:P.size,zoom:1};
 }
 function mix(a,b,e){const k=new Set([...Object.keys(a),...Object.keys(b)]), m={};
-  k.forEach(n=>{if(n==='aim'){const A=a.aim||[0,0,0],B=b.aim||[0,0,0]; m.aim=A.map((v,i)=>lerp(v,B[i],e));}
+  k.forEach(n=>{if(n==='aim'||n==='tgt'||n==='off'){const A=a[n]||b[n]||[0,0,0],B=b[n]||a[n]||[0,0,0]; m[n]=A.map((v,i)=>lerp(v,B[i],e));}
     else {const d=n==='dolly'?1:n==='fov'?null:0, A=a[n]!=null?a[n]:d, B=b[n]!=null?b[n]:d; m[n]=A==null?B:B==null?A:lerp(A,B,e);}});
   return m;}
 
@@ -70,9 +71,10 @@ async function stage(sh){
   ST.setEra(sh.era||'today',true); for(let i=0;i<3;i++){ST.step(1/FPS); await yieldNow();}
   if(SS.layer) SS.layer.set(sh.layer||'off');
   P=P||ST.presetView();
+  const Vv=ST.venue(); if(sh.cam) ['from','to'].forEach(k=>{const c=sh.cam[k]; if(c&&c.shot&&Vv.shots&&Vv.shots[c.shot]) sh.cam[k]=Object.assign({},Vv.shots[c.shot],c,{shot:undefined});});
   // centerOn: keep the camera's angle but aim it at the Garden (default), the block (V.cutBox) or any [x, z]
   const V=ST.venue(), c=sh.centerOn===false?null:Array.isArray(sh.centerOn)?sh.centerOn
-    :sh.centerOn==='block'&&V.cutBox?[(V.cutBox[0]+V.cutBox[1])/2,(V.cutBox[2]+V.cutBox[3])/2]:[V.center.x,V.center.z];
+    :sh.centerOn==='block'&&V.cutBox?[(V.cutBox[0]+V.cutBox[1])/2,(V.cutBox[2]+V.cutBox[3])/2]:sh.centerOn==='penn'&&V.pennCenter?V.pennCenter:[V.center.x,V.center.z];
   if(c&&!P.o){const d=new THREE.Vector3(c[0]-P.tgt.x,0,c[1]-P.tgt.z); P.pos.add(d); P.tgt.add(d);}
   return P;
 }
@@ -89,15 +91,22 @@ async function render(ep,opts){
   // lay the voice lines end to end, with a short gap between them
   let t=ep.voice.start||.3; const L=voice.map(b=>{const s={start:t,end:t+b.duration}; t=s.end+(ep.voice.gap||.25); return s;});
   const plan=ep.build(L.length?L:ep.voice.guess);
-  let shots=plan.shots; if(solo){const all=shots.concat(plan.extra||[]); shots=[typeof opts.only==='string'?all.find(x=>x.name===opts.only):all[opts.only]]; if(!shots[0]) throw new Error('no shot '+opts.only);}
+  const reel=!!opts.reel;
+  let shots=plan.shots; if(reel) shots=shots.concat(plan.reelExtra||[]).filter(x=>x.reel&&(opts.reel===true||x.reel===opts.reel)).map(x=>Object.assign({},x,{title:null,sub:null,overlay:null,real:null,real2:null,events:x.events&&x.name!=='S6-then'?x.events:null,fadeIn:0,fadeOut:0}));
+  if(solo){const all=shots.concat(plan.extra||[]); shots=[typeof opts.only==='string'?all.find(x=>x.name===opts.only):all[opts.only]]; if(!shots[0]) throw new Error('no shot '+opts.only);}
   const total=shots.reduce((s,x)=>s+x.dur,0), N=Math.round(total*FPS);
   // media
-  for(const sh of shots){if(sh.type==='photo') sh.img=await loadImg(sh.src); if(sh.type==='video') sh.vid=await loadVideo(sh.src); if(sh.overlay&&!solo) sh.ovid=await loadVideo(sh.overlay.src);}
+  const vids={}, getV=async src=>vids[src]||(vids[src]=await loadVideo(src));
+  for(const sh of shots){if(sh.type==='photo') sh.img=await loadImg(sh.src); if(sh.type==='video') sh.vid=await getV(sh.src); if(sh.overlay&&!solo) sh.ovid=await loadVideo(sh.overlay.src);
+    if(sh.real&&!reel) sh.rvid=await getV(sh.real.src); if(sh.real2&&!reel) sh.rvid2=await getV(sh.real2.src);}   // the realistic repaint of this shot (one reel holds them all)
   // encoders
   let cfg=null; for(const codec of ['avc1.640028','avc1.4d0028','avc1.42e028']){const c={codec,width:W,height:H,bitrate:12e6,framerate:FPS,avc:{format:'avc'}};
     try{if((await VideoEncoder.isConfigSupported(c)).supported){cfg=c; break;}}catch(e){}}
   if(!cfg) throw new Error('This browser has no H.264 video encoder');
-  const withAudio=!solo&&voice.length>0;
+  // music and sound effects (plan.music, plan.sfx), loaded up front so a bad file fails before the long render
+  const music=plan.music&&!solo&&!reel?(await loadVoice([plan.music.src],rate))[0]:null;
+  const sfxBufs=plan.sfx&&!solo&&!reel?await loadVoice(plan.sfx.map(x=>x.src),rate):[];
+  const withAudio=!solo&&!reel&&(voice.length>0||!!music||sfxBufs.length>0);
   const muxer=new Mp4Muxer.Muxer({target:new Mp4Muxer.ArrayBufferTarget(),video:{codec:'avc',width:W,height:H,frameRate:FPS},
     ...(withAudio?{audio:{codec:'aac',numberOfChannels:1,sampleRate:rate}}:{}),fastStart:'in-memory'});
   let err=null; const enc=new VideoEncoder({output:(c,m)=>muxer.addVideoChunk(c,m),error:e=>{err=e;}}); enc.configure(cfg);
@@ -121,7 +130,15 @@ async function render(ep,opts){
           }
           while(events.length&&events[0].t<=lt){const ev=events.shift(); if(ev.era) ST.setEra(ev.era,false); if(ev.layer&&SS.layer) SS.layer.set(ev.layer);}
           const cam=camAt(P,mix(sh.cam&&sh.cam.from||{},sh.cam&&sh.cam.to||{},sh.linear?e:ease(e)));
-          ST.setView(cam); ox.drawImage(R.frame(1/FPS,lt+(sh.layerT0||0)),0,0);
+          ST.setView(cam);
+          const useReal=sh.rvid&&lt>=(sh.real.after||0), fadeReal=sh.rvid&&sh.real.after?clamp01((lt-sh.real.after)/.6):1;
+          if(sh.rvid&&!useReal){ox.drawImage(R.frame(1/FPS,lt+(sh.layerT0||0)),0,0);}
+          else if(sh.rvid||reel){   // realistic shot: the studio still moves the camera, the repaint is the picture, our labels go on top
+            if(SS.layer) SS.layer.mute(true); ox.drawImage(R.frame(1/FPS,lt+(sh.layerT0||0)),0,0); if(SS.layer) SS.layer.mute(false);
+            if(sh.rvid){await seek(sh.rvid,Math.min(sh.rvid.duration-.001,sh.real.from+lt*(sh.real.speed||1))); ox.globalAlpha=fadeReal; cover(sh.rvid,1); ox.globalAlpha=1;}   // fades in from the studio picture when it starts partway
+            if(sh.rvid2){const a2=ease(clamp01((lt-sh.real2.at)/(sh.real2.fade||1.5))); if(a2>.002){await seek(sh.rvid2,Math.min(sh.rvid2.duration-.001,sh.real2.from+lt)); ox.globalAlpha=a2; cover(sh.rvid2,1); ox.globalAlpha=1;}}   // second plate dissolving in (e.g. today into 1910)
+            if(!reel&&SS.layer&&sh.layer&&sh.layer!=='off') SS.layer.draw(ox,W,H,lt+(sh.layerT0||0));
+          } else ox.drawImage(R.frame(1/FPS,lt+(sh.layerT0||0)),0,0);
           if(sh.ovid){const a=curve(sh.overlay.alpha,lt); if(a>.002){await seek(sh.ovid,Math.min(sh.ovid.duration-.001,lt)); ox.globalAlpha=a; ox.drawImage(sh.ovid,0,0,W,H); ox.globalAlpha=1;}}   // e.g. the night pass fading in and out
         } else if(sh.type==='photo'){
           cover(sh.img,lerp(sh.zoom?sh.zoom[0]:1,sh.zoom?sh.zoom[1]:1.08,e),sh.fx,sh.fy);
@@ -134,12 +151,14 @@ async function render(ep,opts){
           } else cover(sh.vid,1);
           if(sh.ovid){const a=curve(sh.overlay.alpha,lt); if(a>.002){await seek(sh.ovid,Math.min(sh.ovid.duration-.001,(sh.overlay.from||0)+lt*(sh.speed||1))); ox.globalAlpha=a; cover(sh.ovid,1); ox.globalAlpha=1;}}   // e.g. the realistic night half fading in
         } else {ox.fillStyle=sh.color||'#0b1220'; ox.fillRect(0,0,W,H);}
-        if(sh.title) text(sh.title.text,W/2,H*(sh.title.y||.45),{font:`700 ${sh.title.size||96}px ${DISPLAY}`,spacing:'2px',alpha:clamp01(lt/.4)});
+        // title: one or more lines (split on \n); until = when it fades out (for a hook that sits on the first seconds only)
+        if(sh.title){const T=sh.title, fs=T.size||96, ls=T.text.split('\n'), al=Math.min(T.at==null?clamp01(lt/.4):clamp01((lt-T.at)/.25),T.until==null?1:clamp01((T.until-lt)/.3));
+          if(al>0) ls.forEach((x,i)=>text(x,W/2,H*(T.y||.45)+(i-(ls.length-1)/2)*fs*1.02,{font:`${T.weight||700} ${fs}px ${DISPLAY}`,spacing:'2px',alpha:al,color:T.color&&i===ls.length-1?T.color:undefined,lw:T.lw}));}
         if(sh.sub) text(sh.sub.text,W/2,H*(sh.sub.y||.52),{font:`500 ${sh.sub.size||30}px ${MONO}`,lw:6,alpha:clamp01((lt-.3)/.4),color:'#e8f6ff'});
         // fades between shots
         const fi=sh.fadeIn?clamp01(lt/sh.fadeIn):1, fo=sh.fadeOut?clamp01((sh.dur-lt)/sh.fadeOut):1, k=Math.min(fi,fo);
         if(k<1){ox.globalAlpha=1-k; ox.fillStyle='#000'; ox.fillRect(0,0,W,H); ox.globalAlpha=1;}
-        if(!solo) (plan.captions||[]).forEach(c=>caption(c,gt));
+        if(!solo&&!reel) (plan.captions||[]).forEach(c=>caption(c,gt));
         const vf=new VideoFrame(out,{timestamp:Math.round(f*1e6/FPS),duration:Math.round(1e6/FPS)});
         enc.encode(vf,{keyFrame:f%(FPS*2)===0}); vf.close(); if(err) throw err;
         while(enc.encodeQueueSize>6) await yieldNow();
@@ -154,6 +173,19 @@ async function render(ep,opts){
       status.stage='audio';
       const len=Math.round(total*rate), mixd=new Float32Array(len);
       voice.forEach((b,k)=>{const d=b.getChannelData(0), o=Math.round(L[k].start*rate); for(let i=0;i<d.length&&o+i<len;i++) mixd[o+i]+=d[i]*(ep.voice.gain||1);});
+      // a sound file as one channel (stereo files are averaged)
+      const mono=b=>{if(b.numberOfChannels<2) return b.getChannelData(0); const a=b.getChannelData(0),c=b.getChannelData(1),m=new Float32Array(a.length); for(let i=0;i<a.length;i++) m[i]=(a[i]+c[i])/2; return m;};
+      // sound effects at their times: {src, t, gain}
+      sfxBufs.forEach((b,k)=>{const x=plan.sfx[k], d=mono(b), o=Math.round(x.t*rate), g=x.gain==null?.6:x.gain; for(let i=0;i<d.length&&o+i<len;i++) if(o+i>=0) mixd[o+i]+=d[i]*g;});
+      // music bed: {src, from (seconds into the song), gain, duck (level while the narrator talks), fadeIn, fadeOut}
+      if(music){const M=plan.music, d=mono(music), from=Math.round((M.from||0)*rate), g=M.gain==null?.35:M.gain, duck=M.duck==null?.45:M.duck;
+        const fi=(M.fadeIn||.5)*rate, fo=(M.fadeOut||2)*rate, att=.15*rate, rel=.5*rate;
+        let env=1;   // the duck follows the voice lines, easing down quickly and back up slowly
+        const talking=new Uint8Array(len); L.forEach(l=>{for(let i=Math.max(0,Math.round((l.start-.1)*rate));i<Math.min(len,Math.round((l.end+.15)*rate));i++) talking[i]=1;});
+        for(let i=0;i<len&&from+i<d.length;i++){const want=talking[i]?duck:1; env+=(want-env)/(want<env?att:rel);
+          const edge=Math.min(1,i/fi,(len-i)/fo); mixd[i]+=d[from+i]*g*env*Math.max(0,edge);}}
+      // keep the peaks under full scale so the mix never clips
+      let pk=0; for(let i=0;i<len;i++) pk=Math.max(pk,Math.abs(mixd[i])); if(pk>.98){const s=.98/pk; for(let i=0;i<len;i++) mixd[i]*=s;}
       let aerr=null; const ae=new AudioEncoder({output:(c,m)=>muxer.addAudioChunk(c,m),error:e=>{aerr=e;}});
       ae.configure({codec:'mp4a.40.2',sampleRate:rate,numberOfChannels:1,bitrate:128000});
       for(let i=0;i<len;i+=1024){const part=mixd.subarray(i,Math.min(len,i+1024));
